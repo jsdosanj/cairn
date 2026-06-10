@@ -118,6 +118,18 @@ jobs:
           name: cairn-windows
           path: artifacts/windows
 
+      # Publish stable, version-less copies alongside the versioned ones so the
+      # website's `releases/latest/download/<name>` links resolve on every release.
+      - name: Stage stable-named assets
+        run: |
+          mkdir -p artifacts/stable
+          cp artifacts/macos/*.pkg     artifacts/stable/cairn-macos.pkg
+          cp artifacts/macos/*.tar.gz  artifacts/stable/cairn-macos.tar.gz
+          cp artifacts/linux/*.deb     artifacts/stable/cairn-linux.deb
+          cp artifacts/linux/*.tar.gz  artifacts/stable/cairn-linux.tar.gz
+          cp artifacts/windows/*.zip   artifacts/stable/cairn-windows-x64.zip
+          ls -la artifacts/stable
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
@@ -127,5 +139,6 @@ jobs:
             artifacts/linux/*.deb
             artifacts/linux/*.tar.gz
             artifacts/windows/*.zip
+            artifacts/stable/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

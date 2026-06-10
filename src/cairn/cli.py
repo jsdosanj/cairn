@@ -12,10 +12,45 @@ import argparse
 import logging
 import sys
 
+from . import __version__
 from .config import ConfigError, enabled_items, load_config
 from .registry import available_notifiers, available_sinks, available_sources
 
 logger = logging.getLogger("cairn")
+
+STARTER_CONFIG = """\
+# Cairn configuration. chmod 600 this file; prefer env vars for secrets.
+# Full reference: https://github.com/jsdosanj/cairn/blob/main/config.example.yaml
+mode: fleet
+source_priority: [intune, jamf, jumpcloud, crowdstrike, sophos, defender]
+
+defaults:
+  status_id: 2
+  company_id: 1
+  site_id: 1
+
+incremental: true
+schedule:
+  interval: 3600
+
+sources:
+  jamf:
+    enabled: false
+    url: https://your.jamf.instance.com
+    client_id: ...
+    client_secret: ...
+
+sinks:
+  snipeit:
+    enabled: true
+    url: https://your-snipe-it/api/v1
+    token: ...
+
+notifiers:
+  slack:
+    enabled: false
+    webhook_url: https://hooks.slack.com/services/XXX/YYY/ZZZ
+"""
 
 
 def _setup_logging(verbose: bool) -> None:
@@ -24,6 +59,12 @@ def _setup_logging(verbose: bool) -> None:
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
         datefmt="%Y-%m-%dT%H:%M:%S",
     )
+
+
+def _cmd_init(_args) -> int:
+    # Print a starter config to stdout so `cairn init > cairn.yaml` works.
+    print(STARTER_CONFIG, end="")
+    return 0
 
 
 def _cmd_list_providers(_args) -> int:
@@ -82,6 +123,7 @@ def _cmd_schedule(args) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cairn", description="Cairn device asset sync")
+    parser.add_argument("--version", action="version", version=f"cairn {__version__}")
     parser.add_argument("-c", "--config", help="path to config.yaml (default: auto-discover)")
     parser.add_argument("-v", "--verbose", action="store_true", help="debug logging")
     sub = parser.add_subparsers(dest="command")
@@ -100,6 +142,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_sched.add_argument("--mode", choices=["agent", "fleet"], help="mode for the scheduled run")
     p_sched.set_defaults(func=_cmd_schedule)
 
+    sub.add_parser("init", help="print a starter config (e.g. cairn init > cairn.yaml)").set_defaults(func=_cmd_init)
     sub.add_parser("validate", help="check config + providers").set_defaults(func=_cmd_validate)
     sub.add_parser("list-providers", help="list available plugins").set_defaults(func=_cmd_list_providers)
     return parser

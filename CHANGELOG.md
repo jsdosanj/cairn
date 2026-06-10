@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented here.
 
+## [1.0.1] — 2026-06-10
+
+**Relicensed to AGPL-3.0, repo renamed to `cairn`, and release downloads made stable.**
+
+### Changed
+
+- **License**: relicensed from MIT to **AGPL-3.0-or-later** to match Snipe-IT,
+  which Cairn integrates with.
+- **Repository** renamed to `github.com/jsdosanj/cairn` (the old URL redirects).
+
+### Added
+
+- `cairn --version` and `cairn init` (prints a starter config:
+  `cairn init > cairn.yaml`).
+- Releases now publish **stable, version-less asset names** (`cairn-macos.tar.gz`,
+  `cairn-macos.pkg`, `cairn-linux.deb`, `cairn-linux.tar.gz`,
+  `cairn-windows-x64.zip`) alongside the versioned ones, so
+  `releases/latest/download/<name>` links always resolve.
+
+[1.0.1]: https://github.com/jsdosanj/cairn/releases/tag/v1.0.1
+
 ## [1.0.0] — 2026-06-10
 
 **GhostAssetSync becomes Cairn: one tool that reconciles your whole device fleet into Snipe-IT.**
