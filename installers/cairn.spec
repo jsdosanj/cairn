@@ -38,6 +38,12 @@ hiddenimports = [
     # frozen binary always ships scheduling + incremental-state support.
     "cairn.scheduler",
     "cairn.state",
+    # UX layer (function-scope imports in cli.py).
+    "cairn.wizard",
+    "cairn.health",
+    "cairn.web",
+    "cairn.secrets",
+    "cairn.provider_meta",
 ]
 
 

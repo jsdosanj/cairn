@@ -176,7 +176,12 @@ def load_config(explicit: Optional[str] = None, search_dir: Optional[str] = None
         logger.info("No config file found; relying entirely on environment variables.")
         tree = {}
     _apply_env_overrides(tree)
-    return normalize(tree)
+    tree = normalize(tree)
+    # Resolve any `keyring:NAME` references against the OS keychain (no-op unless
+    # such references exist).
+    from .secrets import resolve_secrets
+
+    return resolve_secrets(tree)
 
 
 def enabled_items(tree: dict, section: str) -> dict[str, dict]:

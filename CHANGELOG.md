@@ -2,6 +2,38 @@
 
 All notable changes to this project are documented here.
 
+## [1.1.0] — 2026-06-10
+
+**More integrations, and you no longer need a terminal to use Cairn.**
+
+This release starts consolidating the Snipe-IT integration ecosystem and adds a
+guided experience for non-technical admins.
+
+### Added
+
+- **New sources**: **Kandji** (Apple MDM) and **Google Workspace / ChromeOS**
+  (Admin SDK). Cairn now reads from 8 systems.
+- **Asset typing** — devices carry an `asset_type` (computer / mobile / network /
+  accessory / consumable / purchase_order), so non-laptop assets fit.
+- **`cairn setup`** — an interactive wizard that connects Snipe-IT and each tool
+  with plain-language prompts, **tests the connection live**, and writes your
+  config. No YAML editing.
+- **`cairn web`** — a local dashboard (opens in your browser): see your
+  integrations, test connections, run a **dry-run with a results table**, and turn
+  on the schedule, all with clicks.
+- **`cairn doctor`** — one command that tests every configured connection and tells
+  you what's healthy.
+- **OS-keychain secret storage** — store tokens in macOS Keychain / Windows
+  Credential Manager / libsecret instead of plaintext, referenced as
+  `keyring:NAME` (install with `pip install 'cairn-sync[secrets]'`).
+
+### For contributors
+
+- Central `provider_meta.py` describes every integration's fields (powers the
+  wizard, dashboard, and doctor). 53 tests total.
+
+[1.1.0]: https://github.com/jsdosanj/cairn/releases/tag/v1.1.0
+
 ## [1.0.1] — 2026-06-10
 
 **Relicensed to AGPL-3.0, repo renamed to `cairn`, and release downloads made stable.**

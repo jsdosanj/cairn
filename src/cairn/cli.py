@@ -67,6 +67,34 @@ def _cmd_init(_args) -> int:
     return 0
 
 
+def _cmd_setup(args) -> int:
+    from .wizard import run_setup
+
+    return run_setup(args.config or "config.yaml")
+
+
+def _cmd_doctor(args) -> int:
+    from . import health
+
+    config = load_config(args.config)
+    results = health.check_config(config)
+    if not results:
+        print("No sources or sinks enabled. Run `cairn setup` first.")
+        return 1
+    for r in results:
+        mark = "OK  " if r.ok else "FAIL"
+        print(f"[{mark}] {r.section[:-1]}:{r.key} — {r.message}")
+    failed = [r for r in results if not r.ok]
+    print(f"\n{len(results) - len(failed)}/{len(results)} healthy.")
+    return 1 if failed else 0
+
+
+def _cmd_web(args) -> int:
+    from .web import serve
+
+    return serve(host=args.host, port=args.port, config_path=args.config or "config.yaml")
+
+
 def _cmd_list_providers(_args) -> int:
     print("Sources:   ", ", ".join(available_sources()))
     print("Sinks:     ", ", ".join(available_sinks()))
@@ -141,6 +169,14 @@ def build_parser() -> argparse.ArgumentParser:
                          help="seconds between runs (default: config schedule.interval or 3600)")
     p_sched.add_argument("--mode", choices=["agent", "fleet"], help="mode for the scheduled run")
     p_sched.set_defaults(func=_cmd_schedule)
+
+    sub.add_parser("setup", help="interactive setup wizard (recommended for first run)").set_defaults(func=_cmd_setup)
+    sub.add_parser("doctor", help="test every configured connection").set_defaults(func=_cmd_doctor)
+
+    p_web = sub.add_parser("web", help="launch the local dashboard in your browser")
+    p_web.add_argument("--host", default="127.0.0.1", help="bind host (default 127.0.0.1)")
+    p_web.add_argument("--port", type=int, default=8765, help="bind port (default 8765)")
+    p_web.set_defaults(func=_cmd_web)
 
     sub.add_parser("init", help="print a starter config (e.g. cairn init > cairn.yaml)").set_defaults(func=_cmd_init)
     sub.add_parser("validate", help="check config + providers").set_defaults(func=_cmd_validate)

@@ -8,4 +8,4 @@ asset system of record (Snipe-IT), with chat/webhook notifications.
 Formerly GhostAssetSync.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.1.0"

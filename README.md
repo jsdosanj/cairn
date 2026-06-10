@@ -41,10 +41,15 @@ asset system as a pluggable sink, and reconciliation as a first-class step.
 |----------------------------------|------------------|--------------------|
 | Jamf Pro                         | Snipe-IT         | Microsoft Teams    |
 | Microsoft Intune (Graph)         |                  | Slack              |
-| JumpCloud                        |                  | Generic webhook    |
+| Kandji                           |                  | Generic webhook    |
+| JumpCloud                        |                  |                    |
+| Google Workspace (ChromeOS)      |                  |                    |
 | CrowdStrike Falcon               |                  |                    |
 | Sophos Central                   |                  |                    |
 | Microsoft Defender for Endpoint  |                  |                    |
+
+More connectors (Apple Business Manager, UniFi, CDW, Rudder) and Snipe-IT→MDM
+writeback are on the [roadmap](docs/ROADMAP.md).
 
 ---
 
@@ -68,6 +73,18 @@ cairn --help
 ```
 
 ---
+
+## Easiest start (no YAML, no terminal know-how)
+
+```bash
+cairn setup     # guided wizard: pick your tools, paste credentials, test live
+cairn web       # opens a local dashboard: test connections, dry-run, schedule
+```
+
+`cairn setup` walks you through Snipe-IT and each integration, tests every
+connection as you go, can store secrets in your OS keychain, and writes the config
+for you. `cairn web` then gives you a clickable dashboard. Prefer the terminal?
+The manual path is below.
 
 ## Quick start
 
@@ -117,6 +134,9 @@ cairn --help
 ## Commands
 
 ```
+cairn setup                 interactive first-run wizard (recommended)
+cairn web                   launch the local point-and-click dashboard
+cairn doctor                test every configured connection
 cairn validate              load config, initialize every provider, report readiness
 cairn sync                  run a sync (agent or fleet per config)
 cairn sync --dry-run        report changes, write nothing
