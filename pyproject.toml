@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cairn-sync"
+version = "1.0.0"
+description = "Reconcile device inventory from MDM/EDR tools into Snipe-IT. Formerly GhostAssetSync."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Cairn contributors" }]
+keywords = ["mdm", "edr", "snipe-it", "asset-management", "jamf", "intune", "crowdstrike"]
+dependencies = [
+    "requests>=2.31.0,<3.0.0",
+    "PyYAML>=6.0,<7.0",
+    'pyobjc-framework-SystemConfiguration>=10.0; platform_system=="Darwin"',
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "responses>=0.24", "pyinstaller>=6.0"]
+
+[project.scripts]
+cairn = "cairn.cli:main"
+ghostsync = "cairn.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jsdosanj/GhostAssetSync"
+Website = "https://jsdosanj.github.io/cairn-site/"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
