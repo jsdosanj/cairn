@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Cairn logo: a stack of balanced stones">
+  <!-- Base stone -->
+  <ellipse cx="24" cy="40" rx="15" ry="5" fill="#64748b"/>
+  <!-- Stone 3 (largest, bottom) -->
+  <ellipse cx="24" cy="34" rx="13" ry="6" fill="#94a3b8"/>
+  <!-- Stone 2 (middle) -->
+  <ellipse cx="23" cy="25" rx="10" ry="5.5" fill="#cbd5e1"/>
+  <!-- Stone 1 (small, accent, top) -->
+  <ellipse cx="25" cy="16" rx="7" ry="4.5" fill="#14b8a6"/>
+  <!-- Cap pebble -->
+  <ellipse cx="24" cy="9" rx="3.5" ry="2.5" fill="#0d9488"/>
+</svg>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cairn — Every device. One source of truth.</title>
+  <meta name="description" content="Cairn is an open-source CLI that reconciles device inventory from your MDM and EDR tools into a single IT asset system of record — automatically.">
+  <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="stylesheet" href="assets/styles.css">
+  <meta property="og:title" content="Cairn — Every device. One source of truth.">
+  <meta property="og:description" content="Cairn pulls your fleet from the tools that already manage it and keeps your asset database honest, automatically.">
+  <meta property="og:type" content="website">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="#top" aria-label="Cairn home">
+        <img class="brand__mark" src="assets/cairn.svg" alt="" width="28" height="28">
+        <span class="brand__name">Cairn</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/jsdosanj/GhostAssetSync#readme">Docs</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/GhostAssetSync" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Open-source asset reconciliation</p>
+          <h1 class="hero__title">Every device.<br><span class="accent">One source of truth.</span></h1>
+          <p class="hero__lead">
+            Cairn pulls your fleet from the tools that already manage it — Jamf, Intune,
+            CrowdStrike and more — and keeps your asset database honest, automatically.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="https://github.com/jsdosanj/GhostAssetSync/releases" rel="noopener">Download</a>
+            <a class="btn btn--ghost" href="https://github.com/jsdosanj/GhostAssetSync" rel="noopener">View on GitHub</a>
+          </div>
+          <p class="hero__meta">Single binary · macOS · Windows · Linux · MIT licensed</p>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <div class="cairn-stack">
+            <span class="stone stone--1"></span>
+            <span class="stone stone--2"></span>
+            <span class="stone stone--3"></span>
+            <span class="stone stone--4"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL / CODE -->
+    <section class="demo">
+      <div class="container demo__grid">
+        <figure class="terminal" aria-label="Example Cairn command and output">
+          <figcaption class="terminal__bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="terminal__title">cairn — fleet reconciliation</span>
+            <button class="copy-btn" type="button" data-copy="#snippet-cmd" aria-label="Copy command">Copy</button>
+          </figcaption>
+          <pre class="terminal__body"><code id="snippet-cmd"><span class="c-prompt">$</span> cairn sync --dry-run
+<span class="c-muted">→</span> Loading config from ./cairn.yaml
+<span class="c-muted">→</span> Pulling fleet: jamf (412) · intune (377) · crowdstrike (455)
+<span class="c-muted">→</span> Reconciling by serial number…
+<span class="c-ok">✓</span> 461 devices matched · 12 new · 3 conflicts resolved by trust priority
+<span class="c-warn">~</span> dry-run: no changes written to Snipe-IT</code></pre>
+        </figure>
+
+        <figure class="terminal" aria-label="Example Cairn YAML configuration">
+          <figcaption class="terminal__bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="terminal__title">cairn.yaml</span>
+            <button class="copy-btn" type="button" data-copy="#snippet-yaml" aria-label="Copy config">Copy</button>
+          </figcaption>
+          <pre class="terminal__body"><code id="snippet-yaml"><span class="c-key">mode</span>: fleet
+<span class="c-key">sources</span>:
+  - <span class="c-key">type</span>: jamf
+    <span class="c-key">base_url</span>: https://acme.jamfcloud.com
+    <span class="c-key">trust</span>: 90        <span class="c-muted"># higher wins on conflict</span>
+  - <span class="c-key">type</span>: intune
+    <span class="c-key">trust</span>: 70
+<span class="c-key">sink</span>:
+  <span class="c-key">type</span>: snipe-it
+  <span class="c-key">base_url</span>: https://assets.acme.com
+<span class="c-key">notify</span>:
+  - <span class="c-key">type</span>: slack</code></pre>
+        </figure>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <h2 class="section__title">Built for honest inventory</h2>
+        <p class="section__sub">Cairn does one job well: it makes your system of record match reality.</p>
+
+        <ul class="grid grid--features">
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">🔌</span>
+            <h3>Pluggable providers</h3>
+            <p>Add a new MDM or EDR by dropping in a provider — no changes to the core engine.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">🛰️</span>
+            <h3>Agent &amp; fleet modes</h3>
+            <p>Run on each endpoint to sync that machine, or run centrally to reconcile the whole fleet.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">🧩</span>
+            <h3>Serial reconciliation</h3>
+            <p>Merges records for the same physical machine across tools, field-by-field, by trust priority.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">🔒</span>
+            <h3>Security-first</h3>
+            <p>HTTPS-only, secrets via env vars, config permission checks, and serial masking in logs.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">📦</span>
+            <h3>Single binary</h3>
+            <p>One cross-platform binary for macOS, Windows, and Linux — grab it from GitHub Releases.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">🧪</span>
+            <h3>Dry-run mode</h3>
+            <p>Preview every create, update, and conflict resolution before a single write hits your SoR.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- INTEGRATIONS -->
+    <section class="section section--alt" id="integrations">
+      <div class="container">
+        <h2 class="section__title">Works with the tools you already run</h2>
+        <p class="section__sub">Cairn reads from your management tools and writes to one system of record.</p>
+
+        <div class="integrations">
+          <div class="integrations__group">
+            <h3 class="integrations__label">Sources</h3>
+            <ul class="logos">
+              <li class="logo">🍎 Jamf Pro</li>
+              <li class="logo">🪟 Microsoft Intune</li>
+              <li class="logo">☁️ JumpCloud</li>
+              <li class="logo">🦅 CrowdStrike Falcon</li>
+              <li class="logo">🛡️ Sophos Central</li>
+              <li class="logo">🟦 Microsoft Defender for Endpoint</li>
+            </ul>
+          </div>
+
+          <div class="integrations__group">
+            <h3 class="integrations__label">System of record</h3>
+            <ul class="logos">
+              <li class="logo logo--sink">📋 Snipe-IT</li>
+            </ul>
+          </div>
+
+          <div class="integrations__group">
+            <h3 class="integrations__label">Notifications</h3>
+            <ul class="logos">
+              <li class="logo">👥 Microsoft Teams</li>
+              <li class="logo">💬 Slack</li>
+              <li class="logo">🔗 Generic webhook</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section class="section" id="install">
+      <div class="container">
+        <h2 class="section__title">Install Cairn</h2>
+        <p class="section__sub">Pick your platform. Every build is published on GitHub Releases.</p>
+
+        <div class="tabs" role="tablist" aria-label="Install options">
+          <button class="tab is-active" role="tab" id="tab-macos" aria-selected="true" aria-controls="panel-macos">macOS</button>
+          <button class="tab" role="tab" id="tab-windows" aria-selected="false" aria-controls="panel-windows" tabindex="-1">Windows</button>
+          <button class="tab" role="tab" id="tab-linux" aria-selected="false" aria-controls="panel-linux" tabindex="-1">Linux</button>
+          <button class="tab" role="tab" id="tab-pip" aria-selected="false" aria-controls="panel-pip" tabindex="-1">pip</button>
+        </div>
+
+        <div class="tabpanels">
+          <div class="tabpanel is-active" role="tabpanel" id="panel-macos" aria-labelledby="tab-macos">
+            <p class="tabpanel__hint">Install the signed <code>.pkg</code>, or drop the binary in your PATH:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-macos" aria-label="Copy macOS install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Option A — download &amp; install the .pkg from Releases</span>
+<span class="c-muted"># Option B — install the binary directly</span>
+curl -fsSL https://github.com/jsdosanj/GhostAssetSync/releases/latest/download/cairn-macos -o cairn
+chmod +x cairn && sudo mv cairn /usr/local/bin/
+cairn version</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
+            <p class="tabpanel__hint">Run the installer, or unzip the portable build:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-windows" aria-label="Copy Windows install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the .zip from Releases and extract</span>
+Invoke-WebRequest `
+  https://github.com/jsdosanj/GhostAssetSync/releases/latest/download/cairn-windows.zip `
+  -OutFile cairn.zip
+Expand-Archive cairn.zip -DestinationPath "$Env:ProgramFiles\Cairn"
+cairn version</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux" hidden>
+            <p class="tabpanel__hint">Install the <code>.deb</code> on Debian/Ubuntu, or use the tarball anywhere:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-linux" aria-label="Copy Linux install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-linux"><span class="c-muted"># Debian / Ubuntu (.deb)</span>
+curl -fsSLO https://github.com/jsdosanj/GhostAssetSync/releases/latest/download/cairn.deb
+sudo dpkg -i cairn.deb
+
+<span class="c-muted"># Or the portable tarball</span>
+curl -fsSL https://github.com/jsdosanj/GhostAssetSync/releases/latest/download/cairn-linux.tar.gz | tar xz
+sudo mv cairn /usr/local/bin/</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-pip" aria-labelledby="tab-pip" hidden>
+            <p class="tabpanel__hint">Prefer Python packaging? Install from PyPI:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pip" aria-label="Copy pip install command">Copy</button>
+              <pre class="terminal__body"><code id="install-pip">pip install cairn
+
+<span class="c-muted"># then generate a starter config</span>
+cairn init &gt; cairn.yaml</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <section class="cta-strip">
+      <div class="container cta-strip__inner">
+        <div>
+          <h2>Stop guessing what you own.</h2>
+          <p>Reconcile your fleet in minutes — with a dry run first.</p>
+        </div>
+        <div class="cta-strip__buttons">
+          <a class="btn btn--primary" href="https://github.com/jsdosanj/GhostAssetSync/releases" rel="noopener">Download Cairn</a>
+          <a class="btn btn--ghost" href="https://github.com/jsdosanj/GhostAssetSync" rel="noopener">Read the docs</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/cairn.svg" alt="" width="24" height="24">
+        <span>Cairn</span>
+      </div>
+      <p class="footer__meta">
+        MIT licensed · Formerly <strong>GhostAssetSync</strong> ·
+        <a href="https://github.com/jsdosanj/GhostAssetSync" rel="noopener">GitHub</a>
+      </p>
+      <p class="footer__copy">Every device. One source of truth.</p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+</body>
+</html>
