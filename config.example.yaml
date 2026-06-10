@@ -1,0 +1,102 @@
+# ============================================================
+# Cairn configuration (formerly GhostAssetSync)
+#
+# SECURITY
+#   - Never commit this file with real credentials.
+#   - chmod 600 config.yaml   (Cairn refuses a world-readable config)
+#   - Prefer environment variables for secrets in production. Any value here
+#     can be overridden by env:
+#       Legacy:  GHOST_JAMF_URL, GHOST_SNIPE_TOKEN, TEAMS_WEBHOOK_URL, ...
+#       Generic: CAIRN_sources__jamf__client_secret=...
+#                CAIRN_sinks__snipeit__token=...
+# ============================================================
+
+# agent = run on one endpoint, sync only this machine.
+# fleet = run centrally, pull every device from every source and sync the fleet.
+mode: fleet
+
+# When two sources describe the same serial, earlier sources win field-by-field
+# (empty fields are then filled from later sources). Tune to your trust order.
+source_priority: [intune, jamf, jumpcloud, crowdstrike, sophos, defender]
+
+# Org-level defaults applied to created assets (sinks read these).
+defaults:
+  status_id: 2
+  company_id: 1
+  site_id: 1
+
+# ----------------------------------------------------------------
+# SOURCES — enable only the ones you use. Disabled ones are ignored.
+# ----------------------------------------------------------------
+sources:
+  jamf:
+    enabled: false
+    url: https://your.jamf.instance.com
+    # Preferred: API role client credentials
+    client_id: YOUR_JAMF_API_CLIENT_ID
+    client_secret: YOUR_JAMF_API_CLIENT_SECRET
+    # OR basic auth (less preferred):
+    # username: YOUR_JAMF_API_USER
+    # password: YOUR_JAMF_API_PASSWORD
+
+  intune:
+    enabled: false
+    tenant_id: YOUR_AZURE_TENANT_ID
+    client_id: YOUR_APP_REGISTRATION_CLIENT_ID
+    client_secret: YOUR_APP_REGISTRATION_SECRET
+
+  jumpcloud:
+    enabled: false
+    api_key: YOUR_JUMPCLOUD_API_KEY
+    # org_id: YOUR_ORG_ID   # only for multi-tenant admin
+
+  crowdstrike:
+    enabled: false
+    client_id: YOUR_FALCON_CLIENT_ID
+    client_secret: YOUR_FALCON_CLIENT_SECRET
+    base_url: https://api.crowdstrike.com   # region-specific (us-2/eu-1/gov)
+
+  sophos:
+    enabled: false
+    client_id: YOUR_SOPHOS_CLIENT_ID
+    client_secret: YOUR_SOPHOS_CLIENT_SECRET
+
+  defender:
+    enabled: false
+    tenant_id: YOUR_AZURE_TENANT_ID
+    client_id: YOUR_APP_REGISTRATION_CLIENT_ID
+    client_secret: YOUR_APP_REGISTRATION_SECRET
+
+# ----------------------------------------------------------------
+# SINKS — where reconciled devices are written.
+# ----------------------------------------------------------------
+sinks:
+  snipeit:
+    enabled: true
+    url: https://your-snipe-it-instance/api/v1
+    token: YOUR_SNIPEIT_API_TOKEN
+    default_model_id: 1
+    # Map a Snipe-IT custom-field label to a device attribute or extra path.
+    field_map:
+      "Operating System": os_name
+      "OS Version": os_version
+      "OS Build": os_build
+      "MAC Address": mac_addresses
+      "Last Seen": last_seen
+      "Source": source
+
+# ----------------------------------------------------------------
+# NOTIFIERS — optional run summaries.
+# ----------------------------------------------------------------
+notifiers:
+  teams:
+    enabled: false
+    webhook_url: https://outlook.office.com/webhook/your-webhook-url
+  slack:
+    enabled: false
+    webhook_url: https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+  webhook:
+    enabled: false
+    url: https://example.com/collector
+    headers:
+      X-Api-Key: optional-shared-secret
