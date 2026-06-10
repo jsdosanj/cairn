@@ -8,9 +8,14 @@ version = "1.0.0"
 description = "Reconcile device inventory from MDM/EDR tools into Snipe-IT. Formerly GhostAssetSync."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "Cairn contributors" }]
 keywords = ["mdm", "edr", "snipe-it", "asset-management", "jamf", "intune", "crowdstrike"]
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Systems Administration",
+]
 dependencies = [
     "requests>=2.31.0,<3.0.0",
     "PyYAML>=6.0,<7.0",

@@ -297,4 +297,12 @@ one-file binary, then `.pkg` / `.deb` / `.zip`). See
 
 ## License
 
-MIT. Formerly GhostAssetSync.
+**GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)** — the same
+license as [Snipe-IT](https://github.com/snipe/snipe-it), which Cairn integrates
+with. See [LICENSE](LICENSE).
+
+AGPL is a strong copyleft: if you modify Cairn and run it as a network service,
+you must make your modified source available to its users. For most teams running
+it internally to sync their own fleet, that changes nothing.
+
+Formerly GhostAssetSync.
