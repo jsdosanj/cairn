@@ -51,7 +51,7 @@ asset system as a pluggable sink, and reconciliation as a first-class step.
 ## Install
 
 **Download a release binary** (recommended) from
-[Releases](https://github.com/jsdosanj/GhostAssetSync/releases):
+[Releases](https://github.com/jsdosanj/cairn/releases):
 
 - macOS — `.pkg` installer or `cairn-macos.tar.gz`
 - Windows — `.zip` or the Inno Setup `.exe` installer
@@ -60,8 +60,8 @@ asset system as a pluggable sink, and reconciliation as a first-class step.
 **Or install from source:**
 
 ```bash
-git clone https://github.com/jsdosanj/GhostAssetSync.git
-cd GhostAssetSync
+git clone https://github.com/jsdosanj/cairn.git
+cd cairn
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 cairn --help

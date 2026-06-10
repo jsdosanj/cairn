@@ -54,4 +54,4 @@ automatically, on a schedule.
 - 39 offline tests (`pytest`) covering models, config, sink, orchestrator,
   incremental state, scheduler unit generation, and provider normalization.
 
-[1.0.0]: https://github.com/jsdosanj/GhostAssetSync/releases/tag/v1.0.0
+[1.0.0]: https://github.com/jsdosanj/cairn/releases/tag/v1.0.0

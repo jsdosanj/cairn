@@ -30,7 +30,7 @@ cairn = "cairn.cli:main"
 ghostsync = "cairn.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/jsdosanj/GhostAssetSync"
+Homepage = "https://github.com/jsdosanj/cairn"
 Website = "https://jsdosanj.github.io/cairn-site/"
 
 [tool.setuptools]
