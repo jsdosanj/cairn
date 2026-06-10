@@ -2,8 +2,7 @@
 
 The source for the **Cairn** landing page. Cairn is an open-source CLI that
 reconciles device inventory from your MDM/EDR tools into a single IT asset
-system of record. (Cairn is the rebrand of the tool formerly known as
-*GhostAssetSync*.)
+system of record.
 
 > Every device. One source of truth.
 
