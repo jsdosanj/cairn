@@ -9,7 +9,7 @@ system of record. (Cairn is the rebrand of the tool formerly known as
 
 This repo contains only the static marketing site — no application code. The
 Cairn tool itself lives at
-**https://github.com/jsdosanj/GhostAssetSync**.
+**https://github.com/jsdosanj/cairn**.
 
 ## What's here
 
