@@ -83,6 +83,19 @@ sources:
     client_id: YOUR_APP_REGISTRATION_CLIENT_ID
     client_secret: YOUR_APP_REGISTRATION_SECRET
 
+  kandji:
+    enabled: false
+    api_url: https://YOUR_SUBDOMAIN.api.kandji.io   # EU: ...api.eu.kandji.io
+    api_token: YOUR_KANDJI_API_TOKEN
+
+  google_workspace:
+    enabled: false
+    # ChromeOS devices via the Admin SDK. Needs a service account with
+    # domain-wide delegation. Install with: pip install 'cairn-sync[google]'
+    customer_id: my_customer
+    subject: admin@yourdomain.com           # admin email to impersonate
+    service_account_file: /path/to/service-account.json
+
 # ----------------------------------------------------------------
 # SINKS — where reconciled devices are written.
 # ----------------------------------------------------------------

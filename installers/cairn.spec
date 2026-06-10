@@ -28,6 +28,8 @@ hiddenimports = [
     "cairn.sources.crowdstrike",
     "cairn.sources.sophos",
     "cairn.sources.defender",
+    "cairn.sources.kandji",
+    "cairn.sources.google_workspace",
     "cairn.sinks.snipeit",
     "cairn.notifiers.teams",
     "cairn.notifiers.slack",

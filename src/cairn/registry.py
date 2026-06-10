@@ -22,6 +22,8 @@ _SOURCES: dict[str, str] = {
     "crowdstrike": "cairn.sources.crowdstrike:CrowdStrikeSource",
     "sophos": "cairn.sources.sophos:SophosSource",
     "defender": "cairn.sources.defender:DefenderSource",
+    "kandji": "cairn.sources.kandji:KandjiSource",
+    "google_workspace": "cairn.sources.google_workspace:GoogleWorkspaceSource",
 }
 
 _SINKS: dict[str, str] = {

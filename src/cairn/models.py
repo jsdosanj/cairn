@@ -47,6 +47,9 @@ class NormalizedDevice:
     serial: str
     source: str  # provider key that produced this record (e.g. "jamf")
     source_id: Optional[str] = None  # provider-native device id, for round-trips
+    # Broad asset class so non-endpoint sources (network gear, procurement) fit:
+    # computer | mobile | network | accessory | consumable | purchase_order
+    asset_type: str = "computer"
     hostname: Optional[str] = None
     mac_addresses: list[str] = field(default_factory=list)
     os_name: Optional[str] = None  # "macOS" | "Windows" | "Linux" | ...
@@ -110,6 +113,12 @@ def merge_devices(
 
     merged = NormalizedDevice(serial=base.serial, source="merged")
     merged.source_id = base.source_id
+    # Asset class is intrinsic to the device; take it from the highest-priority
+    # source (prefer any non-default classification if the top source is generic).
+    merged.asset_type = next(
+        (d.asset_type for d in ordered if d.asset_type and d.asset_type != "computer"),
+        base.asset_type,
+    )
     merged_sources = []
     all_macs: list[str] = []
 

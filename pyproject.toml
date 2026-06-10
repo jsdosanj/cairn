@@ -23,7 +23,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4", "responses>=0.24", "pyinstaller>=6.0"]
+google = ["PyJWT>=2.8", "cryptography>=42.0"]
+dev = ["pytest>=7.4", "responses>=0.24", "pyinstaller>=6.0", "PyJWT>=2.8", "cryptography>=42.0"]
 
 [project.scripts]
 cairn = "cairn.cli:main"
