@@ -1,5 +1,7 @@
 # Secrets
 settings.conf
+config.yaml
+config.yml
 
 # Python
 __pycache__/
@@ -12,6 +14,7 @@ __pycache__/
 dist/
 build/
 *.spec
+!installers/cairn.spec   # checked-in build spec, not generated
 
 # Virtual environments
 venv/
