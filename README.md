@@ -48,4 +48,4 @@ Source: GitHub Actions**.
 
 ## License
 
-MIT.
+AGPL-3.0-or-later (matching the Cairn tool and Snipe-IT).
