@@ -13,8 +13,9 @@ __pycache__/
 # PyInstaller
 dist/
 build/
+# checked-in build spec (not generated), so un-ignore it
 *.spec
-!installers/cairn.spec   # checked-in build spec, not generated
+!installers/cairn.spec
 
 # Virtual environments
 venv/
