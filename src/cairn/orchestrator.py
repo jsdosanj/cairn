@@ -19,6 +19,7 @@ from .config import enabled_items
 from .models import NormalizedDevice, merge_devices
 from .registry import get_notifier_class, get_sink_class, get_source_class
 from .sinks.base import SyncResult
+from .state import SyncState
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +73,11 @@ class Orchestrator:
             logger.warning("No sources enabled.")
         if not self.sinks:
             raise ValueError("No sinks enabled — nothing to sync into.")
+        self.state = SyncState(
+            path=config.get("state_path"),
+            enabled=config.get("incremental", True) is not False,
+            ignore_fields=config.get("incremental_ignore_fields"),
+        )
 
     def _build(self, getter, section: str) -> dict:
         built = {}
@@ -84,7 +90,8 @@ class Orchestrator:
         return built
 
     # --- public entrypoint ----------------------------------------------
-    def run(self, dry_run: bool = False) -> RunSummary:
+    def run(self, dry_run: bool = False, full: bool = False) -> RunSummary:
+        """Run a sync. `full=True` ignores incremental state (re-sync everything)."""
         summary = RunSummary(mode=self.mode, dry_run=dry_run)
         devices = (
             self._collect_fleet(summary)
@@ -93,11 +100,23 @@ class Orchestrator:
         )
         summary.devices_seen = len(devices)
         for device in devices:
+            # Incremental skip: unchanged device since last successful sync.
+            if not full and self.state.is_unchanged(device):
+                summary.record(SyncResult(SyncResult.SKIPPED, device.serial, "", "unchanged"))
+                continue
+            ok = True
             for sink in self.sinks.values():
                 result = sink.upsert(device, dry_run=dry_run)
                 summary.record(result)
                 if result.action == SyncResult.FAILED:
+                    ok = False
                     logger.error("sink %s failed for %s: %s", sink.key, result.serial, result.detail)
+            # Only remember a device as synced when every sink accepted it and we
+            # actually wrote (never in dry-run), so failures retry next run.
+            if ok and not dry_run:
+                self.state.mark_synced(device)
+        if not dry_run:
+            self.state.save()
         self._notify(summary)
         return summary
 

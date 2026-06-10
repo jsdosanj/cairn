@@ -117,13 +117,17 @@ cairn --help
 ## Commands
 
 ```
-cairn validate            load config, initialize every provider, report readiness
-cairn sync                run a sync (agent or fleet per config)
-cairn sync --dry-run      report changes, write nothing
-cairn sync --mode agent   override the configured mode for one run
-cairn list-providers      list available sources / sinks / notifiers
-cairn -c path/to.yaml ... use a specific config file
-cairn -v ...              debug logging
+cairn validate              load config, initialize every provider, report readiness
+cairn sync                  run a sync (agent or fleet per config)
+cairn sync --dry-run        report changes, write nothing
+cairn sync --full           re-sync every device (ignore incremental state)
+cairn sync --mode agent     override the configured mode for one run
+cairn schedule install      install a native scheduled auto-sync (--interval SECONDS)
+cairn schedule status       show the scheduled job
+cairn schedule uninstall    remove the scheduled job
+cairn list-providers        list available sources / sinks / notifiers
+cairn -c path/to.yaml ...   use a specific config file
+cairn -v ...                debug logging
 ```
 
 ---
@@ -147,6 +151,46 @@ fields are backfilled from lower-priority sources. MAC addresses are unioned and
 normalized; every source's raw payload is preserved under `raw[<source>]`. EDR-only
 records that lack a serial (some Defender/Sophos endpoints) are still synced, just
 not merged.
+
+---
+
+## Scheduling (auto-sync)
+
+Install Cairn as a native scheduled job so it keeps Snipe-IT current on its own:
+
+```bash
+cairn schedule install --interval 3600   # sync every hour
+cairn schedule status
+cairn schedule uninstall
+```
+
+Per platform, this uses the OS-native scheduler (no daemon to babysit):
+
+- **macOS** — a launchd LaunchAgent (`~/Library/LaunchAgents/com.cairn.sync.plist`),
+  run at low I/O priority, logging to `~/Library/Logs/cairn.log`.
+- **Linux** — a `systemd --user` service + timer, falling back to cron if systemd
+  isn't available. (Run `loginctl enable-linger $USER` to keep it running while
+  logged out.)
+- **Windows** — a Task Scheduler task (`schtasks`).
+
+The interval defaults to `schedule.interval` in your config (or 3600s).
+
+## Efficiency
+
+Cairn is built to run cheaply on a tight schedule:
+
+- **Incremental sync** — a per-device content hash means a scheduled run only
+  writes the devices that actually changed. Unchanged devices are skipped before
+  any write. `last_seen` is excluded from the hash by default so a routine
+  check-in doesn't cause churn. Force a full re-sync with `cairn sync --full`.
+- **Streaming** — sources yield devices as they page, so memory stays flat
+  regardless of fleet size.
+- **Connection reuse** — pooled keep-alive sessions with retry/backoff per source.
+- **Lazy loading** — only the providers you enable are imported.
+- **Low priority** — scheduled jobs run niced / idle-I/O so they stay out of the
+  way of interactive work.
+
+State lives in `~/.cairn/state.json` (override with `state_path` or `CAIRN_STATE`).
 
 ---
 
@@ -210,6 +254,8 @@ src/cairn/
 ├── models.py         NormalizedDevice + merge_devices (the lingua franca)
 ├── http.py           retrying session, HTTPS enforcement, OAuth2 client creds
 ├── registry.py       maps config keys -> provider classes (lazy import)
+├── state.py          incremental-sync hash store (skip unchanged devices)
+├── scheduler.py      install native scheduled jobs (launchd / systemd / schtasks)
 ├── system_info.py    local machine facts (macOS / Windows / Linux) for agent mode
 ├── sources/          DeviceSource plugins: jamf, intune, jumpcloud,
 │                     crowdstrike, sophos, defender

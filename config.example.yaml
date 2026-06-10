@@ -26,6 +26,22 @@ defaults:
   site_id: 1
 
 # ----------------------------------------------------------------
+# EFFICIENCY — incremental sync (recommended for scheduled runs).
+# Cairn stores a per-device content hash and skips devices that haven't changed
+# since the last successful sync, so a scheduled run only writes real changes.
+# ----------------------------------------------------------------
+incremental: true
+# Where the state lives (default: ~/.cairn/state.json, or %LOCALAPPDATA%\Cairn on Windows).
+# state_path: /var/lib/cairn/state.json
+# Fields that should NOT count as a "change" (they tick constantly). last_seen is
+# excluded by default so a device merely checking in doesn't trigger a write.
+incremental_ignore_fields: [last_seen]
+
+# Default cadence used by `cairn schedule install` when --interval is omitted.
+schedule:
+  interval: 3600   # seconds (1 hour)
+
+# ----------------------------------------------------------------
 # SOURCES — enable only the ones you use. Disabled ones are ignored.
 # ----------------------------------------------------------------
 sources:

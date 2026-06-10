@@ -36,15 +36,18 @@ def _patch_registry(monkeypatch, source_cls, sink_cls):
     monkeypatch.setattr(orch, "get_notifier_class", lambda key: None)
 
 
-def _config():
-    return {
+def _config(**overrides):
+    cfg = {
         "mode": "fleet",
         "source_priority": ["fake"],
         "sources": {"fake": {"enabled": True}},
         "sinks": {"fakesink": {"enabled": True}},
         "notifiers": {},
         "defaults": {},
+        "incremental": False,  # tests don't touch the real ~/.cairn state by default
     }
+    cfg.update(overrides)
+    return cfg
 
 
 def test_fleet_run_merges_by_serial(monkeypatch):
@@ -76,6 +79,33 @@ def test_dry_run_propagates(monkeypatch):
     _patch_registry(monkeypatch, FakeSource, FakeSink)
     Orchestrator(_config()).run(dry_run=True)
     assert FakeSink.upserts == [("S1", True)]
+
+
+def test_incremental_skips_unchanged_on_second_run(monkeypatch, tmp_path):
+    FakeSource._devices = [NormalizedDevice(serial="S1", source="fake", hostname="a")]
+    _patch_registry(monkeypatch, FakeSource, FakeSink)
+    cfg = _config(incremental=True, state_path=str(tmp_path / "state.json"))
+
+    FakeSink.upserts = []
+    first = Orchestrator(cfg).run()
+    assert first.created == 1  # written the first time
+
+    FakeSink.upserts = []
+    second = Orchestrator(cfg).run()  # nothing changed
+    assert second.skipped == 1
+    assert second.created == 0
+    assert FakeSink.upserts == []  # the sink was never called the second time
+
+
+def test_full_flag_overrides_incremental(monkeypatch, tmp_path):
+    FakeSource._devices = [NormalizedDevice(serial="S1", source="fake", hostname="a")]
+    _patch_registry(monkeypatch, FakeSource, FakeSink)
+    cfg = _config(incremental=True, state_path=str(tmp_path / "state.json"))
+    Orchestrator(cfg).run()
+    FakeSink.upserts = []
+    summary = Orchestrator(cfg).run(full=True)  # force re-sync
+    assert summary.created == 1
+    assert FakeSink.upserts == [("S1", False)]
 
 
 def test_source_error_recorded_not_fatal(monkeypatch):

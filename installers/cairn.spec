@@ -32,6 +32,10 @@ hiddenimports = [
     "cairn.notifiers.teams",
     "cairn.notifiers.slack",
     "cairn.notifiers.webhook",
+    # Imported at function scope in cli.py / orchestrator.py — pin them so the
+    # frozen binary always ships scheduling + incremental-state support.
+    "cairn.scheduler",
+    "cairn.state",
 ]
 
 

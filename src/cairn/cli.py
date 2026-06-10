@@ -59,9 +59,25 @@ def _cmd_sync(args) -> int:
     from .orchestrator import Orchestrator
 
     orch = Orchestrator(config)
-    summary = orch.run(dry_run=args.dry_run)
+    summary = orch.run(dry_run=args.dry_run, full=getattr(args, "full", False))
     print(summary.as_text())
     return 1 if summary.failed else 0
+
+
+def _cmd_schedule(args) -> int:
+    from . import scheduler
+
+    if args.action == "install":
+        interval = args.interval
+        if interval is None:
+            cfg = load_config(args.config)
+            interval = int((cfg.get("schedule") or {}).get("interval", 3600))
+        print(scheduler.install(interval, args.config, args.mode))
+    elif args.action == "uninstall":
+        print(scheduler.uninstall())
+    else:  # status
+        print(scheduler.status())
+    return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -72,8 +88,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_sync = sub.add_parser("sync", help="run a sync")
     p_sync.add_argument("--dry-run", action="store_true", help="report changes, write nothing")
+    p_sync.add_argument("--full", action="store_true",
+                        help="ignore incremental state; re-sync every device")
     p_sync.add_argument("--mode", choices=["agent", "fleet"], help="override config mode")
     p_sync.set_defaults(func=_cmd_sync)
+
+    p_sched = sub.add_parser("schedule", help="install/remove a native scheduled sync")
+    p_sched.add_argument("action", choices=["install", "uninstall", "status"])
+    p_sched.add_argument("--interval", type=int,
+                         help="seconds between runs (default: config schedule.interval or 3600)")
+    p_sched.add_argument("--mode", choices=["agent", "fleet"], help="mode for the scheduled run")
+    p_sched.set_defaults(func=_cmd_schedule)
 
     sub.add_parser("validate", help="check config + providers").set_defaults(func=_cmd_validate)
     sub.add_parser("list-providers", help="list available plugins").set_defaults(func=_cmd_list_providers)
