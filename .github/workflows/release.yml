@@ -144,3 +144,10 @@ jobs:
             artifacts/stable/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # softprops/action-gh-release has, in practice, created drafts even with
+      # draft:false set, so force-publish as the latest release explicitly.
+      - name: Publish release as latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release edit "${GITHUB_REF_NAME}" --draft=false --latest --repo "${GITHUB_REPOSITORY}"
