@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.1] — 2026-06-11
+
+**Release pipeline fix: downloads publish reliably and as the latest release.**
+
+The release job was failing because a stable-named asset collided with the
+Windows build's identically-named zip (`cairn-windows-x64.zip`), tripping a
+"duplicate asset" error in the release action. Removed the duplicate copy and
+added an explicit publish-as-latest step. No code changes to Cairn itself.
+
+[1.2.1]: https://github.com/jsdosanj/cairn/releases/tag/v1.2.1
+
 ## [1.2.0] — 2026-06-10
 
 **Four more connectors: now covering network gear and procurement, not just endpoints.**

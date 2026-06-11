@@ -127,7 +127,10 @@ jobs:
           cp artifacts/macos/*.tar.gz  artifacts/stable/cairn-macos.tar.gz
           cp artifacts/linux/*.deb     artifacts/stable/cairn-linux.deb
           cp artifacts/linux/*.tar.gz  artifacts/stable/cairn-linux.tar.gz
-          cp artifacts/windows/*.zip   artifacts/stable/cairn-windows-x64.zip
+          # NOTE: the Windows zip is already stable-named (cairn-windows-x64.zip)
+          # and uploaded via artifacts/windows/*.zip. Do NOT copy it here — a second
+          # file with the same basename makes softprops fail with
+          # "Not Found - update-a-release-asset" (duplicate asset name).
           ls -la artifacts/stable
 
       - name: Create GitHub Release
