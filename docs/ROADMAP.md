@@ -126,11 +126,11 @@ The plugin engine is solid but YAML+CLI is a wall for non-technical admins. Add:
 
 | Phase | Scope | Rough size (CC+gstack) |
 |---|---|---|
-| **P1 — Connector parity I** | Kandji, Google/ChromeOS, asset-typing model | ~half a day |
-| **P2 — Connector parity II** | Apple ABM, UniFi, Rudder, CDW import | ~1 day |
+| **P1 — Connector parity I** ✅ shipped (v1.1.0) | Kandji, Google/ChromeOS, asset-typing model | done |
+| **P2 — Connector parity II** ✅ shipped (v1.2.0) | Apple ABM, UniFi, Rudder, CDW import | done |
 | **P3 — Writeback** | SnipeITSource + Jamf/Intune writeback + conflict policy | ~half a day |
-| **P4 — Setup wizard + secrets** | `cairn setup`, keyring, `cairn doctor` | ~half a day |
-| **P5 — Web dashboard** | `cairn web`: config, dry-run diff, history, schedule | ~1–2 days |
+| **P4 — Setup wizard + secrets** ✅ shipped (v1.1.0) | `cairn setup`, keyring, `cairn doctor` | done |
+| **P5 — Web dashboard** ✅ shipped (v1.1.0) | `cairn web`: config, dry-run diff, schedule | done |
 | **P6 — MCP + Python client** | optional | ~half a day |
 
 Each phase ships independently, keeps the test suite green, and updates docs + the

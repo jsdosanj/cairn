@@ -104,6 +104,42 @@ SOURCES: dict[str, ProviderMeta] = {
             Field("client_secret", "Client secret", secret=True, required=True),
         ],
     ),
+    "apple_bm": ProviderMeta(
+        "apple_bm", "Apple Business Manager", "Apple device purchase/enrollment records.",
+        [
+            Field("client_id", "API client ID", required=True),
+            Field("key_id", "Private key ID", required=True),
+            Field("private_key_file", "Private key (.pem) path", required=True,
+                  placeholder="/path/to/abm-key.pem"),
+        ],
+        note="Modern ABM API. Install with: pip install 'cairn-sync[apple]'.",
+    ),
+    "unifi": ProviderMeta(
+        "unifi", "UniFi", "Ubiquiti network gear (APs, switches, gateways).",
+        [
+            Field("host", "Controller URL", required=True, placeholder="https://192.168.1.1"),
+            Field("api_key", "API key", secret=True, required=True),
+            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
+                  default="true"),
+        ],
+    ),
+    "cdw": ProviderMeta(
+        "cdw", "CDW (procurement)", "Import a CDW order/invoice CSV export.",
+        [
+            Field("csv_file", "CSV file path", required=True,
+                  placeholder="/path/to/cdw-orders.csv"),
+        ],
+        note="File import: creates assets with purchase metadata (order, cost, date).",
+    ),
+    "rudder": ProviderMeta(
+        "rudder", "Rudder", "Open-source config management / audit inventory.",
+        [
+            Field("url", "Rudder URL", required=True, placeholder="https://rudder.example.com"),
+            Field("api_token", "API token", secret=True, required=True),
+            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
+                  default="true"),
+        ],
+    ),
 }
 
 SINKS: dict[str, ProviderMeta] = {

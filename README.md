@@ -47,9 +47,13 @@ asset system as a pluggable sink, and reconciliation as a first-class step.
 | CrowdStrike Falcon               |                  |                    |
 | Sophos Central                   |                  |                    |
 | Microsoft Defender for Endpoint  |                  |                    |
+| Apple Business Manager           |                  |                    |
+| UniFi (network gear)             |                  |                    |
+| CDW (procurement CSV import)     |                  |                    |
+| Rudder                           |                  |                    |
 
-More connectors (Apple Business Manager, UniFi, CDW, Rudder) and Snipe-IT→MDM
-writeback are on the [roadmap](docs/ROADMAP.md).
+Snipe-IT→MDM writeback (push asset tags back to Jamf/Intune) is next on the
+[roadmap](docs/ROADMAP.md).
 
 ---
 

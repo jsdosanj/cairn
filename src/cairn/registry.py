@@ -24,6 +24,10 @@ _SOURCES: dict[str, str] = {
     "defender": "cairn.sources.defender:DefenderSource",
     "kandji": "cairn.sources.kandji:KandjiSource",
     "google_workspace": "cairn.sources.google_workspace:GoogleWorkspaceSource",
+    "apple_bm": "cairn.sources.apple_business_manager:AppleBusinessManagerSource",
+    "unifi": "cairn.sources.unifi:UniFiSource",
+    "cdw": "cairn.sources.cdw:CdwSource",
+    "rudder": "cairn.sources.rudder:RudderSource",
 }
 
 _SINKS: dict[str, str] = {

@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.0] — 2026-06-10
+
+**Four more connectors: now covering network gear and procurement, not just endpoints.**
+
+### Added
+
+- **Apple Business Manager** — device purchase/enrollment records via the modern
+  ABM API (`pip install 'cairn-sync[apple]'`).
+- **UniFi** — Ubiquiti network gear (APs, switches, gateways) via the Network
+  Integration API, with a `verify_ssl` option for self-signed controllers.
+- **CDW** — import a CDW order/invoice CSV export; assets carry purchase metadata
+  (order number, cost, date). The first file-import source.
+- **Rudder** — managed-node inventory from the open-source config-management tool.
+
+Cairn now reads from **12 systems**, spanning MDM, EDR, directory, network, and
+procurement. Network gear and procurement rows correlate by MAC / order number
+when they have no serial.
+
+[1.2.0]: https://github.com/jsdosanj/cairn/releases/tag/v1.2.0
+
 ## [1.1.0] — 2026-06-10
 
 **More integrations, and you no longer need a terminal to use Cairn.**

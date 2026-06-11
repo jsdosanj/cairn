@@ -96,6 +96,33 @@ sources:
     subject: admin@yourdomain.com           # admin email to impersonate
     service_account_file: /path/to/service-account.json
 
+  apple_bm:
+    enabled: false
+    # Apple Business Manager device records. pip install 'cairn-sync[apple]'
+    client_id: YOUR_ABM_CLIENT_ID
+    key_id: YOUR_PRIVATE_KEY_ID
+    private_key_file: /path/to/abm-key.pem
+
+  unifi:
+    enabled: false
+    host: https://192.168.1.1                # UniFi controller (UniFi OS)
+    api_key: YOUR_UNIFI_API_KEY
+    verify_ssl: true                          # set false for self-signed certs
+
+  cdw:
+    enabled: false
+    # Procurement import — point at a CDW order/invoice CSV export.
+    csv_file: /path/to/cdw-orders.csv
+    # columns:                                # override to match your export headers
+    #   serial: "Serial Number"
+    #   model: "Product Description"
+
+  rudder:
+    enabled: false
+    url: https://rudder.example.com
+    api_token: YOUR_RUDDER_API_TOKEN
+    verify_ssl: true
+
 # ----------------------------------------------------------------
 # SINKS — where reconciled devices are written.
 # ----------------------------------------------------------------
