@@ -50,6 +50,9 @@ class NormalizedDevice:
     # Broad asset class so non-endpoint sources (network gear, procurement) fit:
     # computer | mobile | network | accessory | consumable | purchase_order
     asset_type: str = "computer"
+    # The asset tag in the system of record. Populated when reading from Snipe-IT;
+    # used by writeback targets to push the tag back into the MDM.
+    asset_tag: Optional[str] = None
     hostname: Optional[str] = None
     mac_addresses: list[str] = field(default_factory=list)
     os_name: Optional[str] = None  # "macOS" | "Windows" | "Linux" | ...
@@ -125,7 +128,7 @@ def merge_devices(
     simple_fields = [
         "hostname", "source_id", "os_name", "os_version", "os_build", "model",
         "manufacturer", "primary_user", "primary_user_email",
-        "logged_in_users", "last_seen", "compliance",
+        "logged_in_users", "last_seen", "compliance", "asset_tag",
     ]
 
     for d in ordered:

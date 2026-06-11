@@ -14,7 +14,12 @@ import sys
 
 from . import __version__
 from .config import ConfigError, enabled_items, load_config
-from .registry import available_notifiers, available_sinks, available_sources
+from .registry import (
+    available_notifiers,
+    available_sinks,
+    available_sources,
+    available_writebacks,
+)
 
 logger = logging.getLogger("cairn")
 
@@ -99,6 +104,7 @@ def _cmd_list_providers(_args) -> int:
     print("Sources:   ", ", ".join(available_sources()))
     print("Sinks:     ", ", ".join(available_sinks()))
     print("Notifiers: ", ", ".join(available_notifiers()))
+    print("Writebacks:", ", ".join(available_writebacks()))
     return 0
 
 
@@ -133,6 +139,19 @@ def _cmd_sync(args) -> int:
     return 1 if summary.failed else 0
 
 
+def _cmd_writeback(args) -> int:
+    config = load_config(args.config)
+    from .orchestrator import Orchestrator
+
+    orch = Orchestrator(config)
+    dry = not args.apply
+    summary = orch.run_writeback(dry_run=dry)
+    print(summary.as_text())
+    if dry:
+        print("\n(dry-run — nothing was written. Re-run with --apply to write to your MDM.)")
+    return 1 if summary.failed else 0
+
+
 def _cmd_schedule(args) -> int:
     from . import scheduler
 
@@ -162,6 +181,11 @@ def build_parser() -> argparse.ArgumentParser:
                         help="ignore incremental state; re-sync every device")
     p_sync.add_argument("--mode", choices=["agent", "fleet"], help="override config mode")
     p_sync.set_defaults(func=_cmd_sync)
+
+    p_wb = sub.add_parser("writeback", help="push Snipe-IT asset tags back to your MDM (Jamf/Intune)")
+    p_wb.add_argument("--apply", action="store_true",
+                      help="actually write to the MDM (default is a dry-run preview)")
+    p_wb.set_defaults(func=_cmd_writeback)
 
     p_sched = sub.add_parser("schedule", help="install/remove a native scheduled sync")
     p_sched.add_argument("action", choices=["install", "uninstall", "status"])

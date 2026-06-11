@@ -17,7 +17,12 @@ from typing import Optional
 from . import system_info
 from .config import enabled_items
 from .models import NormalizedDevice, merge_devices
-from .registry import get_notifier_class, get_sink_class, get_source_class
+from .registry import (
+    get_notifier_class,
+    get_sink_class,
+    get_source_class,
+    get_writeback_class,
+)
 from .sinks.base import SyncResult
 from .state import SyncState
 
@@ -58,6 +63,34 @@ class RunSummary:
             lines.append("  source errors:")
             for src, err in self.source_errors.items():
                 lines.append(f"    - {src}: {err}")
+        return "\n".join(lines)
+
+
+@dataclass
+class WritebackSummary:
+    dry_run: bool
+    assets_read: int = 0
+    updated: int = 0
+    skipped: int = 0
+    failed: int = 0
+    per_target: dict[str, dict[str, int]] = field(default_factory=dict)
+    results: list = field(default_factory=list)
+
+    def record(self, target: str, result) -> None:
+        self.results.append((target, result))
+        bucket = self.per_target.setdefault(target, {"updated": 0, "skipped": 0, "failed": 0})
+        bucket[result.action] = bucket.get(result.action, 0) + 1
+        setattr(self, result.action, getattr(self, result.action) + 1)
+
+    def as_text(self) -> str:
+        lines = [
+            f"Cairn writeback{' (dry-run)' if self.dry_run else ''}",
+            f"  Snipe-IT assets read: {self.assets_read}",
+            f"  updated: {self.updated}  skipped: {self.skipped}  failed: {self.failed}",
+        ]
+        for target, b in self.per_target.items():
+            lines.append(f"    {target}: updated {b.get('updated',0)}, "
+                         f"skipped {b.get('skipped',0)}, failed {b.get('failed',0)}")
         return "\n".join(lines)
 
 
@@ -172,4 +205,52 @@ class Orchestrator:
             try:
                 notifier.notify(title, summary.as_text(), level=level)
             except Exception as e:  # noqa: BLE001 - notifications are best-effort
+                logger.error("notifier %s failed: %s", notifier.key, e)
+
+    # --- writeback (Snipe-IT -> MDM) ------------------------------------
+    def run_writeback(self, dry_run: bool = True, full: bool = False) -> WritebackSummary:
+        """Read assets from Snipe-IT and push asset tags back into the MDMs.
+
+        dry_run defaults to True: writeback mutates systems you may not own, so a
+        preview is the safe default. The caller opts in to writing.
+        """
+        sink_cfgs = enabled_items(self.config, "sinks")
+        if "snipeit" not in sink_cfgs:
+            raise ValueError("Writeback needs a Snipe-IT sink configured to read from.")
+        reader = get_source_class("snipeit")(sink_cfgs["snipeit"])
+
+        targets = {}
+        for key, cfg in enabled_items(self.config, "writebacks").items():
+            try:
+                targets[key] = get_writeback_class(key)(cfg)
+                logger.info("Enabled writeback: %s", key)
+            except Exception as e:  # noqa: BLE001
+                logger.error("Failed to initialize writeback '%s': %s", key, e)
+        if not targets:
+            raise ValueError("No writebacks enabled.")
+
+        summary = WritebackSummary(dry_run=dry_run)
+        for device in reader.fetch_all():
+            summary.assets_read += 1
+            if not device.asset_tag or device.serial in (None, "", "UNKNOWN"):
+                continue
+            for key, wb in targets.items():
+                try:
+                    result = wb.push(device, dry_run=dry_run)
+                except Exception as e:  # noqa: BLE001 - one device shouldn't kill the run
+                    from .writebacks.base import WritebackResult
+                    result = WritebackResult(WritebackResult.FAILED, device.serial, str(e)[:200])
+                summary.record(key, result)
+        self._notify_writeback(summary)
+        return summary
+
+    def _notify_writeback(self, summary: WritebackSummary) -> None:
+        if not self.notifiers:
+            return
+        level = "error" if summary.failed else "success"
+        title = f"Cairn writeback: {summary.updated} updated, {summary.failed} failed"
+        for notifier in self.notifiers.values():
+            try:
+                notifier.notify(title, summary.as_text(), level=level)
+            except Exception as e:  # noqa: BLE001
                 logger.error("notifier %s failed: %s", notifier.key, e)

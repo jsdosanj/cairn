@@ -140,6 +140,41 @@ SOURCES: dict[str, ProviderMeta] = {
                   default="true"),
         ],
     ),
+    "snipeit": ProviderMeta(
+        "snipeit", "Snipe-IT (read)", "Read assets from a Snipe-IT instance.",
+        [
+            Field("url", "API URL", "Ends in /api/v1.", required=True,
+                  placeholder="https://assets.example.com/api/v1"),
+            Field("token", "API token", secret=True, required=True),
+        ],
+        note="Mainly used as the read side of writeback; the sink config is reused automatically.",
+    ),
+}
+
+# Writeback targets (reverse sync: Snipe-IT asset tag -> MDM).
+WRITEBACKS: dict[str, ProviderMeta] = {
+    "jamf": ProviderMeta(
+        "jamf", "Jamf Pro (writeback)", "Push the Snipe-IT asset tag into Jamf.",
+        [
+            Field("url", "Server URL", required=True, placeholder="https://your.jamfcloud.com"),
+            Field("client_id", "API Client ID", secret=True),
+            Field("client_secret", "API Client Secret", secret=True),
+            Field("conflict", "Conflict policy", "snipe_wins | only_if_empty",
+                  default="snipe_wins"),
+        ],
+    ),
+    "intune": ProviderMeta(
+        "intune", "Microsoft Intune (writeback)", "Write the asset tag to a device field.",
+        [
+            Field("tenant_id", "Azure tenant ID", required=True),
+            Field("client_id", "App (client) ID", required=True),
+            Field("client_secret", "Client secret", secret=True, required=True),
+            Field("target_field", "Target field", "managedDevice property.",
+                  default="notes"),
+            Field("conflict", "Conflict policy", "snipe_wins | only_if_empty",
+                  default="only_if_empty"),
+        ],
+    ),
 }
 
 SINKS: dict[str, ProviderMeta] = {

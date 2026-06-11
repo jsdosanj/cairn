@@ -13,6 +13,7 @@ from typing import Type
 from .sources.base import DeviceSource
 from .sinks.base import AssetSink
 from .notifiers.base import Notifier
+from .writebacks.base import Writeback
 
 # key -> "module:ClassName" (relative to this package)
 _SOURCES: dict[str, str] = {
@@ -28,6 +29,12 @@ _SOURCES: dict[str, str] = {
     "unifi": "cairn.sources.unifi:UniFiSource",
     "cdw": "cairn.sources.cdw:CdwSource",
     "rudder": "cairn.sources.rudder:RudderSource",
+    "snipeit": "cairn.sources.snipeit:SnipeITSource",
+}
+
+_WRITEBACKS: dict[str, str] = {
+    "jamf": "cairn.writebacks.jamf:JamfWriteback",
+    "intune": "cairn.writebacks.intune:IntuneWriteback",
 }
 
 _SINKS: dict[str, str] = {
@@ -59,6 +66,10 @@ def available_notifiers() -> list[str]:
     return sorted(_NOTIFIERS)
 
 
+def available_writebacks() -> list[str]:
+    return sorted(_WRITEBACKS)
+
+
 def get_source_class(key: str) -> Type[DeviceSource]:
     if key not in _SOURCES:
         raise KeyError(
@@ -81,3 +92,11 @@ def get_notifier_class(key: str) -> Type[Notifier]:
             f"Unknown notifier '{key}'. Available: {', '.join(available_notifiers())}"
         )
     return _load(_NOTIFIERS[key])
+
+
+def get_writeback_class(key: str) -> Type[Writeback]:
+    if key not in _WRITEBACKS:
+        raise KeyError(
+            f"Unknown writeback '{key}'. Available: {', '.join(available_writebacks())}"
+        )
+    return _load(_WRITEBACKS[key])

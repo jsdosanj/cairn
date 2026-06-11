@@ -156,3 +156,24 @@ notifiers:
     url: https://example.com/collector
     headers:
       X-Api-Key: optional-shared-secret
+
+# ----------------------------------------------------------------
+# WRITEBACKS — reverse sync: push the Snipe-IT asset tag back into the MDM
+# (the snipe2jamf / Snipe-IT->Intune direction). Reads from the Snipe-IT sink
+# above. Run with: cairn writeback (dry-run) then cairn writeback --apply.
+# conflict: snipe_wins (overwrite) | only_if_empty (set only when MDM is blank)
+# ----------------------------------------------------------------
+writebacks:
+  jamf:
+    enabled: false
+    url: https://your.jamf.instance.com
+    client_id: YOUR_JAMF_API_CLIENT_ID
+    client_secret: YOUR_JAMF_API_CLIENT_SECRET
+    conflict: snipe_wins              # writes Snipe-IT tag -> Jamf general.assetTag
+  intune:
+    enabled: false
+    tenant_id: YOUR_AZURE_TENANT_ID
+    client_id: YOUR_APP_REGISTRATION_CLIENT_ID
+    client_secret: YOUR_APP_REGISTRATION_SECRET
+    target_field: notes               # Intune managedDevice field to write
+    conflict: only_if_empty

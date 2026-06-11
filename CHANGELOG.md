@@ -2,6 +2,32 @@
 
 All notable changes to this project are documented here.
 
+## [1.3.0] — 2026-06-11
+
+**Cairn now syncs both directions: it can push your Snipe-IT asset tags back into the MDM.**
+
+Until now Cairn read from your tools into Snipe-IT. This release adds the reverse
+(`snipe2jamf` / Snipe-IT→Intune): reconcile your asset tags in Snipe-IT, then write
+them back so the MDM matches your system of record.
+
+### Added
+
+- **`cairn writeback`** — reads assets from Snipe-IT and pushes the asset tag back
+  into the matching MDM device. **Dry-run by default**; add `--apply` to write.
+- **Jamf writeback** — sets a computer's `general.assetTag`.
+- **Intune writeback** — writes the tag to a configurable device field (default
+  `notes`).
+- **Conflict policy** per target — `snipe_wins` (overwrite) or `only_if_empty`
+  (only fill blanks). Writeback never creates devices; it skips serials the MDM
+  doesn't have.
+- **Snipe-IT as a source** — read assets out of Snipe-IT (powers writeback, and
+  lets you sync one Snipe-IT into another sink).
+- `asset_tag` is now a first-class field on every device record.
+
+Cairn now covers both directions of the Snipe-IT integration ecosystem.
+
+[1.3.0]: https://github.com/jsdosanj/cairn/releases/tag/v1.3.0
+
 ## [1.2.1] — 2026-06-11
 
 **Release pipeline fix: downloads publish reliably and as the latest release.**

@@ -52,8 +52,17 @@ asset system as a pluggable sink, and reconciliation as a first-class step.
 | CDW (procurement CSV import)     |                  |                    |
 | Rudder                           |                  |                    |
 
-Snipe-IT→MDM writeback (push asset tags back to Jamf/Intune) is next on the
-[roadmap](docs/ROADMAP.md).
+Cairn also does **writeback** — push your Snipe-IT asset tags *back* into Jamf or
+Intune so the MDM matches your system of record:
+
+```bash
+cairn writeback           # preview (dry-run): what would change in the MDM
+cairn writeback --apply   # write the asset tags to Jamf / Intune
+```
+
+Writeback is dry-run by default, honors a per-target conflict policy
+(`snipe_wins` or `only_if_empty`), and never creates devices. See the
+[roadmap](docs/ROADMAP.md) for what's next.
 
 ---
 
@@ -146,6 +155,8 @@ cairn sync                  run a sync (agent or fleet per config)
 cairn sync --dry-run        report changes, write nothing
 cairn sync --full           re-sync every device (ignore incremental state)
 cairn sync --mode agent     override the configured mode for one run
+cairn writeback             preview pushing Snipe-IT asset tags back to your MDM
+cairn writeback --apply     actually write the asset tags to Jamf/Intune
 cairn schedule install      install a native scheduled auto-sync (--interval SECONDS)
 cairn schedule status       show the scheduled job
 cairn schedule uninstall    remove the scheduled job

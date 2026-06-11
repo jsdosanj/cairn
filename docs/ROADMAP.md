@@ -128,7 +128,7 @@ The plugin engine is solid but YAML+CLI is a wall for non-technical admins. Add:
 |---|---|---|
 | **P1 — Connector parity I** ✅ shipped (v1.1.0) | Kandji, Google/ChromeOS, asset-typing model | done |
 | **P2 — Connector parity II** ✅ shipped (v1.2.0) | Apple ABM, UniFi, Rudder, CDW import | done |
-| **P3 — Writeback** | SnipeITSource + Jamf/Intune writeback + conflict policy | ~half a day |
+| **P3 — Writeback** ✅ shipped (v1.3.0) | SnipeITSource + Jamf/Intune writeback + conflict policy | done |
 | **P4 — Setup wizard + secrets** ✅ shipped (v1.1.0) | `cairn setup`, keyring, `cairn doctor` | done |
 | **P5 — Web dashboard** ✅ shipped (v1.1.0) | `cairn web`: config, dry-run diff, schedule | done |
 | **P6 — MCP + Python client** | optional | ~half a day |
