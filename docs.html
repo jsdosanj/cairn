@@ -3,13 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docs — Cairn</title>
-  <meta name="description" content="Cairn documentation — get set up, connect your MDM and EDR sources, reconcile your fleet, and answers to common questions.">
+  <title>Docs — Snipe-IT Reconciliation Setup &amp; FAQ | Cairn</title>
+  <meta name="description" content="Cairn docs: set up Snipe-IT device reconciliation, connect 12+ MDM and EDR sources (Jamf, Intune, CrowdStrike), run a dry-run sync, plus answers to common questions.">
+  <link rel="canonical" href="https://jsdosanj.github.io/cairn-site/docs.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="keywords" content="Snipe-IT sync setup, Snipe-IT integration, device reconciliation, Jamf to Snipe-IT, Intune Snipe-IT sync, CrowdStrike asset sync, MDM EDR inventory sync, fleet reconciliation tool, dry-run sync, Cairn docs">
+  <meta name="theme-color" content="#0a0f1c">
+
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/styles.css">
-  <meta property="og:title" content="Docs — Cairn">
-  <meta property="og:description" content="Set up Cairn, connect your sources, and reconcile your fleet.">
+
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cairn">
+  <meta property="og:title" content="Docs — Snipe-IT Reconciliation Setup &amp; FAQ | Cairn">
+  <meta property="og:description" content="Set up Snipe-IT device reconciliation with Cairn: connect 12+ MDM and EDR sources, run a dry-run sync, and reconcile your fleet.">
+  <meta property="og:url" content="https://jsdosanj.github.io/cairn-site/docs.html">
+  <meta property="og:image" content="https://jsdosanj.github.io/cairn-site/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cairn — Snipe-IT device reconciliation, automated.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Docs — Snipe-IT Reconciliation Setup &amp; FAQ | Cairn">
+  <meta name="twitter:description" content="Set up Snipe-IT device reconciliation with Cairn: connect your MDM and EDR sources and run a dry-run sync.">
+  <meta name="twitter:image" content="https://jsdosanj.github.io/cairn-site/assets/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://jsdosanj.github.io/cairn-site/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Docs",
+        "item": "https://jsdosanj.github.io/cairn-site/docs.html"
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Cairn for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cairn keeps your IT asset system of record matching reality. It reads device inventory from the MDM and EDR tools that already manage your fleet, reconciles overlapping records, and writes one clean, trustworthy record per machine — so you stop guessing what you actually own."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does reconciliation work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cairn matches records for the same physical machine across tools by serial number, then merges them field-by-field using the trust score you assign each source. Higher trust wins on conflict, so you can let Jamf own hardware fields while CrowdStrike owns last-seen data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which tools does Cairn integrate with?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sources include Jamf Pro, Microsoft Intune, Kandji, JumpCloud, Google Workspace (ChromeOS), CrowdStrike Falcon, Sophos Central, Microsoft Defender for Endpoint, Apple Business Manager, UniFi, CDW, and Rudder. Snipe-IT is the supported system of record, and notifications go to Slack, Microsoft Teams, or a generic webhook."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I import existing data, and can I export it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There's nothing to import manually — Cairn pulls live device data directly from your connected sources on every run. Your reconciled records live in your Snipe-IT system of record, which you fully own and can export at any time through Snipe-IT's own API and CSV export."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will Cairn overwrite my data without warning?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Run cairn sync --dry-run to preview every create, update, and conflict resolution before a single write hits your system of record. Only when you drop the flag does Cairn apply changes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do permissions and credentials work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cairn talks to each tool with its own scoped API credentials — ideally read-only on sources and write-scoped only on your system of record. Secrets are supplied via environment variables (never committed to config), connections are HTTPS-only, config files are permission-checked, and serial numbers are masked in logs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I search and review what changed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every run produces a summary of matched, new, and conflict-resolved devices, delivered to your notification channel. You can search and filter the reconciled records themselves in Snipe-IT by serial, asset tag, model, or source."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where does Cairn run?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cairn is a single cross-platform binary for macOS, Windows, and Linux. Run it in fleet mode centrally to reconcile the whole estate, or in agent mode on each endpoint to sync that one machine. It fits cleanly into cron jobs and CI/orchestration pipelines."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Cairn open source?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Cairn is free and open source, released under the AGPL-3.0 — the same license as Snipe-IT, which Cairn integrates with. You can self-host it at no cost, forever, from GitHub. There are no paid tiers, no seat limits, and no license keys."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does Cairn cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nothing. Cairn is free and open source (AGPL-3.0), forever. There are no paid tiers, no seat limits, and no license keys."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I add a tool you don't list?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cairn's provider model lets new MDM and EDR sources be added without changing the core engine. Since Cairn is open source, you can build a provider yourself or request one on GitHub."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -42,7 +182,7 @@
   <main id="main">
     <section class="section docs">
       <div class="container">
-        <h2 class="section__title">Cairn documentation</h2>
+        <h1 class="section__title">Cairn documentation — Snipe-IT reconciliation setup</h1>
         <p class="section__sub">
           Everything you need to connect your tools and keep your asset system of record honest.
         </p>
@@ -278,7 +418,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <img src="assets/cairn.svg" alt="" width="24" height="24">
+        <img src="assets/cairn.svg" alt="Cairn logo" width="24" height="24" loading="lazy" decoding="async">
         <span>Cairn</span>
       </div>
       <p class="footer__meta">
