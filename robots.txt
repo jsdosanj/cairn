@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jsdosanj.github.io/cairn-site/sitemap.xml
+Sitemap: https://dosanjhlabs.com/cairn/sitemap.xml
