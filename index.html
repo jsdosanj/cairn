@@ -392,28 +392,65 @@ cairn init &gt; cairn.yaml</code></pre>
             <input type="hidden" name="_subject" value="New Cairn inquiry">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_autoresponse" value="Thanks for reaching out about Cairn — we've received your message and someone will be in touch shortly. — Cairn, a Dosanjh Labs project">
             <input type="hidden" name="_next" value="https://jsdosanj.github.io/cairn-site/?sent=1#contact">
+            <input type="hidden" name="Source" value="Cairn">
             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
             <div class="contact__row">
               <div class="field">
                 <label class="field__label" for="cf-name">Name</label>
-                <input class="field__input" id="cf-name" type="text" name="name" required autocomplete="name">
+                <input class="field__input" id="cf-name" type="text" name="Name" required autocomplete="name">
               </div>
               <div class="field">
-                <label class="field__label" for="cf-email">Work email</label>
+                <label class="field__label" for="cf-email">Email</label>
                 <input class="field__input" id="cf-email" type="email" name="email" required autocomplete="email">
               </div>
             </div>
 
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-company">Company / project</label>
+                <input class="field__input" id="cf-company" type="text" name="Company" autocomplete="organization">
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-role">Role / title</label>
+                <input class="field__input" id="cf-role" type="text" name="Role" autocomplete="organization-title">
+              </div>
+            </div>
+
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-size">Company size</label>
+                <select class="field__input" id="cf-size" name="Company size">
+                  <option value="">Select…</option>
+                  <option>Just me</option>
+                  <option>2–25 people</option>
+                  <option>26–250 people</option>
+                  <option>250+ people</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-topic">What's this about?</label>
+                <select class="field__input" id="cf-topic" name="Topic">
+                  <option value="">Select…</option>
+                  <option>Using Cairn</option>
+                  <option>Integrating with Sightline / Lookout / Bastion</option>
+                  <option>Contributing</option>
+                  <option>Support / bug</option>
+                  <option>Something else</option>
+                </select>
+              </div>
+            </div>
+
             <div class="field">
-              <label class="field__label" for="cf-company">Company <span class="field__opt">(optional)</span></label>
-              <input class="field__input" id="cf-company" type="text" name="company" autocomplete="organization">
+              <label class="field__label" for="cf-phone">Phone <span class="field__opt">(optional)</span></label>
+              <input class="field__input" id="cf-phone" type="tel" name="Phone" autocomplete="tel">
             </div>
 
             <div class="field">
               <label class="field__label" for="cf-message">Message</label>
-              <textarea class="field__input field__input--area" id="cf-message" name="message" rows="5" required></textarea>
+              <textarea class="field__input field__input--area" id="cf-message" name="Message" rows="5" required></textarea>
             </div>
 
             <button class="btn btn--primary" type="submit">Send message</button>
