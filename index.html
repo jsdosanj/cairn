@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cairn — Every device. One source of truth.</title>
-  <meta name="description" content="Cairn is an open-source CLI that reconciles device inventory from your MDM and EDR tools into a single IT asset system of record — automatically.">
+  <meta name="description" content="Cairn reconciles device inventory from your MDM and EDR tools into a single IT asset system of record — automatically.">
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
   <link rel="stylesheet" href="assets/styles.css">
   <meta property="og:title" content="Cairn — Every device. One source of truth.">
@@ -31,9 +31,9 @@
         <a href="#features">Features</a>
         <a href="#integrations">Integrations</a>
         <a href="#install">Install</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="docs.html">Docs</a>
         <a href="#contact">Contact</a>
-        <a href="https://github.com/jsdosanj/cairn#readme">Docs</a>
-        <a class="nav__github" href="https://github.com/jsdosanj/cairn" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
@@ -43,7 +43,7 @@
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__copy">
-          <p class="eyebrow">Open-source asset reconciliation</p>
+          <p class="eyebrow">Asset reconciliation, automated</p>
           <h1 class="hero__title">Every device.<br><span class="accent">One source of truth.</span></h1>
           <p class="hero__lead">
             Cairn pulls your fleet from the tools that already manage it — Jamf, Intune,
@@ -52,10 +52,10 @@
             Set it up with a guided wizard or a point-and-click dashboard, no YAML required.
           </p>
           <div class="hero__cta">
-            <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn/releases" rel="noopener">Download</a>
-            <a class="btn btn--ghost" href="https://github.com/jsdosanj/cairn" rel="noopener">View on GitHub</a>
+            <a class="btn btn--primary" href="#contact">Request a demo</a>
+            <a class="btn btn--ghost" href="pricing.html">View pricing</a>
           </div>
-          <p class="hero__meta">Single binary · macOS · Windows · Linux · AGPL-3.0</p>
+          <p class="hero__meta">Single binary · macOS · Windows · Linux</p>
         </div>
 
         <div class="hero__art" aria-hidden="true">
@@ -138,7 +138,7 @@
           <li class="card">
             <span class="card__icon" aria-hidden="true">📦</span>
             <h3>Single binary</h3>
-            <p>One cross-platform binary for macOS, Windows, and Linux — grab it from GitHub Releases.</p>
+            <p>One cross-platform binary for macOS, Windows, and Linux — download it from your Cairn account.</p>
           </li>
           <li class="card">
             <span class="card__icon" aria-hidden="true">🧪</span>
@@ -197,7 +197,7 @@
     <section class="section" id="install">
       <div class="container">
         <h2 class="section__title">Install Cairn</h2>
-        <p class="section__sub">Pick your platform. Every build is published on GitHub Releases.</p>
+        <p class="section__sub">Pick your platform. Signed builds are available to customers in the Cairn dashboard.</p>
 
         <div class="tabs" role="tablist" aria-label="Install options">
           <button class="tab is-active" role="tab" id="tab-macos" aria-selected="true" aria-controls="panel-macos">macOS</button>
@@ -211,9 +211,9 @@
             <p class="tabpanel__hint">Install the signed <code>.pkg</code>, or drop the binary in your PATH:</p>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-macos" aria-label="Copy macOS install commands">Copy</button>
-              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Option A — grab the .pkg installer from the Releases page</span>
-<span class="c-muted"># Option B — install the portable binary</span>
-curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-macos.tar.gz | tar xz
+              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Option A — grab the .pkg installer from your Cairn dashboard</span>
+<span class="c-muted"># Option B — install the portable binary (use your license token)</span>
+curl -fsSL -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-macos.tar.gz | tar xz
 sudo mv cairn /usr/local/bin/
 cairn --version</code></pre>
             </div>
@@ -223,9 +223,10 @@ cairn --version</code></pre>
             <p class="tabpanel__hint">Run the installer, or unzip the portable build:</p>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-windows" aria-label="Copy Windows install commands">Copy</button>
-              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the .zip from Releases and extract</span>
+              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the signed .zip and extract</span>
 Invoke-WebRequest `
-  https://github.com/jsdosanj/cairn/releases/latest/download/cairn-windows-x64.zip `
+  -Headers @{ Authorization = "Bearer $Env:CAIRN_TOKEN" } `
+  https://dl.cairn.app/latest/cairn-windows-x64.zip `
   -OutFile cairn.zip
 Expand-Archive cairn.zip -DestinationPath "$Env:ProgramFiles\Cairn"
 cairn --version</code></pre>
@@ -237,20 +238,20 @@ cairn --version</code></pre>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-linux" aria-label="Copy Linux install commands">Copy</button>
               <pre class="terminal__body"><code id="install-linux"><span class="c-muted"># Debian / Ubuntu (.deb)</span>
-curl -fsSLO https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.deb
+curl -fsSLO -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-linux.deb
 sudo dpkg -i cairn-linux.deb
 
 <span class="c-muted"># Or the portable tarball</span>
-curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.tar.gz | tar xz
+curl -fsSL -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-linux.tar.gz | tar xz
 sudo mv cairn /usr/local/bin/</code></pre>
             </div>
           </div>
 
           <div class="tabpanel" role="tabpanel" id="panel-pip" aria-labelledby="tab-pip" hidden>
-            <p class="tabpanel__hint">Prefer Python packaging? Install with pip from the repo:</p>
+            <p class="tabpanel__hint">Prefer Python packaging? Install from the Cairn package index:</p>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pip" aria-label="Copy pip install command">Copy</button>
-              <pre class="terminal__body"><code id="install-pip">pip install git+https://github.com/jsdosanj/cairn.git
+              <pre class="terminal__body"><code id="install-pip">pip install cairn --index-url https://$CAIRN_TOKEN@pkg.cairn.app/simple
 
 <span class="c-muted"># then generate a starter config</span>
 cairn init &gt; cairn.yaml</code></pre>
@@ -268,8 +269,8 @@ cairn init &gt; cairn.yaml</code></pre>
           <p>Reconcile your fleet in minutes — with a dry run first.</p>
         </div>
         <div class="cta-strip__buttons">
-          <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn/releases" rel="noopener">Download Cairn</a>
-          <a class="btn btn--ghost" href="https://github.com/jsdosanj/cairn" rel="noopener">Read the docs</a>
+          <a class="btn btn--primary" href="#contact">Request a demo</a>
+          <a class="btn btn--ghost" href="docs.html">Read the docs</a>
         </div>
       </div>
     </section>
@@ -331,10 +332,11 @@ cairn init &gt; cairn.yaml</code></pre>
         <span>Cairn</span>
       </div>
       <p class="footer__meta">
-        AGPL-3.0 licensed ·
-        <a href="https://github.com/jsdosanj/cairn" rel="noopener">GitHub</a>
+        <a href="pricing.html">Pricing</a> ·
+        <a href="docs.html">Docs</a> ·
+        <a href="#contact">Contact</a>
       </p>
-      <p class="footer__copy">Every device. One source of truth.</p>
+      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
     </div>
   </footer>
 

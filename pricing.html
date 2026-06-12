@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — Cairn</title>
+  <meta name="description" content="Cairn pricing — per-seat plans for teams that need an honest IT asset system of record. Starter, Team, and Enterprise tiers.">
+  <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="stylesheet" href="assets/styles.css">
+  <meta property="og:title" content="Pricing — Cairn">
+  <meta property="og:description" content="Per-seat plans for teams that need an honest IT asset system of record.">
+  <meta property="og:type" content="website">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html#top" aria-label="Cairn home">
+        <img class="brand__mark" src="assets/cairn.svg" alt="" width="28" height="28">
+        <span class="brand__name">Cairn</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#integrations">Integrations</a>
+        <a href="index.html#install">Install</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="docs.html">Docs</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section pricing">
+      <div class="container">
+        <h2 class="section__title">Simple, per-seat pricing</h2>
+        <p class="section__sub">
+          Cairn is a commercial product. Pick the plan that matches your team —
+          every plan includes the full reconciliation engine, dry-run mode, and signed builds.
+        </p>
+
+        <!-- TODO: confirm pricing -->
+        <div class="pricing__grid">
+          <!-- Starter -->
+          <article class="price-card">
+            <h3 class="price-card__name">Starter</h3>
+            <p class="price-card__tagline">For small IT teams getting their inventory honest.</p>
+            <div class="price-card__price">
+              <span class="price-card__amount">$6</span>
+              <span class="price-card__period">/ seat / month</span>
+            </div>
+            <p class="price-card__note">Billed annually · up to 250 managed devices</p>
+            <ul class="price-card__features">
+              <li>Up to 3 source integrations</li>
+              <li>Snipe-IT system of record</li>
+              <li>Serial-number reconciliation</li>
+              <li>Dry-run previews</li>
+              <li>Email support</li>
+            </ul>
+            <a class="btn btn--ghost" href="index.html#contact">Get started</a>
+          </article>
+
+          <!-- Team -->
+          <article class="price-card price-card--featured">
+            <span class="price-card__badge">Most popular</span>
+            <h3 class="price-card__name">Team</h3>
+            <p class="price-card__tagline">For growing fleets across multiple tools.</p>
+            <div class="price-card__price">
+              <span class="price-card__amount">$12</span>
+              <span class="price-card__period">/ seat / month</span>
+            </div>
+            <p class="price-card__note">Billed annually · up to 2,000 managed devices</p>
+            <ul class="price-card__features">
+              <li>Unlimited source integrations</li>
+              <li>Agent &amp; fleet modes</li>
+              <li>Trust-priority conflict resolution</li>
+              <li>Asset-tag write-back to MDM</li>
+              <li>Slack, Teams &amp; webhook alerts</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn--primary" href="index.html#contact">Start a trial</a>
+          </article>
+
+          <!-- Enterprise -->
+          <article class="price-card">
+            <h3 class="price-card__name">Enterprise</h3>
+            <p class="price-card__tagline">For large or regulated fleets that need more.</p>
+            <div class="price-card__price">
+              <span class="price-card__amount">Custom</span>
+            </div>
+            <p class="price-card__note">Volume pricing · unlimited devices</p>
+            <ul class="price-card__features">
+              <li>Everything in Team</li>
+              <li>SSO / SAML &amp; SCIM</li>
+              <li>Custom &amp; private providers</li>
+              <li>Audit logging &amp; retention controls</li>
+              <li>SLA &amp; dedicated onboarding</li>
+              <li>Named support contact</li>
+            </ul>
+            <a class="btn btn--ghost" href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20Enterprise%20inquiry">Contact sales</a>
+          </article>
+        </div>
+
+        <p class="pricing__foot">
+          Prices shown in USD. Need monthly billing or a tailored plan?
+          <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20pricing%20question">Talk to sales</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/cairn.svg" alt="" width="24" height="24">
+        <span>Cairn</span>
+      </div>
+      <p class="footer__meta">
+        <a href="pricing.html">Pricing</a> ·
+        <a href="docs.html">Docs</a> ·
+        <a href="index.html#contact">Contact</a>
+      </p>
+      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+</body>
+</html>

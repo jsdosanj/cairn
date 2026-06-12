@@ -1,14 +1,19 @@
 # Cairn — marketing site
 
-The source for the **Cairn** landing page. Cairn is an open-source CLI that
+The source for the **Cairn** landing page. Cairn is a commercial tool that
 reconciles device inventory from your MDM/EDR tools into a single IT asset
 system of record.
 
 > Every device. One source of truth.
 
-This repo contains only the static marketing site — no application code. The
-Cairn tool itself lives at
-**https://github.com/jsdosanj/cairn**.
+This repo contains only the static marketing site — no application code. Cairn
+itself is a closed-source, commercial product.
+
+## Pages
+
+- `index.html` — landing page
+- `pricing.html` — per-seat plans (Starter, Team, Enterprise)
+- `docs.html` — setup guide, FAQ, and support
 
 ## What's here
 
@@ -47,4 +52,5 @@ Source: GitHub Actions**.
 
 ## License
 
-AGPL-3.0-or-later (matching the Cairn tool and Snipe-IT).
+© 2026 Cairn. All rights reserved. The Cairn product is commercial and
+closed-source; this marketing site is published for informational purposes.

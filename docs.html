@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docs — Cairn</title>
+  <meta name="description" content="Cairn documentation — set up a workspace, connect your MDM and EDR sources, reconcile your fleet, and answers to common questions.">
+  <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="stylesheet" href="assets/styles.css">
+  <meta property="og:title" content="Docs — Cairn">
+  <meta property="og:description" content="Set up Cairn, connect your sources, and reconcile your fleet.">
+  <meta property="og:type" content="website">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html#top" aria-label="Cairn home">
+        <img class="brand__mark" src="assets/cairn.svg" alt="" width="28" height="28">
+        <span class="brand__name">Cairn</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#integrations">Integrations</a>
+        <a href="index.html#install">Install</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="docs.html">Docs</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section docs">
+      <div class="container">
+        <h2 class="section__title">Cairn documentation</h2>
+        <p class="section__sub">
+          Everything you need to connect your tools and keep your asset system of record honest.
+        </p>
+
+        <div class="docs__layout">
+          <aside class="docs__nav" aria-label="Docs sections">
+            <p class="docs__nav-label">On this page</p>
+            <a href="#getting-started">Getting started / Setup</a>
+            <a href="#faq">Frequently asked questions</a>
+            <a href="#support">Support</a>
+          </aside>
+
+          <div class="docs__main">
+            <!-- GETTING STARTED -->
+            <section class="docs__block" id="getting-started">
+              <h2>Getting started / Setup</h2>
+              <p class="docs__lead">
+                Cairn pulls device records from the tools that already manage your
+                fleet and reconciles them into one system of record. You can get a
+                first dry run going in a few minutes.
+              </p>
+
+              <div class="docs__step">
+                <h3>1. Create a workspace</h3>
+                <p>
+                  Sign in to the Cairn dashboard and create a workspace for your
+                  organization. Your workspace holds your source connections, your
+                  system-of-record settings, and your reconciliation history. Invite
+                  teammates as workspace members so they can review runs.
+                </p>
+              </div>
+
+              <div class="docs__step">
+                <h3>2. Install the binary &amp; generate a config</h3>
+                <p>
+                  Download the signed Cairn binary for your platform from the
+                  dashboard (see <a href="index.html#install">Install</a>), then create a
+                  starter config with <code>cairn init &gt; cairn.yaml</code>. The config
+                  declares your sources, your sink (system of record), and notifications.
+                </p>
+              </div>
+
+              <div class="docs__step">
+                <h3>3. Connect your sources</h3>
+                <p>
+                  Add each MDM or EDR you run — Jamf Pro, Microsoft Intune, Kandji,
+                  JumpCloud, Google Workspace (ChromeOS), CrowdStrike Falcon, Sophos
+                  Central, Defender for Endpoint, and more — under <code>sources</code>.
+                  Supply each source's base URL and credentials via environment variables,
+                  and give it a <code>trust</code> score that decides which tool wins
+                  field-by-field when records disagree.
+                </p>
+              </div>
+
+              <div class="docs__step">
+                <h3>4. Point Cairn at your system of record</h3>
+                <p>
+                  Set your <code>sink</code> to Snipe-IT and give it your instance URL and
+                  an API token. Cairn matches devices across sources by serial number,
+                  merges them by trust priority, and writes the reconciled record into
+                  Snipe-IT — then pushes the resulting asset tag back to your MDM so both
+                  sides agree.
+                </p>
+              </div>
+
+              <div class="docs__step">
+                <h3>5. Dry-run, then sync</h3>
+                <p>
+                  Always preview first: <code>cairn sync --dry-run</code> shows every
+                  create, update, and conflict resolution without writing anything. When
+                  the plan looks right, drop the flag to apply it. Wire up Slack, Microsoft
+                  Teams, or a generic webhook under <code>notify</code> so your team sees
+                  each run, and schedule it (cron or your orchestrator) to keep inventory
+                  honest automatically.
+                </p>
+              </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="docs__block" id="faq">
+              <h2>Frequently asked questions</h2>
+              <p class="docs__lead">Short answers to the things teams ask most.</p>
+
+              <div class="faq">
+                <details class="faq__item">
+                  <summary>What is Cairn for?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn keeps your IT asset system of record matching reality. It reads
+                    device inventory from the MDM and EDR tools that already manage your
+                    fleet, reconciles overlapping records, and writes one clean, trustworthy
+                    record per machine — so you stop guessing what you actually own.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>How does reconciliation work?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn matches records for the same physical machine across tools by
+                    serial number, then merges them field-by-field using the
+                    <code>trust</code> score you assign each source. Higher trust wins on
+                    conflict, so (for example) you can let Jamf own hardware fields while
+                    CrowdStrike owns last-seen data.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Which tools does Cairn integrate with?</summary>
+                  <div class="faq__answer"><p>
+                    Sources include Jamf Pro, Microsoft Intune, Kandji, JumpCloud, Google
+                    Workspace (ChromeOS), CrowdStrike Falcon, Sophos Central, Microsoft
+                    Defender for Endpoint, Apple Business Manager, UniFi, CDW, and Rudder.
+                    Snipe-IT is the supported system of record, and notifications go to
+                    Slack, Microsoft Teams, or a generic webhook.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>How do I import existing data, and can I export it?</summary>
+                  <div class="faq__answer"><p>
+                    There's nothing to import manually — Cairn pulls live device data
+                    directly from your connected sources on every run. Your reconciled
+                    records live in your Snipe-IT system of record, which you fully own and
+                    can export at any time through Snipe-IT's own API and CSV export.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Will Cairn overwrite my data without warning?</summary>
+                  <div class="faq__answer"><p>
+                    No. Run <code>cairn sync --dry-run</code> to preview every create,
+                    update, and conflict resolution before a single write hits your system
+                    of record. Only when you drop the flag does Cairn apply changes.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>How do permissions and credentials work?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn talks to each tool with its own scoped API credentials — ideally
+                    read-only on sources and write-scoped only on your system of record.
+                    Secrets are supplied via environment variables (never committed to
+                    config), connections are HTTPS-only, config files are permission-checked,
+                    and serial numbers are masked in logs. On Team and Enterprise plans,
+                    dashboard access is managed per workspace member.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Can I search and review what changed?</summary>
+                  <div class="faq__answer"><p>
+                    Every run produces a summary of matched, new, and conflict-resolved
+                    devices, delivered to your notification channel and recorded in your
+                    workspace history. You can search and filter the reconciled records
+                    themselves in Snipe-IT by serial, asset tag, model, or source.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Where does Cairn run?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn is a single cross-platform binary for macOS, Windows, and Linux.
+                    Run it in <em>fleet mode</em> centrally to reconcile the whole estate, or
+                    in <em>agent mode</em> on each endpoint to sync that one machine. It fits
+                    cleanly into cron jobs and CI/orchestration pipelines.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Is Cairn open source?</summary>
+                  <div class="faq__answer"><p>
+                    No. Cairn is a commercial, closed-source product. Customers receive
+                    signed binaries and the Cairn dashboard under their subscription — see
+                    <a href="pricing.html">Pricing</a> for plans.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>How much does Cairn cost?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn is priced per seat. Starter and Team are published on the
+                    <a href="pricing.html">pricing page</a>, and Enterprise is custom-priced
+                    with volume discounts, SSO, and an SLA. There is no free tier, but you can
+                    request a trial.
+                  </p></div>
+                </details>
+
+                <details class="faq__item">
+                  <summary>Can I add a tool you don't list?</summary>
+                  <div class="faq__answer"><p>
+                    Cairn's provider model lets new MDM and EDR sources be added without
+                    changing the core engine. Custom and private providers are available on
+                    the Enterprise plan — <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20custom%20provider">tell us what you run</a>.
+                  </p></div>
+                </details>
+              </div>
+            </section>
+
+            <!-- SUPPORT -->
+            <section class="docs__block" id="support">
+              <h2>Support</h2>
+              <p class="docs__lead">Stuck on a setup step, a connector, or a conflict? We're happy to help.</p>
+
+              <div class="support-card">
+                <div>
+                  <h3>Email support</h3>
+                  <p>
+                    Reach the Cairn team directly and we'll get back to you. Enterprise
+                    customers have a named contact and an SLA.
+                  </p>
+                </div>
+                <a class="btn btn--primary" href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20support">Email support</a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/cairn.svg" alt="" width="24" height="24">
+        <span>Cairn</span>
+      </div>
+      <p class="footer__meta">
+        <a href="pricing.html">Pricing</a> ·
+        <a href="docs.html">Docs</a> ·
+        <a href="index.html#contact">Contact</a>
+      </p>
+      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+</body>
+</html>
