@@ -34,6 +34,7 @@
         <a href="pricing.html">Pricing</a>
         <a href="docs.html">Docs</a>
         <a href="index.html#contact">Contact</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
@@ -61,26 +62,34 @@
               <p class="docs__lead">
                 Cairn pulls device records from the tools that already manage your
                 fleet and reconciles them into one system of record. You can get a
-                first dry run going in a few minutes.
+                first dry run going in a few minutes. Cairn is free and open source
+                (AGPL-3.0) — self-host it yourself, or use the managed hosted version.
               </p>
 
               <div class="docs__step">
-                <h3>1. Create a workspace</h3>
+                <h3>1. Choose self-hosted or managed</h3>
                 <p>
-                  Sign in to the Cairn dashboard and create a workspace for your
-                  organization. Your workspace holds your source connections, your
-                  system-of-record settings, and your reconciliation history. Invite
-                  teammates as workspace members so they can review runs.
+                  <strong>Self-hosted (free, open source):</strong> clone
+                  <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">github.com/jsdosanj/cairn</a>,
+                  build the binary or grab a release, and run it on your own infrastructure
+                  under the AGPL-3.0 — no account required.
+                </p>
+                <p>
+                  <strong>Managed (hosted):</strong> sign in to the Cairn dashboard and
+                  create a workspace for your organization. Your workspace holds your source
+                  connections, system-of-record settings, and reconciliation history, and lets
+                  teammates review runs. See <a href="pricing.html">Pricing</a>.
                 </p>
               </div>
 
               <div class="docs__step">
                 <h3>2. Install the binary &amp; generate a config</h3>
                 <p>
-                  Download the signed Cairn binary for your platform from the
-                  dashboard (see <a href="index.html#install">Install</a>), then create a
-                  starter config with <code>cairn init &gt; cairn.yaml</code>. The config
-                  declares your sources, your sink (system of record), and notifications.
+                  Install Cairn from <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a> —
+                  download a release binary or build from source (see
+                  <a href="index.html#install">Install</a>) — then create a starter config with
+                  <code>cairn init &gt; cairn.yaml</code>. The config declares your sources, your
+                  sink (system of record), and notifications.
                 </p>
               </div>
 
@@ -212,19 +221,22 @@
                 <details class="faq__item">
                   <summary>Is Cairn open source?</summary>
                   <div class="faq__answer"><p>
-                    No. Cairn is a commercial, closed-source product. Customers receive
-                    signed binaries and the Cairn dashboard under their subscription — see
-                    <a href="pricing.html">Pricing</a> for plans.
+                    Yes. Cairn is free and open source, released under the
+                    <strong>AGPL-3.0</strong> — the same license as Snipe-IT, which Cairn
+                    integrates with. You can self-host it at no cost from
+                    <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>,
+                    or use our managed hosted version with support (see
+                    <a href="pricing.html">Pricing</a>).
                   </p></div>
                 </details>
 
                 <details class="faq__item">
                   <summary>How much does Cairn cost?</summary>
                   <div class="faq__answer"><p>
-                    Cairn is priced per seat. Starter and Team are published on the
-                    <a href="pricing.html">pricing page</a>, and Enterprise is custom-priced
-                    with volume discounts, SSO, and an SLA. There is no free tier, but you can
-                    request a trial.
+                    Self-hosting the open-source (AGPL-3.0) version is free, forever. If you'd
+                    rather we run it, the managed Team tier is priced per seat and Enterprise is
+                    custom-priced with volume discounts, SSO, and an SLA — both are on the
+                    <a href="pricing.html">pricing page</a>.
                   </p></div>
                 </details>
 
@@ -254,6 +266,17 @@
                 </div>
                 <a class="btn btn--primary" href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20support">Email support</a>
               </div>
+
+              <div class="support-card">
+                <div>
+                  <h3>Community &amp; bug reports</h3>
+                  <p>
+                    Self-hosting the open-source build? File bugs and feature requests, or
+                    browse existing discussion, on GitHub issues.
+                  </p>
+                </div>
+                <a class="btn btn--ghost" href="https://github.com/jsdosanj/cairn/issues" target="_blank" rel="noopener">GitHub issues</a>
+              </div>
             </section>
           </div>
         </div>
@@ -270,9 +293,10 @@
       <p class="footer__meta">
         <a href="pricing.html">Pricing</a> ·
         <a href="docs.html">Docs</a> ·
-        <a href="index.html#contact">Contact</a>
+        <a href="index.html#contact">Contact</a> ·
+        <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </p>
-      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
+      <p class="footer__copy">© 2026 Cairn · Free &amp; open source (AGPL-3.0) · Every device. One source of truth.</p>
     </div>
   </footer>
 

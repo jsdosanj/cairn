@@ -34,6 +34,7 @@
         <a href="pricing.html">Pricing</a>
         <a href="docs.html">Docs</a>
         <a href="#contact">Contact</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
@@ -43,19 +44,20 @@
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__copy">
-          <p class="eyebrow">Asset reconciliation, automated</p>
+          <p class="eyebrow">Open source · AGPL-3.0 · Asset reconciliation, automated</p>
           <h1 class="hero__title">Every device.<br><span class="accent">One source of truth.</span></h1>
           <p class="hero__lead">
             Cairn pulls your fleet from the tools that already manage it — Jamf, Intune,
             Kandji, ChromeOS, CrowdStrike and more — and keeps your asset database honest,
             automatically — and pushes asset tags back to the MDM so both sides agree.
-            Set it up with a guided wizard or a point-and-click dashboard, no YAML required.
+            It's free and open source (AGPL-3.0): self-host it yourself, or let us run the
+            managed version for you.
           </p>
           <div class="hero__cta">
-            <a class="btn btn--primary" href="#contact">Request a demo</a>
+            <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
             <a class="btn btn--ghost" href="pricing.html">View pricing</a>
           </div>
-          <p class="hero__meta">Single binary · macOS · Windows · Linux</p>
+          <p class="hero__meta">Free &amp; open source · Single binary · macOS · Windows · Linux</p>
         </div>
 
         <div class="hero__art" aria-hidden="true">
@@ -82,7 +84,7 @@
 <span class="c-muted">→</span> Loading config from ./cairn.yaml
 <span class="c-muted">→</span> Pulling fleet: jamf (412) · intune (377) · crowdstrike (455)
 <span class="c-muted">→</span> Reconciling by serial number…
-<span class="c-ok">✓</span> 461 devices matched · 12 new · 3 conflicts resolved by trust priority
+<span class="c-ok">[ok]</span> 461 devices matched · 12 new · 3 conflicts resolved by trust priority
 <span class="c-warn">~</span> dry-run: no changes written to Snipe-IT</code></pre>
         </figure>
 
@@ -116,32 +118,32 @@
 
         <ul class="grid grid--features">
           <li class="card">
-            <span class="card__icon" aria-hidden="true">🔌</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Pluggable providers</h3>
             <p>Add a new MDM or EDR by dropping in a provider — no changes to the core engine.</p>
           </li>
           <li class="card">
-            <span class="card__icon" aria-hidden="true">🛰️</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Agent &amp; fleet modes</h3>
             <p>Run on each endpoint to sync that machine, or run centrally to reconcile the whole fleet.</p>
           </li>
           <li class="card">
-            <span class="card__icon" aria-hidden="true">🧩</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Serial reconciliation</h3>
             <p>Merges records for the same physical machine across tools, field-by-field, by trust priority.</p>
           </li>
           <li class="card">
-            <span class="card__icon" aria-hidden="true">🔒</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Security-first</h3>
             <p>HTTPS-only, secrets via env vars, config permission checks, and serial masking in logs.</p>
           </li>
           <li class="card">
-            <span class="card__icon" aria-hidden="true">📦</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Single binary</h3>
-            <p>One cross-platform binary for macOS, Windows, and Linux — download it from your Cairn account.</p>
+            <p>One cross-platform binary for macOS, Windows, and Linux — download a release or build from source on GitHub.</p>
           </li>
           <li class="card">
-            <span class="card__icon" aria-hidden="true">🧪</span>
+            <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Dry-run mode</h3>
             <p>Preview every create, update, and conflict resolution before a single write hits your SoR.</p>
           </li>
@@ -159,34 +161,34 @@
           <div class="integrations__group">
             <h3 class="integrations__label">Sources</h3>
             <ul class="logos">
-              <li class="logo">🍎 Jamf Pro</li>
-              <li class="logo">🪟 Microsoft Intune</li>
-              <li class="logo">📱 Kandji</li>
-              <li class="logo">☁️ JumpCloud</li>
-              <li class="logo">🌐 Google Workspace (ChromeOS)</li>
-              <li class="logo">🦅 CrowdStrike Falcon</li>
-              <li class="logo">🛡️ Sophos Central</li>
-              <li class="logo">🟦 Microsoft Defender for Endpoint</li>
-              <li class="logo">🍏 Apple Business Manager</li>
-              <li class="logo">📡 UniFi</li>
-              <li class="logo">📦 CDW (procurement)</li>
-              <li class="logo">⚙️ Rudder</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Jamf Pro</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Intune</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Kandji</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> JumpCloud</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Google Workspace (ChromeOS)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> CrowdStrike Falcon</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Sophos Central</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Defender for Endpoint</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Apple Business Manager</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> UniFi</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> CDW (procurement)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Rudder</li>
             </ul>
           </div>
 
           <div class="integrations__group">
             <h3 class="integrations__label">System of record</h3>
             <ul class="logos">
-              <li class="logo logo--sink">📋 Snipe-IT</li>
+              <li class="logo logo--sink"><span class="logo__mark" aria-hidden="true">◆</span> Snipe-IT</li>
             </ul>
           </div>
 
           <div class="integrations__group">
             <h3 class="integrations__label">Notifications</h3>
             <ul class="logos">
-              <li class="logo">👥 Microsoft Teams</li>
-              <li class="logo">💬 Slack</li>
-              <li class="logo">🔗 Generic webhook</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Teams</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Slack</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Generic webhook</li>
             </ul>
           </div>
         </div>
@@ -197,36 +199,34 @@
     <section class="section" id="install">
       <div class="container">
         <h2 class="section__title">Install Cairn</h2>
-        <p class="section__sub">Pick your platform. Signed builds are available to customers in the Cairn dashboard.</p>
+        <p class="section__sub">Pick your platform. Cairn is free and open source (AGPL-3.0) — grab a release from <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a> or build from source.</p>
 
         <div class="tabs" role="tablist" aria-label="Install options">
           <button class="tab is-active" role="tab" id="tab-macos" aria-selected="true" aria-controls="panel-macos">macOS</button>
           <button class="tab" role="tab" id="tab-windows" aria-selected="false" aria-controls="panel-windows" tabindex="-1">Windows</button>
           <button class="tab" role="tab" id="tab-linux" aria-selected="false" aria-controls="panel-linux" tabindex="-1">Linux</button>
-          <button class="tab" role="tab" id="tab-pip" aria-selected="false" aria-controls="panel-pip" tabindex="-1">pip</button>
+          <button class="tab" role="tab" id="tab-pip" aria-selected="false" aria-controls="panel-pip" tabindex="-1">From source</button>
         </div>
 
         <div class="tabpanels">
           <div class="tabpanel is-active" role="tabpanel" id="panel-macos" aria-labelledby="tab-macos">
-            <p class="tabpanel__hint">Install the signed <code>.pkg</code>, or drop the binary in your PATH:</p>
+            <p class="tabpanel__hint">Grab the latest release binary from GitHub and drop it in your PATH:</p>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-macos" aria-label="Copy macOS install commands">Copy</button>
-              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Option A — grab the .pkg installer from your Cairn dashboard</span>
-<span class="c-muted"># Option B — install the portable binary (use your license token)</span>
-curl -fsSL -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-macos.tar.gz | tar xz
+              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Download the latest macOS release from GitHub</span>
+curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-macos.tar.gz | tar xz
 sudo mv cairn /usr/local/bin/
 cairn --version</code></pre>
             </div>
           </div>
 
           <div class="tabpanel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
-            <p class="tabpanel__hint">Run the installer, or unzip the portable build:</p>
+            <p class="tabpanel__hint">Download the release .zip from GitHub and extract it:</p>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-windows" aria-label="Copy Windows install commands">Copy</button>
-              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the signed .zip and extract</span>
+              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the latest Windows release and extract</span>
 Invoke-WebRequest `
-  -Headers @{ Authorization = "Bearer $Env:CAIRN_TOKEN" } `
-  https://dl.cairn.app/latest/cairn-windows-x64.zip `
+  https://github.com/jsdosanj/cairn/releases/latest/download/cairn-windows-x64.zip `
   -OutFile cairn.zip
 Expand-Archive cairn.zip -DestinationPath "$Env:ProgramFiles\Cairn"
 cairn --version</code></pre>
@@ -238,20 +238,23 @@ cairn --version</code></pre>
             <div class="terminal terminal--plain">
               <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-linux" aria-label="Copy Linux install commands">Copy</button>
               <pre class="terminal__body"><code id="install-linux"><span class="c-muted"># Debian / Ubuntu (.deb)</span>
-curl -fsSLO -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-linux.deb
+curl -fsSLO https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.deb
 sudo dpkg -i cairn-linux.deb
 
 <span class="c-muted"># Or the portable tarball</span>
-curl -fsSL -H "Authorization: Bearer $CAIRN_TOKEN" https://dl.cairn.app/latest/cairn-linux.tar.gz | tar xz
+curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.tar.gz | tar xz
 sudo mv cairn /usr/local/bin/</code></pre>
             </div>
           </div>
 
           <div class="tabpanel" role="tabpanel" id="panel-pip" aria-labelledby="tab-pip" hidden>
-            <p class="tabpanel__hint">Prefer Python packaging? Install from the Cairn package index:</p>
+            <p class="tabpanel__hint">Clone the repo and build the open-source binary yourself:</p>
             <div class="terminal terminal--plain">
-              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pip" aria-label="Copy pip install command">Copy</button>
-              <pre class="terminal__body"><code id="install-pip">pip install cairn --index-url https://$CAIRN_TOKEN@pkg.cairn.app/simple
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pip" aria-label="Copy build-from-source commands">Copy</button>
+              <pre class="terminal__body"><code id="install-pip"><span class="c-muted"># Clone and build from source (AGPL-3.0)</span>
+git clone https://github.com/jsdosanj/cairn.git
+cd cairn
+make build &amp;&amp; sudo mv ./bin/cairn /usr/local/bin/
 
 <span class="c-muted"># then generate a starter config</span>
 cairn init &gt; cairn.yaml</code></pre>
@@ -283,7 +286,7 @@ cairn init &gt; cairn.yaml</code></pre>
 
         <div class="contact__card">
           <div id="ok" class="contact__ok" hidden>
-            <span class="contact__ok-icon" aria-hidden="true">✓</span>
+            <span class="contact__ok-icon" aria-hidden="true">◆</span>
             <div>
               <h3>Message sent</h3>
               <p>Thanks for reaching out — we'll be in touch shortly.</p>
@@ -334,9 +337,10 @@ cairn init &gt; cairn.yaml</code></pre>
       <p class="footer__meta">
         <a href="pricing.html">Pricing</a> ·
         <a href="docs.html">Docs</a> ·
-        <a href="#contact">Contact</a>
+        <a href="#contact">Contact</a> ·
+        <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </p>
-      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
+      <p class="footer__copy">© 2026 Cairn · Free &amp; open source (AGPL-3.0) · Every device. One source of truth.</p>
     </div>
   </footer>
 

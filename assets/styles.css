@@ -434,6 +434,7 @@ code { font-family: var(--mono); }
   font-weight: 500;
   font-size: 0.95rem;
 }
+.logo__mark { color: var(--accent); font-size: 0.7rem; line-height: 1; }
 .logo--sink {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
   background: var(--accent-soft);
@@ -653,7 +654,7 @@ code { font-family: var(--mono); }
   font-size: 0.94rem;
 }
 .price-card__features li::before {
-  content: "✓";
+  content: "◆";
   color: var(--accent);
   font-weight: 700;
   flex: none;

@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pricing — Cairn</title>
-  <meta name="description" content="Cairn pricing — per-seat plans for teams that need an honest IT asset system of record. Starter, Team, and Enterprise tiers.">
+  <meta name="description" content="Cairn pricing — free and open source (AGPL-3.0) to self-host, plus managed hosted Team and Enterprise tiers.">
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
   <link rel="stylesheet" href="assets/styles.css">
   <meta property="og:title" content="Pricing — Cairn">
-  <meta property="og:description" content="Per-seat plans for teams that need an honest IT asset system of record.">
+  <meta property="og:description" content="Free and open source to self-host, or a managed hosted version for teams.">
   <meta property="og:type" content="website">
 </head>
 <body>
@@ -34,6 +34,7 @@
         <a href="pricing.html">Pricing</a>
         <a href="docs.html">Docs</a>
         <a href="index.html#contact">Contact</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
@@ -41,50 +42,51 @@
   <main id="main">
     <section class="section pricing">
       <div class="container">
-        <h2 class="section__title">Simple, per-seat pricing</h2>
+        <h2 class="section__title">Self-host free, or let us run it</h2>
         <p class="section__sub">
-          Cairn is a commercial product. Pick the plan that matches your team —
-          every plan includes the full reconciliation engine, dry-run mode, and signed builds.
+          Cairn is free and open source under the AGPL-3.0 — self-host it at no cost,
+          forever. Prefer not to run it yourself? Our managed, hosted tiers add support,
+          updates, and operations on top of the same open-source engine.
         </p>
 
         <!-- TODO: confirm pricing -->
         <div class="pricing__grid">
-          <!-- Starter -->
+          <!-- Open source / self-hosted (free) -->
           <article class="price-card">
-            <h3 class="price-card__name">Starter</h3>
-            <p class="price-card__tagline">For small IT teams getting their inventory honest.</p>
+            <h3 class="price-card__name">Open Source</h3>
+            <p class="price-card__tagline">Self-host the full reconciliation engine yourself.</p>
             <div class="price-card__price">
-              <span class="price-card__amount">$6</span>
-              <span class="price-card__period">/ seat / month</span>
+              <span class="price-card__amount">Free</span>
             </div>
-            <p class="price-card__note">Billed annually · up to 250 managed devices</p>
+            <p class="price-card__note">AGPL-3.0 · self-hosted · unlimited devices</p>
             <ul class="price-card__features">
-              <li>Up to 3 source integrations</li>
-              <li>Snipe-IT system of record</li>
+              <li>The complete open-source engine</li>
+              <li>All source integrations</li>
               <li>Serial-number reconciliation</li>
+              <li>Trust-priority conflict resolution</li>
               <li>Dry-run previews</li>
-              <li>Email support</li>
+              <li>Community support via GitHub issues</li>
             </ul>
-            <a class="btn btn--ghost" href="index.html#contact">Get started</a>
+            <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
           </article>
 
-          <!-- Team -->
+          <!-- Team (managed / hosted) -->
           <article class="price-card price-card--featured">
-            <span class="price-card__badge">Most popular</span>
+            <span class="price-card__badge">Managed</span>
             <h3 class="price-card__name">Team</h3>
-            <p class="price-card__tagline">For growing fleets across multiple tools.</p>
+            <p class="price-card__tagline">The managed, hosted version — we run it for you.</p>
             <div class="price-card__price">
               <span class="price-card__amount">$12</span>
               <span class="price-card__period">/ seat / month</span>
             </div>
-            <p class="price-card__note">Billed annually · up to 2,000 managed devices</p>
+            <p class="price-card__note">Billed annually · hosted &amp; fully managed</p>
             <ul class="price-card__features">
-              <li>Unlimited source integrations</li>
-              <li>Agent &amp; fleet modes</li>
-              <li>Trust-priority conflict resolution</li>
+              <li>Everything in Open Source, hosted for you</li>
+              <li>Managed updates &amp; operations</li>
+              <li>Point-and-click dashboard</li>
               <li>Asset-tag write-back to MDM</li>
               <li>Slack, Teams &amp; webhook alerts</li>
-              <li>Priority support</li>
+              <li>Priority email support</li>
             </ul>
             <a class="btn btn--primary" href="index.html#contact">Start a trial</a>
           </article>
@@ -110,7 +112,8 @@
         </div>
 
         <p class="pricing__foot">
-          Prices shown in USD. Need monthly billing or a tailored plan?
+          Managed prices shown in USD. The AGPL-3.0 license is used because Cairn integrates
+          with Snipe-IT, which is also AGPL-3.0. Need monthly billing or a tailored plan?
           <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20pricing%20question">Talk to sales</a>.
         </p>
       </div>
@@ -126,9 +129,10 @@
       <p class="footer__meta">
         <a href="pricing.html">Pricing</a> ·
         <a href="docs.html">Docs</a> ·
-        <a href="index.html#contact">Contact</a>
+        <a href="index.html#contact">Contact</a> ·
+        <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
       </p>
-      <p class="footer__copy">© 2026 Cairn · Every device. One source of truth.</p>
+      <p class="footer__copy">© 2026 Cairn · Free &amp; open source (AGPL-3.0) · Every device. One source of truth.</p>
     </div>
   </footer>
 
