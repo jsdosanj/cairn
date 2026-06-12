@@ -31,6 +31,7 @@
         <a href="#features">Features</a>
         <a href="#integrations">Integrations</a>
         <a href="#install">Install</a>
+        <a href="#contact">Contact</a>
         <a href="https://github.com/jsdosanj/cairn#readme">Docs</a>
         <a class="nav__github" href="https://github.com/jsdosanj/cairn" rel="noopener">GitHub</a>
       </nav>
@@ -272,6 +273,55 @@ cairn init &gt; cairn.yaml</code></pre>
         </div>
       </div>
     </section>
+
+    <!-- CONTACT -->
+    <section class="section section--alt" id="contact">
+      <div class="container contact">
+        <h2 class="section__title">Get in touch</h2>
+        <p class="section__sub">Questions about Cairn, a deployment, or a custom provider? Send us a note and we'll get back to you.</p>
+
+        <div class="contact__card">
+          <div id="ok" class="contact__ok" hidden>
+            <span class="contact__ok-icon" aria-hidden="true">✓</span>
+            <div>
+              <h3>Message sent</h3>
+              <p>Thanks for reaching out — we'll be in touch shortly.</p>
+            </div>
+          </div>
+
+          <form id="cf" class="contact__form" method="POST" data-e="ZG90cy13aGlza3MuNnJAaWNsb3VkLmNvbQ==">
+            <input type="hidden" name="_subject" value="New Cairn inquiry">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://jsdosanj.github.io/cairn-site/?sent=1#contact">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-name">Name</label>
+                <input class="field__input" id="cf-name" type="text" name="name" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-email">Work email</label>
+                <input class="field__input" id="cf-email" type="email" name="email" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-company">Company <span class="field__opt">(optional)</span></label>
+              <input class="field__input" id="cf-company" type="text" name="company" autocomplete="organization">
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-message">Message</label>
+              <textarea class="field__input field__input--area" id="cf-message" name="message" rows="5" required></textarea>
+            </div>
+
+            <button class="btn btn--primary" type="submit">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -289,5 +339,9 @@ cairn init &gt; cairn.yaml</code></pre>
   </footer>
 
   <script src="assets/main.js" defer></script>
+  <script>
+   (function(){try{var f=document.getElementById('cf');f.action='https://formsubmit.co/'+atob(f.getAttribute('data-e'));}catch(e){}})();
+   if(location.search.indexOf('sent=1')>=0){var o=document.getElementById('ok'),f=document.getElementById('cf');if(o)o.hidden=false;if(f)f.style.display='none';}
+  </script>
 </body>
 </html>

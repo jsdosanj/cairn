@@ -495,6 +495,75 @@ code { font-family: var(--mono); }
 .cta-strip p { margin: 8px 0 0; color: var(--text-muted); }
 .cta-strip__buttons { display: flex; gap: 14px; flex-wrap: wrap; }
 
+/* ---------- Contact ---------- */
+.contact__card {
+  max-width: 680px;
+  margin: 44px auto 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px 28px;
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.6);
+}
+.contact__form { display: grid; gap: 18px; }
+.contact__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.field { display: grid; gap: 7px; }
+.field__label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.field__opt { color: var(--text-dim); font-weight: 500; }
+.field__input {
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.96rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.field__input::placeholder { color: var(--text-dim); }
+.field__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field__input--area { resize: vertical; min-height: 120px; line-height: 1.6; }
+.contact__form .btn { justify-self: start; }
+
+.contact__ok {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 680px;
+  margin: 44px auto 0;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+  border-radius: var(--radius);
+  padding: 26px 28px;
+}
+.contact__ok-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #04201d;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.contact__ok h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.contact__ok p { margin: 0; color: var(--text-muted); font-size: 0.96rem; }
+
 /* ---------- Footer ---------- */
 .footer {
   border-top: 1px solid var(--border);
@@ -548,6 +617,7 @@ code { font-family: var(--mono); }
   .hero__inner { grid-template-columns: 1fr; }
   .hero__art { order: -1; }
   .demo__grid { grid-template-columns: 1fr; }
+  .contact__row { grid-template-columns: 1fr; }
   .grid--features { grid-template-columns: 1fr 1fr; }
   .integrations { grid-template-columns: 1fr; }
 }
