@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Docs — Cairn</title>
-  <meta name="description" content="Cairn documentation — set up a workspace, connect your MDM and EDR sources, reconcile your fleet, and answers to common questions.">
+  <meta name="description" content="Cairn documentation — get set up, connect your MDM and EDR sources, reconcile your fleet, and answers to common questions.">
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
   <link rel="stylesheet" href="assets/styles.css">
   <meta property="og:title" content="Docs — Cairn">
@@ -63,22 +63,16 @@
                 Cairn pulls device records from the tools that already manage your
                 fleet and reconciles them into one system of record. You can get a
                 first dry run going in a few minutes. Cairn is free and open source
-                (AGPL-3.0) — self-host it yourself, or use the managed hosted version.
+                (AGPL-3.0) — self-host it yourself, at no cost, forever.
               </p>
 
               <div class="docs__step">
-                <h3>1. Choose self-hosted or managed</h3>
+                <h3>1. Get Cairn</h3>
                 <p>
-                  <strong>Self-hosted (free, open source):</strong> clone
+                  Cairn is free and open source: clone
                   <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">github.com/jsdosanj/cairn</a>,
                   build the binary or grab a release, and run it on your own infrastructure
-                  under the AGPL-3.0 — no account required.
-                </p>
-                <p>
-                  <strong>Managed (hosted):</strong> sign in to the Cairn dashboard and
-                  create a workspace for your organization. Your workspace holds your source
-                  connections, system-of-record settings, and reconciliation history, and lets
-                  teammates review runs. See <a href="pricing.html">Pricing</a>.
+                  under the AGPL-3.0 — no account, no license key required.
                 </p>
               </div>
 
@@ -193,8 +187,7 @@
                     read-only on sources and write-scoped only on your system of record.
                     Secrets are supplied via environment variables (never committed to
                     config), connections are HTTPS-only, config files are permission-checked,
-                    and serial numbers are masked in logs. On Team and Enterprise plans,
-                    dashboard access is managed per workspace member.
+                    and serial numbers are masked in logs.
                   </p></div>
                 </details>
 
@@ -202,9 +195,9 @@
                   <summary>Can I search and review what changed?</summary>
                   <div class="faq__answer"><p>
                     Every run produces a summary of matched, new, and conflict-resolved
-                    devices, delivered to your notification channel and recorded in your
-                    workspace history. You can search and filter the reconciled records
-                    themselves in Snipe-IT by serial, asset tag, model, or source.
+                    devices, delivered to your notification channel. You can search and
+                    filter the reconciled records themselves in Snipe-IT by serial, asset
+                    tag, model, or source.
                   </p></div>
                 </details>
 
@@ -223,19 +216,17 @@
                   <div class="faq__answer"><p>
                     Yes. Cairn is free and open source, released under the
                     <strong>AGPL-3.0</strong> — the same license as Snipe-IT, which Cairn
-                    integrates with. You can self-host it at no cost from
-                    <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>,
-                    or use our managed hosted version with support (see
-                    <a href="pricing.html">Pricing</a>).
+                    integrates with. You can self-host it at no cost, forever, from
+                    <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>.
+                    There are no paid tiers, no seat limits, and no license keys.
                   </p></div>
                 </details>
 
                 <details class="faq__item">
                   <summary>How much does Cairn cost?</summary>
                   <div class="faq__answer"><p>
-                    Self-hosting the open-source (AGPL-3.0) version is free, forever. If you'd
-                    rather we run it, the managed Team tier is priced per seat and Enterprise is
-                    custom-priced with volume discounts, SSO, and an SLA — both are on the
+                    Nothing. Cairn is free and open source (AGPL-3.0), forever. There are
+                    no paid tiers, no seat limits, and no license keys — see the
                     <a href="pricing.html">pricing page</a>.
                   </p></div>
                 </details>
@@ -244,8 +235,9 @@
                   <summary>Can I add a tool you don't list?</summary>
                   <div class="faq__answer"><p>
                     Cairn's provider model lets new MDM and EDR sources be added without
-                    changing the core engine. Custom and private providers are available on
-                    the Enterprise plan — <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20custom%20provider">tell us what you run</a>.
+                    changing the core engine. Since Cairn is open source, you can build a
+                    provider yourself or
+                    <a href="https://github.com/jsdosanj/cairn/issues" target="_blank" rel="noopener">request one on GitHub</a>.
                   </p></div>
                 </details>
               </div>
@@ -260,8 +252,7 @@
                 <div>
                   <h3>Email support</h3>
                   <p>
-                    Reach the Cairn team directly and we'll get back to you. Enterprise
-                    customers have a named contact and an SLA.
+                    Reach the Cairn maintainer directly by email and we'll get back to you.
                   </p>
                 </div>
                 <a class="btn btn--primary" href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20support">Email support</a>

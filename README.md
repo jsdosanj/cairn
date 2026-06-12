@@ -13,7 +13,7 @@ itself is free and open source (AGPL-3.0) and lives at
 ## Pages
 
 - `index.html` — landing page
-- `pricing.html` — free self-hosted tier plus managed Team and Enterprise plans
+- `pricing.html` — free and open source (AGPL-3.0), no paid plans
 - `docs.html` — setup guide, FAQ, and support
 
 ## What's here

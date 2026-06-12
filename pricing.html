@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pricing — Cairn</title>
-  <meta name="description" content="Cairn pricing — free and open source (AGPL-3.0) to self-host, plus managed hosted Team and Enterprise tiers.">
+  <meta name="description" content="Cairn is free and open source (AGPL-3.0), forever. No paid plans, no seat limits, no license keys — self-host it for free.">
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
   <link rel="stylesheet" href="assets/styles.css">
   <meta property="og:title" content="Pricing — Cairn">
-  <meta property="og:description" content="Free and open source to self-host, or a managed hosted version for teams.">
+  <meta property="og:description" content="Free and open source (AGPL-3.0), forever. No paid plans, no seat limits, no license keys.">
   <meta property="og:type" content="website">
 </head>
 <body>
@@ -42,80 +42,48 @@
   <main id="main">
     <section class="section pricing">
       <div class="container">
-        <h2 class="section__title">Self-host free, or let us run it</h2>
+        <h2 class="section__title">Free and open source, forever</h2>
         <p class="section__sub">
-          Cairn is free and open source under the AGPL-3.0 — self-host it at no cost,
-          forever. Prefer not to run it yourself? Our managed, hosted tiers add support,
-          updates, and operations on top of the same open-source engine.
+          Cairn is free and open source under the AGPL-3.0 — forever. There are no paid
+          plans, no seat limits, and no license keys. Self-host it for free, on your own
+          infrastructure, with the complete reconciliation engine and every integration.
         </p>
 
-        <!-- TODO: confirm pricing -->
-        <div class="pricing__grid">
-          <!-- Open source / self-hosted (free) -->
-          <article class="price-card">
-            <h3 class="price-card__name">Open Source</h3>
-            <p class="price-card__tagline">Self-host the full reconciliation engine yourself.</p>
-            <div class="price-card__price">
-              <span class="price-card__amount">Free</span>
-            </div>
-            <p class="price-card__note">AGPL-3.0 · self-hosted · unlimited devices</p>
-            <ul class="price-card__features">
-              <li>The complete open-source engine</li>
-              <li>All source integrations</li>
-              <li>Serial-number reconciliation</li>
-              <li>Trust-priority conflict resolution</li>
-              <li>Dry-run previews</li>
-              <li>Community support via GitHub issues</li>
-            </ul>
-            <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
-          </article>
-
-          <!-- Team (managed / hosted) -->
-          <article class="price-card price-card--featured">
-            <span class="price-card__badge">Managed</span>
-            <h3 class="price-card__name">Team</h3>
-            <p class="price-card__tagline">The managed, hosted version — we run it for you.</p>
-            <div class="price-card__price">
-              <span class="price-card__amount">$12</span>
-              <span class="price-card__period">/ seat / month</span>
-            </div>
-            <p class="price-card__note">Billed annually · hosted &amp; fully managed</p>
-            <ul class="price-card__features">
-              <li>Everything in Open Source, hosted for you</li>
-              <li>Managed updates &amp; operations</li>
-              <li>Point-and-click dashboard</li>
-              <li>Asset-tag write-back to MDM</li>
-              <li>Slack, Teams &amp; webhook alerts</li>
-              <li>Priority email support</li>
-            </ul>
-            <a class="btn btn--primary" href="index.html#contact">Start a trial</a>
-          </article>
-
-          <!-- Enterprise -->
-          <article class="price-card">
-            <h3 class="price-card__name">Enterprise</h3>
-            <p class="price-card__tagline">For large or regulated fleets that need more.</p>
-            <div class="price-card__price">
-              <span class="price-card__amount">Custom</span>
-            </div>
-            <p class="price-card__note">Volume pricing · unlimited devices</p>
-            <ul class="price-card__features">
-              <li>Everything in Team</li>
-              <li>SSO / SAML &amp; SCIM</li>
-              <li>Custom &amp; private providers</li>
-              <li>Audit logging &amp; retention controls</li>
-              <li>SLA &amp; dedicated onboarding</li>
-              <li>Named support contact</li>
-            </ul>
-            <a class="btn btn--ghost" href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20Enterprise%20inquiry">Contact sales</a>
-          </article>
+        <div class="pricing__free">
+          <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
+          <a class="btn btn--ghost" href="docs.html">Read the docs</a>
         </div>
 
         <p class="pricing__foot">
-          Managed prices shown in USD. The AGPL-3.0 license is used because Cairn integrates
-          with Snipe-IT, which is also AGPL-3.0. Need monthly billing or a tailored plan?
-          <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20pricing%20question">Talk to sales</a>.
+          The AGPL-3.0 license is used because Cairn integrates with Snipe-IT, which is
+          also AGPL-3.0. Clone it, build it, and run it however you like.
         </p>
+
+        <section class="docs__block" aria-label="Pricing questions">
+          <h2>Frequently asked questions</h2>
+          <div class="faq">
+            <details class="faq__item">
+              <summary>Is it really free?</summary>
+              <div class="faq__answer"><p>
+                Yes — Cairn is open source under the AGPL-3.0, the same license as
+                Snipe-IT, which Cairn integrates with. You can self-host the complete
+                engine at no cost, forever. There are no paid tiers, no seat limits, and
+                no license keys.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>How is it funded, and can I get help?</summary>
+              <div class="faq__answer"><p>
+                Cairn is a community open-source project. Community support is available
+                through <a href="https://github.com/jsdosanj/cairn/issues" target="_blank" rel="noopener">GitHub issues</a>,
+                where you can file bugs, request features, and browse existing discussion.
+                You can also reach out by email at
+                <a href="mailto:jasvantdosanjh@outlook.com?subject=Cairn%20question">jasvantdosanjh@outlook.com</a>.
+              </p></div>
+            </details>
+          </div>
+        </section>
       </div>
     </section>
   </main>

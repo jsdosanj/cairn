@@ -660,12 +660,20 @@ code { font-family: var(--mono); }
   flex: none;
 }
 .price-card .btn { margin-top: auto; width: 100%; }
+.pricing__free {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
 .pricing__foot {
   text-align: center;
   color: var(--text-dim);
   font-size: 0.92rem;
   margin-top: 36px;
 }
+.pricing .docs__block { max-width: 760px; margin: 56px auto 0; }
 
 /* ---------- Docs ---------- */
 .docs { padding: 56px 0 80px; }
