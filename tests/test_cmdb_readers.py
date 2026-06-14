@@ -115,3 +115,26 @@ def test_netbox_follows_next_url():
     src = NetBoxSource({"url": base, "token": "tok"})
     serials = [d.serial for d in src.fetch_all()]
     assert serials == ["A", "B"]
+
+
+@responses.activate
+def test_netbox_refuses_cross_origin_next_url():
+    """A malicious/compromised NetBox must not redirect the auth token off-host.
+
+    `next` is server-controlled; if it points at another origin we would resend
+    `Authorization: Token <key>` to an attacker. The reader must stop instead.
+    """
+    base = "https://netbox.example.com"
+    evil = "https://attacker.example.com/api/dcim/devices/?limit=200&offset=200"
+    responses.add(
+        responses.GET, f"{base}/api/dcim/devices/",
+        json={"count": 2, "next": evil, "results": [
+            {"id": 1, "name": "a", "serial": "A", "device_type": {}}]},
+        status=200,
+    )
+    # No mock registered for the attacker host: if the reader tried to fetch it,
+    # `responses` would raise a ConnectionError and fail the test.
+    src = NetBoxSource({"url": base, "token": "tok"})
+    serials = [d.serial for d in src.fetch_all()]
+    assert serials == ["A"]  # stopped at the configured origin, token not leaked
+    assert {c.request.url.split("/api/")[0] for c in responses.calls} == {base}
