@@ -14,7 +14,7 @@ from typing import Any, Optional
 from urllib.parse import quote
 
 from ..http import build_session, request_json, require_https, HttpError
-from ..models import NormalizedDevice
+from ..models import NormalizedDevice, mask_serial
 from .base import AssetSink, SinkConfigError, SyncResult
 
 logger = logging.getLogger(__name__)
@@ -160,5 +160,5 @@ class SnipeITSink(AssetSink):
                 raise HttpError(f"Snipe-IT rejected create: {resp.get('messages')}")
             return SyncResult(SyncResult.CREATED, serial, asset_tag)
         except Exception as e:  # noqa: BLE001 - surface as a failed result, keep the run going
-            logger.error("Snipe-IT upsert failed for ****%s: %s", serial[-4:], e)
+            logger.error("Snipe-IT upsert failed for %s: %s", mask_serial(serial), e)
             return SyncResult(SyncResult.FAILED, serial, "", str(e))

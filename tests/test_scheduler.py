@@ -41,6 +41,14 @@ def test_windows_create_argv():
     assert "/MO" in argv and "60" in argv  # 60 minutes
 
 
+def test_resolve_invocation_drift_command_omits_mode():
+    # The scheduled drift-digest hook runs `drift`, read-only; --mode is sync-only.
+    argv = scheduler.resolve_invocation("config.yaml", "fleet", command="drift")
+    assert "drift" in argv
+    assert "sync" not in argv
+    assert "--mode" not in argv
+
+
 def test_quote_paths_with_spaces():
     cmd = scheduler._cmdline(["/Applications/My App/cairn", "sync"])
     assert '"/Applications/My App/cairn"' in cmd

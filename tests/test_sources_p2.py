@@ -59,7 +59,9 @@ def test_unifi_fetch_all_iterates_sites_and_devices():
     assert d.manufacturer == "Ubiquiti"
     assert d.hostname == "AP-Office"
     assert d.mac_addresses == ["AA:BB:CC:11:22:33"]
-    assert src.session.verify is False  # self-signed support
+    # verify_ssl=false alone must NOT disable verification (MITM protection);
+    # self-signed support comes from pointing ca_bundle at a trusted CA.
+    assert src.session.verify is True
     assert responses.calls[0].request.headers["X-API-KEY"] == "k"
 
 

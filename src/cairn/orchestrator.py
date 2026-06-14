@@ -16,7 +16,7 @@ from typing import Optional
 
 from . import system_info
 from .config import enabled_items
-from .models import NormalizedDevice, merge_devices
+from .models import NormalizedDevice, mask_serial, merge_devices
 from .registry import (
     get_notifier_class,
     get_sink_class,
@@ -178,7 +178,7 @@ class Orchestrator:
     def _collect_agent(self, summary: RunSummary) -> list[NormalizedDevice]:
         local = system_info.collect_local_device()
         serial = local.serial
-        logger.info("Agent mode: local serial ****%s", serial[-4:] if len(serial) >= 4 else serial)
+        logger.info("Agent mode: local serial %s", mask_serial(serial))
         records = [local]
         for key, source in self.sources.items():
             try:
@@ -243,6 +243,76 @@ class Orchestrator:
                 summary.record(key, result)
         self._notify_writeback(summary)
         return summary
+
+    # --- drift / reconciliation (observed vs system of record) ----------
+    def _cmdb_reader(self):
+        """Build the reader for the system of record drift compares against.
+
+        Defaults to Snipe-IT (reading the configured Snipe-IT sink, so existing
+        setups need no extra config). Set a top-level ``cmdb`` block to point
+        drift at GLPI / NetBox / any other reader instead — the engine consumes
+        the same NormalizedDevice list regardless of backend:
+
+            cmdb:
+              backend: netbox
+              url: https://netbox.example.com
+              token: ...
+        """
+        cmdb = self.config.get("cmdb") or {}
+        backend = cmdb.get("backend", "snipeit")
+        if backend == "snipeit" and not cmdb:
+            # Back-compat: reuse the Snipe-IT sink credentials as the reader.
+            sink_cfgs = enabled_items(self.config, "sinks")
+            if "snipeit" not in sink_cfgs:
+                raise ValueError(
+                    "Drift needs a Snipe-IT sink (or a `cmdb:` block) configured "
+                    "to read the system of record."
+                )
+            return get_source_class("snipeit")(sink_cfgs["snipeit"])
+        try:
+            return get_source_class(backend)(cmdb)
+        except KeyError as e:
+            raise ValueError(f"Unknown cmdb backend '{backend}'.") from e
+
+    def run_drift(self, stale_days: int = 30):
+        """Compare what the sources observe against the system-of-record CMDB.
+
+        Read-only: pulls every enabled source, reconciles by serial (the same
+        merge the sync uses), pulls the full CMDB (Snipe-IT by default, or the
+        backend named in the ``cmdb`` config), and diffs them. Writes nothing.
+        Returns a `reconcile.DriftReport`.
+        """
+        from .reconcile import reconcile
+
+        record_reader = self._cmdb_reader()
+
+        # Collect + reconcile observed devices exactly like a fleet sync would.
+        summary = RunSummary(mode="fleet", dry_run=True)
+        observed = self._collect_fleet(summary)
+        record = list(record_reader.fetch_all())
+        report = reconcile(observed, record, stale_days=stale_days)
+        # Surface source-pull failures: a missing source biases the report toward
+        # false "stale" findings, so the caller should know.
+        report.source_errors = dict(summary.source_errors)
+        self._notify_drift(report)
+        return report
+
+    def _notify_drift(self, report) -> None:
+        if not self.notifiers:
+            return
+        from .reconcile import render_text
+
+        counts = report.counts()
+        drift_total = sum(v for k, v in counts.items() if k != "ok")
+        level = "warning" if drift_total else "success"
+        title = (f"Cairn drift: {counts['missing']} missing, "
+                 f"{counts['stale']} stale, {counts['conflicting']} conflicting, "
+                 f"{counts['duplicate']} duplicate")
+        for notifier in self.notifiers.values():
+            try:
+                notifier.notify(title, render_text(report, color=False), level=level)
+            except Exception as e:  # noqa: BLE001 - notifications are best-effort
+                logger.error("notifier %s failed: %s", notifier.key, e)
 
     def _notify_writeback(self, summary: WritebackSummary) -> None:
         if not self.notifiers:

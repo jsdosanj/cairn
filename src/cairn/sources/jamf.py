@@ -16,6 +16,7 @@ Two authentication modes are supported:
 from __future__ import annotations
 
 import logging
+import re
 import time
 from typing import Any, Iterable, Optional
 
@@ -24,6 +25,7 @@ from ..http import (
     build_session,
     request_json,
     require_https,
+    resolve_verify,
     HttpError,
     DEFAULT_TIMEOUT,
 )
@@ -43,6 +45,11 @@ _SECTIONS = (
 # Refresh a token this many seconds before it actually expires so a long fleet
 # pull never fails mid-stream on an expired bearer token.
 _TOKEN_SKEW = 60
+
+# A serial gets interpolated into an RSQL filter; restrict it to characters that
+# can't break out of the quoted value so a crafted serial can't tamper with the
+# query.
+_SERIAL_RE = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
 
 class JamfSource(DeviceSource):
@@ -72,7 +79,6 @@ class JamfSource(DeviceSource):
     def setup(self) -> None:
         self.base_url = str(self.config["url"]).rstrip("/")
         self.page_size = int(self.config.get("page_size", 100) or 100)
-        self.verify_ssl = self.config.get("verify_ssl", True)
 
         self.client_id = self.config.get("client_id")
         self.client_secret = self.config.get("client_secret")
@@ -82,7 +88,7 @@ class JamfSource(DeviceSource):
         self._use_client_creds = bool(self.client_id and self.client_secret)
 
         self.session = build_session()
-        self.session.verify = self.verify_ssl
+        self.session.verify = resolve_verify(self.config, self.base_url)
 
         self._token: Optional[str] = None
         self._expires_at: float = 0.0
@@ -243,6 +249,11 @@ class JamfSource(DeviceSource):
     def find_by_serial(self, serial: str) -> Optional[NormalizedDevice]:
         target = (serial or "").strip()
         if not target:
+            return None
+        if not _SERIAL_RE.match(target):
+            logger.warning(
+                "%s: refusing unsafe serial in filter: %r", self.display_name, target
+            )
             return None
 
         params = self._section_params() + [

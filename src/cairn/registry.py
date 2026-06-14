@@ -30,6 +30,9 @@ _SOURCES: dict[str, str] = {
     "cdw": "cairn.sources.cdw:CdwSource",
     "rudder": "cairn.sources.rudder:RudderSource",
     "snipeit": "cairn.sources.snipeit:SnipeITSource",
+    "glpi": "cairn.sources.glpi:GlpiSource",
+    "netbox": "cairn.sources.netbox:NetBoxSource",
+    "network_discovery": "cairn.sources.network_discovery:NetworkDiscoverySource",
 }
 
 _WRITEBACKS: dict[str, str] = {

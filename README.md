@@ -11,6 +11,15 @@ and keeps your CMDB honest.
 > Cairn is the evolution of **GhostAssetSync**. The `ghostsync` command and the
 > legacy `settings.conf` still work, so existing deployments keep running.
 
+> **📚 Full documentation:** see [`docs/`](docs/README.md) — getting started,
+> a complete [CLI reference](docs/cli-reference.md) and
+> [config schema](docs/configuration.md), every
+> [source connector](docs/sources.md) and
+> [sink/CMDB reader](docs/sinks-and-cmdb.md), the
+> [drift report](docs/drift.md), [scheduling](docs/scheduling.md),
+> [security](docs/security.md), and an exhaustive
+> [troubleshooting](docs/troubleshooting.md) + [FAQ](docs/faq.md).
+
 ---
 
 ## Why Cairn
@@ -150,6 +159,9 @@ The manual path is below.
 cairn setup                 interactive first-run wizard (recommended)
 cairn web                   launch the local point-and-click dashboard
 cairn doctor                test every configured connection
+cairn drift                 reconcile sources vs Snipe-IT: missing / stale / duplicate / conflicting
+cairn drift --stale-days 60 flag CMDB assets no source has seen in 60 days
+cairn drift --json          emit the drift report as JSON
 cairn validate              load config, initialize every provider, report readiness
 cairn sync                  run a sync (agent or fleet per config)
 cairn sync --dry-run        report changes, write nothing
@@ -188,6 +200,32 @@ records that lack a serial (some Defender/Sophos endpoints) are still synced, ju
 not merged.
 
 ---
+
+## Drift report (is your CMDB lying?)
+
+`cairn drift` is read-only and writes nothing. It pulls every enabled source,
+reconciles by serial, pulls your whole Snipe-IT inventory, and diffs them — so
+in one command you see exactly where the system of record disagrees with the
+tools that actually manage your fleet:
+
+- **missing** — a device your MDM/EDR sees that isn't in Snipe-IT at all.
+- **stale** — a Snipe-IT asset no source has seen in `--stale-days` (default 30);
+  a retirement / lost-device candidate.
+- **duplicate** — more than one Snipe-IT row sharing a serial.
+- **conflicting** — present in both, but a field (hostname, model, …) disagrees.
+
+Every finding carries a **confidence score** — how sure Cairn is the finding is
+real, weighted by how many independent sources corroborate it. Serials are masked
+to the last four characters by default (`--show-serials` to override).
+
+```bash
+cairn drift                       # grouped, color report, worst first
+cairn drift --stale-days 60       # only flag assets unseen for 60+ days
+cairn drift --json -o drift.json  # machine-readable for BI / alerting
+```
+
+Exit code is non-zero when drift is found, so a scheduled `cairn drift` cleanly
+gates CI or fires an alert. Configured notifiers (Teams/Slack) get a digest.
 
 ## Scheduling (auto-sync)
 

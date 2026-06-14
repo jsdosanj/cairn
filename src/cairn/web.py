@@ -19,6 +19,7 @@ Implementation notes:
 from __future__ import annotations
 
 import dataclasses
+import hmac
 import json
 import logging
 import os
@@ -242,7 +243,8 @@ def _make_handler(token: str, config_path: str):
             self.wfile.write(payload)
 
         def _check_token(self) -> bool:
-            return self.headers.get("X-Cairn-Token") == token
+            # Constant-time compare to avoid leaking the token via timing.
+            return hmac.compare_digest(self.headers.get("X-Cairn-Token") or "", token)
 
         def _read_body(self) -> dict:
             length = int(self.headers.get("Content-Length") or 0)

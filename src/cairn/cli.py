@@ -152,6 +152,40 @@ def _cmd_writeback(args) -> int:
     return 1 if summary.failed else 0
 
 
+def _cmd_drift(args) -> int:
+    if args.stale_days < 0:
+        print("error: --stale-days must be >= 0", file=sys.stderr)
+        return 2
+    config = load_config(args.config)
+    from .orchestrator import Orchestrator
+    from .reconcile import render_text
+
+    orch = Orchestrator(config)
+    report = orch.run_drift(stale_days=args.stale_days)
+
+    if args.json:
+        import json
+
+        text = json.dumps(report.to_dict(mask=not args.show_serials), indent=2)
+    else:
+        text = render_text(
+            report,
+            color=sys.stdout.isatty() and not args.no_color,
+            mask=not args.show_serials,
+        )
+
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as fh:
+            fh.write(text + "\n")
+        print(f"drift report written to {args.output}")
+    else:
+        print(text)
+
+    # Exit non-zero when there is drift, so CI/cron can alert on it.
+    drift_total = sum(v for k, v in report.counts().items() if k != "ok")
+    return 1 if drift_total else 0
+
+
 def _cmd_schedule(args) -> int:
     from . import scheduler
 
@@ -160,7 +194,8 @@ def _cmd_schedule(args) -> int:
         if interval is None:
             cfg = load_config(args.config)
             interval = int((cfg.get("schedule") or {}).get("interval", 3600))
-        print(scheduler.install(interval, args.config, args.mode))
+        command = "drift" if getattr(args, "drift", False) else "sync"
+        print(scheduler.install(interval, args.config, args.mode, command))
     elif args.action == "uninstall":
         print(scheduler.uninstall())
     else:  # status
@@ -187,11 +222,27 @@ def build_parser() -> argparse.ArgumentParser:
                       help="actually write to the MDM (default is a dry-run preview)")
     p_wb.set_defaults(func=_cmd_writeback)
 
+    p_drift = sub.add_parser(
+        "drift",
+        help="reconcile sources vs Snipe-IT: what's missing, stale, duplicate, or conflicting",
+    )
+    p_drift.add_argument("--stale-days", type=int, default=30,
+                         help="flag CMDB assets no source has seen in N days (default 30)")
+    p_drift.add_argument("--json", action="store_true", help="emit the report as JSON")
+    p_drift.add_argument("--output", "-o", help="write the report to a file instead of stdout")
+    p_drift.add_argument("--show-serials", action="store_true",
+                         help="print full serials (default masks to last 4)")
+    p_drift.add_argument("--no-color", action="store_true", help="disable ANSI color")
+    p_drift.set_defaults(func=_cmd_drift)
+
     p_sched = sub.add_parser("schedule", help="install/remove a native scheduled sync")
     p_sched.add_argument("action", choices=["install", "uninstall", "status"])
     p_sched.add_argument("--interval", type=int,
                          help="seconds between runs (default: config schedule.interval or 3600)")
     p_sched.add_argument("--mode", choices=["agent", "fleet"], help="mode for the scheduled run")
+    p_sched.add_argument("--drift", action="store_true",
+                         help="schedule a read-only drift-digest run instead of a sync "
+                              "(notifiers deliver the missing/stale/conflicting digest)")
     p_sched.set_defaults(func=_cmd_schedule)
 
     sub.add_parser("setup", help="interactive setup wizard (recommended for first run)").set_defaults(func=_cmd_setup)

@@ -20,6 +20,7 @@ class via ``self._resolve_policy``.
 from __future__ import annotations
 
 import logging
+import re
 import time
 from typing import Any, Optional
 
@@ -28,6 +29,7 @@ from ..http import (
     build_session,
     request_json,
     require_https,
+    resolve_verify,
     HttpError,
     DEFAULT_TIMEOUT,
 )
@@ -38,6 +40,11 @@ logger = logging.getLogger(__name__)
 # Refresh a token this many seconds before it actually expires so a long
 # writeback run never fails mid-stream on an expired bearer token.
 _TOKEN_SKEW = 60
+
+# A serial gets interpolated into an RSQL filter; restrict it to characters that
+# can't break out of the quoted value so a crafted serial can't tamper with the
+# query.
+_SERIAL_RE = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
 
 class JamfWriteback(Writeback):
@@ -68,7 +75,6 @@ class JamfWriteback(Writeback):
 
     def setup(self) -> None:
         self.base_url = str(self.config["url"]).rstrip("/")
-        self.verify_ssl = self.config.get("verify_ssl", True)
 
         self.client_id = self.config.get("client_id")
         self.client_secret = self.config.get("client_secret")
@@ -78,7 +84,7 @@ class JamfWriteback(Writeback):
         self._use_client_creds = bool(self.client_id and self.client_secret)
 
         self.session = build_session()
-        self.session.verify = self.verify_ssl
+        self.session.verify = resolve_verify(self.config, self.base_url)
 
         self._token: Optional[str] = None
         self._expires_at: float = 0.0
@@ -136,6 +142,10 @@ class JamfWriteback(Writeback):
         try:
             if not serial or serial == "UNKNOWN":
                 return WritebackResult(WritebackResult.SKIPPED, serial, "no serial")
+            if not _SERIAL_RE.match(serial):
+                return WritebackResult(
+                    WritebackResult.SKIPPED, serial, "unsafe serial for filter"
+                )
 
             desired = device.asset_tag
             if not desired:

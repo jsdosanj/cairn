@@ -27,6 +27,20 @@ def _norm_mac(mac: Optional[str]) -> str:
     return s
 
 
+def mask_serial(serial: Optional[str]) -> str:
+    """Show only the last 4 chars of a serial for logs/reports/notifications.
+
+    Serial numbers are mildly sensitive (they identify a physical machine and
+    seed warranty lookups), so Cairn never prints a full serial by default.
+    """
+    s = str(serial or "").strip()
+    if not s or s == "UNKNOWN":
+        return s or "UNKNOWN"
+    if len(s) <= 4:
+        return "*" * len(s)
+    return "****" + s[-4:]
+
+
 def _norm_serial(serial: Optional[str]) -> str:
     """Serial numbers are the join key across providers, so normalize hard.
 

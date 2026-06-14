@@ -119,8 +119,8 @@ SOURCES: dict[str, ProviderMeta] = {
         [
             Field("host", "Controller URL", required=True, placeholder="https://192.168.1.1"),
             Field("api_key", "API key", secret=True, required=True),
-            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
-                  default="true"),
+            Field("ca_bundle", "CA bundle path", "Trusted CA for self-signed certs.",
+                  placeholder="/path/to/controller-ca.pem"),
         ],
     ),
     "cdw": ProviderMeta(
@@ -136,8 +136,8 @@ SOURCES: dict[str, ProviderMeta] = {
         [
             Field("url", "Rudder URL", required=True, placeholder="https://rudder.example.com"),
             Field("api_token", "API token", secret=True, required=True),
-            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
-                  default="true"),
+            Field("ca_bundle", "CA bundle path", "Trusted CA for self-signed certs.",
+                  placeholder="/path/to/rudder-ca.pem"),
         ],
     ),
     "snipeit": ProviderMeta(
@@ -148,6 +148,38 @@ SOURCES: dict[str, ProviderMeta] = {
             Field("token", "API token", secret=True, required=True),
         ],
         note="Mainly used as the read side of writeback; the sink config is reused automatically.",
+    ),
+    "glpi": ProviderMeta(
+        "glpi", "GLPI (read)", "Read Computer assets from a GLPI CMDB.",
+        [
+            Field("url", "API URL", "Ends in /apirest.php.", required=True,
+                  placeholder="https://glpi.example.com/apirest.php"),
+            Field("app_token", "App token", "GLPI API client token.", secret=True, required=True),
+            Field("user_token", "User token", "Personal API token.", secret=True, required=True),
+        ],
+        note="Use as a `cmdb` backend so drift reconciles against GLPI instead of Snipe-IT.",
+    ),
+    "netbox": ProviderMeta(
+        "netbox", "NetBox (read)", "Read DCIM devices from a NetBox source of truth.",
+        [
+            Field("url", "Base URL", "NetBox root URL (no /api).", required=True,
+                  placeholder="https://netbox.example.com"),
+            Field("token", "API token", secret=True, required=True),
+        ],
+        note="Use as a `cmdb` backend so drift reconciles against NetBox instead of Snipe-IT.",
+    ),
+    "network_discovery": ProviderMeta(
+        "network_discovery", "Network discovery (ARP/ping)",
+        "Catch unmanaged devices no MDM/EDR sees by reading the local ARP cache.",
+        [
+            Field("cidr", "CIDR to sweep", "Optional. Required to opt in to active "
+                  "sweeping; passive ARP-cache read needs nothing.",
+                  placeholder="192.168.1.0/24"),
+            Field("active_sweep", "Active sweep", "Set true (with a cidr) to opt in to "
+                  "probing. Off by default; nothing is scanned without it."),
+        ],
+        note="Passive by default: reads the kernel ARP cache and sends no probe packets. "
+             "Devices are keyed by MAC address (network gear rarely exposes a serial).",
     ),
 }
 
