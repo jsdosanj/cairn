@@ -245,21 +245,46 @@ class Orchestrator:
         return summary
 
     # --- drift / reconciliation (observed vs system of record) ----------
+    def _cmdb_reader(self):
+        """Build the reader for the system of record drift compares against.
+
+        Defaults to Snipe-IT (reading the configured Snipe-IT sink, so existing
+        setups need no extra config). Set a top-level ``cmdb`` block to point
+        drift at GLPI / NetBox / any other reader instead — the engine consumes
+        the same NormalizedDevice list regardless of backend:
+
+            cmdb:
+              backend: netbox
+              url: https://netbox.example.com
+              token: ...
+        """
+        cmdb = self.config.get("cmdb") or {}
+        backend = cmdb.get("backend", "snipeit")
+        if backend == "snipeit" and not cmdb:
+            # Back-compat: reuse the Snipe-IT sink credentials as the reader.
+            sink_cfgs = enabled_items(self.config, "sinks")
+            if "snipeit" not in sink_cfgs:
+                raise ValueError(
+                    "Drift needs a Snipe-IT sink (or a `cmdb:` block) configured "
+                    "to read the system of record."
+                )
+            return get_source_class("snipeit")(sink_cfgs["snipeit"])
+        try:
+            return get_source_class(backend)(cmdb)
+        except KeyError as e:
+            raise ValueError(f"Unknown cmdb backend '{backend}'.") from e
+
     def run_drift(self, stale_days: int = 30):
-        """Compare what the sources observe against the Snipe-IT system of record.
+        """Compare what the sources observe against the system-of-record CMDB.
 
         Read-only: pulls every enabled source, reconciles by serial (the same
-        merge the sync uses), pulls the full CMDB, and diffs them. Writes
-        nothing. Returns a `reconcile.DriftReport`.
+        merge the sync uses), pulls the full CMDB (Snipe-IT by default, or the
+        backend named in the ``cmdb`` config), and diffs them. Writes nothing.
+        Returns a `reconcile.DriftReport`.
         """
         from .reconcile import reconcile
 
-        sink_cfgs = enabled_items(self.config, "sinks")
-        if "snipeit" not in sink_cfgs:
-            raise ValueError(
-                "Drift needs a Snipe-IT sink configured to read the system of record."
-            )
-        record_reader = get_source_class("snipeit")(sink_cfgs["snipeit"])
+        record_reader = self._cmdb_reader()
 
         # Collect + reconcile observed devices exactly like a fleet sync would.
         summary = RunSummary(mode="fleet", dry_run=True)

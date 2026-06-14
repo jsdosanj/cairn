@@ -156,7 +156,8 @@ def normalize(tree: dict) -> dict:
     tree.setdefault(
         "source_priority",
         ["intune", "jamf", "kandji", "jumpcloud", "google_workspace",
-         "apple_bm", "crowdstrike", "sophos", "defender", "rudder", "unifi", "cdw"],
+         "apple_bm", "crowdstrike", "sophos", "defender", "rudder", "unifi", "cdw",
+         "network_discovery"],
     )
     if tree["mode"] not in ("agent", "fleet"):
         raise ConfigError("mode must be 'agent' or 'fleet'")

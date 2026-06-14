@@ -147,3 +147,37 @@ def test_source_error_recorded_not_fatal(monkeypatch):
     summary = Orchestrator(_config()).run()
     assert "fake" in summary.source_errors
     assert summary.devices_seen == 0
+
+
+def test_run_drift_uses_configured_cmdb_backend(monkeypatch):
+    """A `cmdb:` block points drift at a non-Snipe-IT reader (e.g. NetBox),
+    built from the cmdb config rather than the snipeit sink."""
+    FakeSource._devices = [NormalizedDevice(serial="S1", source="fake", hostname="a")]
+
+    seen_cfg = {}
+
+    class FakeNetBoxReader(DeviceSource):
+        key = "netbox"
+
+        def __init__(self, config):
+            seen_cfg.update(config or {})
+            super().__init__(config)
+
+        def fetch_all(self):
+            return []  # CMDB empty -> S1 should be flagged missing
+
+    import cairn.orchestrator as orch
+    classes = {"fake": FakeSource, "netbox": FakeNetBoxReader}
+    monkeypatch.setattr(orch, "get_source_class", lambda key: classes[key])
+    monkeypatch.setattr(orch, "get_sink_class", lambda key: FakeSink)
+    monkeypatch.setattr(orch, "get_notifier_class", lambda key: None)
+
+    cfg = _config(
+        sinks={"fakesink": {"enabled": True}},
+        cmdb={"backend": "netbox", "url": "https://nb.example.com", "token": "t"},
+    )
+    report = Orchestrator(cfg).run_drift(stale_days=30)
+    cats = {f.serial: f.category for f in report.findings}
+    assert cats["S1"] == "missing"
+    # The reader was built from the cmdb block, not the snipeit sink.
+    assert seen_cfg["url"] == "https://nb.example.com"

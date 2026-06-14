@@ -194,7 +194,8 @@ def _cmd_schedule(args) -> int:
         if interval is None:
             cfg = load_config(args.config)
             interval = int((cfg.get("schedule") or {}).get("interval", 3600))
-        print(scheduler.install(interval, args.config, args.mode))
+        command = "drift" if getattr(args, "drift", False) else "sync"
+        print(scheduler.install(interval, args.config, args.mode, command))
     elif args.action == "uninstall":
         print(scheduler.uninstall())
     else:  # status
@@ -239,6 +240,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_sched.add_argument("--interval", type=int,
                          help="seconds between runs (default: config schedule.interval or 3600)")
     p_sched.add_argument("--mode", choices=["agent", "fleet"], help="mode for the scheduled run")
+    p_sched.add_argument("--drift", action="store_true",
+                         help="schedule a read-only drift-digest run instead of a sync "
+                              "(notifiers deliver the missing/stale/conflicting digest)")
     p_sched.set_defaults(func=_cmd_schedule)
 
     sub.add_parser("setup", help="interactive setup wizard (recommended for first run)").set_defaults(func=_cmd_setup)

@@ -32,12 +32,20 @@ WINDOWS_TASK = "Cairn"
 
 
 # --- invocation resolution ---------------------------------------------
-def resolve_invocation(config_path: Optional[str], mode: Optional[str]) -> list[str]:
+def resolve_invocation(
+    config_path: Optional[str],
+    mode: Optional[str],
+    command: str = "sync",
+) -> list[str]:
     """Build the argv the scheduler should run.
 
     Prefer an installed `cairn` console binary; fall back to the current Python
     interpreter running the repo entrypoint. Always uses an absolute config path
     so the job works regardless of the scheduler's working directory.
+
+    ``command`` selects the scheduled action: ``sync`` (keep the CMDB current) or
+    ``drift`` (the scheduled drift-digest hook — runs read-only and lets the
+    configured notifiers deliver a "what's missing/stale/conflicting" digest).
     """
     binary = shutil.which("cairn")
     if binary:
@@ -50,8 +58,9 @@ def resolve_invocation(config_path: Optional[str], mode: Optional[str]) -> list[
         argv = [sys.executable, entry]
     if config_path:
         argv += ["-c", os.path.abspath(config_path)]
-    argv += ["sync"]
-    if mode:
+    argv += [command]
+    # --mode only applies to sync; drift is always a read-only fleet pull.
+    if mode and command == "sync":
         argv += ["--mode", mode]
     return argv
 
@@ -156,8 +165,13 @@ def _log_path() -> str:
     return os.path.expanduser("~/.cairn/cairn.log")
 
 
-def install(interval: int, config_path: Optional[str], mode: Optional[str]) -> str:
-    argv = resolve_invocation(config_path, mode)
+def install(
+    interval: int,
+    config_path: Optional[str],
+    mode: Optional[str],
+    command: str = "sync",
+) -> str:
+    argv = resolve_invocation(config_path, mode, command)
     system = platform.system()
     if system == "Darwin":
         return _install_launchd(argv, interval)

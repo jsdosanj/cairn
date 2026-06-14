@@ -11,6 +11,15 @@ and keeps your CMDB honest.
 > Cairn is the evolution of **GhostAssetSync**. The `ghostsync` command and the
 > legacy `settings.conf` still work, so existing deployments keep running.
 
+> **📚 Full documentation:** see [`docs/`](docs/README.md) — getting started,
+> a complete [CLI reference](docs/cli-reference.md) and
+> [config schema](docs/configuration.md), every
+> [source connector](docs/sources.md) and
+> [sink/CMDB reader](docs/sinks-and-cmdb.md), the
+> [drift report](docs/drift.md), [scheduling](docs/scheduling.md),
+> [security](docs/security.md), and an exhaustive
+> [troubleshooting](docs/troubleshooting.md) + [FAQ](docs/faq.md).
+
 ---
 
 ## Why Cairn
