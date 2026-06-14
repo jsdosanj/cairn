@@ -108,6 +108,35 @@ def test_full_flag_overrides_incremental(monkeypatch, tmp_path):
     assert FakeSink.upserts == [("S1", False)]
 
 
+def test_run_drift_diffs_sources_against_snipeit(monkeypatch):
+    # Observed by the source: S1 (matches CMDB) and S2 (missing from CMDB).
+    FakeSource._devices = [
+        NormalizedDevice(serial="S1", source="fake", hostname="a"),
+        NormalizedDevice(serial="S2", source="fake", hostname="b"),
+    ]
+
+    class FakeSnipeReader(DeviceSource):
+        key = "snipeit"
+
+        def fetch_all(self):
+            # CMDB holds S1 (consistent) only — S2 is missing.
+            return [NormalizedDevice(serial="S1", source="snipeit", hostname="a", asset_tag="A1")]
+
+    import cairn.orchestrator as orch
+    # Sources build via get_source_class("fake"); the reader is also fetched via
+    # get_source_class("snipeit"). Route each to the right fake.
+    classes = {"fake": FakeSource, "snipeit": FakeSnipeReader}
+    monkeypatch.setattr(orch, "get_source_class", lambda key: classes[key])
+    monkeypatch.setattr(orch, "get_sink_class", lambda key: FakeSink)
+    monkeypatch.setattr(orch, "get_notifier_class", lambda key: None)
+
+    cfg = _config(sinks={"snipeit": {"enabled": True}})
+    report = Orchestrator(cfg).run_drift(stale_days=30)
+    cats = {f.serial: f.category for f in report.findings}
+    assert cats["S1"] == "ok"
+    assert cats["S2"] == "missing"
+
+
 def test_source_error_recorded_not_fatal(monkeypatch):
     class BoomSource(FakeSource):
         def fetch_all(self):
