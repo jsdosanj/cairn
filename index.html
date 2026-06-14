@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snipe-IT Reconciliation &amp; Device Sync Tool | Cairn</title>
-  <meta name="description" content="Cairn is a free, open-source Snipe-IT reconciliation tool. Sync device inventory from 12+ MDM and EDR sources — Jamf, Intune, CrowdStrike — into one source of truth.">
+  <meta name="description" content="Cairn is a free, open-source Snipe-IT reconciliation tool. Sync device inventory from 12+ MDM and EDR sources — Jamf, Intune, CrowdStrike — into one source of truth, and run a drift report that shows where your CMDB disagrees with reality.">
   <link rel="canonical" href="https://dosanjhlabs.com/cairn/">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-  <meta name="keywords" content="Snipe-IT integration, Snipe-IT sync, device reconciliation, asset reconciliation, IT asset management, Jamf to Snipe-IT, Intune Snipe-IT sync, MDM EDR inventory sync, CrowdStrike asset sync, open source asset management, fleet reconciliation tool">
+  <meta name="keywords" content="Snipe-IT integration, Snipe-IT sync, device reconciliation, asset reconciliation, IT asset management, drift report, CMDB drift, Jamf to Snipe-IT, Intune Snipe-IT sync, MDM EDR inventory sync, CrowdStrike asset sync, GLPI, NetBox, network discovery, open source asset management, fleet reconciliation tool">
   <meta name="theme-color" content="#0a0f1c">
 
   <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
@@ -101,6 +101,7 @@
       </button>
 
       <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#drift">Drift report</a>
         <a href="#features">Features</a>
         <a href="#why">Why Cairn</a>
         <a href="#integrations">Integrations</a>
@@ -122,8 +123,9 @@
           <h1 class="hero__title">Every device.<br><span class="accent">One source of truth.</span></h1>
           <p class="hero__lead">
             Cairn pulls your fleet from the tools that already manage it — Jamf, Intune,
-            Kandji, ChromeOS, CrowdStrike and more — and keeps your asset database honest,
-            automatically — and pushes asset tags back to the MDM so both sides agree.
+            Kandji, ChromeOS, CrowdStrike and more — reconciles every device into your
+            asset system of record, and pushes asset tags back to the MDM so both sides
+            agree. Its drift report shows exactly where your CMDB disagrees with reality.
             It's free and open source (AGPL-3.0): self-host it yourself, at no cost,
             forever.
           </p>
@@ -131,7 +133,7 @@
             <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
             <a class="btn btn--ghost" href="docs.html">Read the docs</a>
           </div>
-          <p class="hero__meta">Free &amp; open source · Single binary · macOS · Windows · Linux</p>
+          <p class="hero__meta">Free &amp; open source (AGPL-3.0) · Single binary · macOS · Windows · Linux</p>
         </div>
 
         <div class="hero__art" aria-hidden="true">
@@ -148,18 +150,21 @@
     <!-- TERMINAL / CODE -->
     <section class="demo">
       <div class="container demo__grid">
-        <figure class="terminal" aria-label="Example Cairn command and output">
+        <figure class="terminal" aria-label="Example Cairn drift report output">
           <figcaption class="terminal__bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="terminal__title">cairn — fleet reconciliation</span>
+            <span class="terminal__title">cairn — is your CMDB lying?</span>
             <button class="copy-btn" type="button" data-copy="#snippet-cmd" aria-label="Copy command">Copy</button>
           </figcaption>
-          <pre class="terminal__body"><code id="snippet-cmd"><span class="c-prompt">$</span> cairn sync --dry-run
-<span class="c-muted">→</span> Loading config from ./cairn.yaml
-<span class="c-muted">→</span> Pulling fleet: jamf (412) · intune (377) · crowdstrike (455)
-<span class="c-muted">→</span> Reconciling by serial number…
-<span class="c-ok">[ok]</span> 461 devices matched · 12 new · 3 conflicts resolved by trust priority
-<span class="c-warn">~</span> dry-run: no changes written to Snipe-IT</code></pre>
+          <pre class="terminal__body"><code id="snippet-cmd"><span class="c-prompt">$</span> cairn drift
+<span class="c-muted">→</span> observed 412 device(s) across sources vs 388 record(s) in the CMDB
+<span class="c-warn">~</span> 7 missing · 3 stale · 2 conflicting · 1 duplicate · 399 ok
+
+<span class="c-warn">MISSING from CMDB (7)</span>
+  ****9F2A   <span class="c-ok">████████░░</span> 85%  not in the system of record   seen by: jamf, crowdstrike
+  ****1C04   <span class="c-warn">███████░░░</span> 70%  not in the system of record   seen by: intune
+<span class="c-warn">CONFLICTING fields (2)</span>
+  ****8D10 [A0991] <span class="c-ok">████████░░</span> 80%  hostname disagrees: MARKETING-07 ≠ mktg-laptop-7</code></pre>
         </figure>
 
         <figure class="terminal" aria-label="Example Cairn YAML configuration">
@@ -184,6 +189,51 @@
       </div>
     </section>
 
+    <!-- DRIFT -->
+    <section class="section section--alt" id="drift">
+      <div class="container">
+        <h2 class="section__title">Is your CMDB lying?</h2>
+        <p class="section__sub">
+          <code>cairn drift</code> is read-only — it writes nothing. It pulls every source,
+          reconciles by serial, reads your system of record, and diffs them, so you see
+          exactly where the official record disagrees with the tools that actually manage your fleet.
+        </p>
+
+        <ul class="grid grid--features">
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Missing</h3>
+            <p>A device your MDM or EDR sees that isn't in the CMDB at all — bought and never logged.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Stale</h3>
+            <p>A record no source has seen in your stale window (default 30 days) — a retirement or lost-device candidate.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Duplicate</h3>
+            <p>More than one record sharing the same serial. Merge or delete the extra rows.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Conflicting</h3>
+            <p>Present in both, but a field disagrees — hostname, model, manufacturer or OS. A blank field is a backfill opportunity, not a conflict.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Confidence scores</h3>
+            <p>Every finding carries a 0–100 score weighted by how many independent sources corroborate it, so you triage the sure things first.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Scheduled digests</h3>
+            <p>Exits non-zero on drift to gate CI, and sends a "what's missing/stale/conflicting" summary to Teams, Slack or a webhook on a cadence — without ever writing to your CMDB.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <!-- FEATURES -->
     <section class="section" id="features">
       <div class="container">
@@ -205,6 +255,16 @@
             <span class="card__icon" aria-hidden="true">◆</span>
             <h3>Serial reconciliation</h3>
             <p>Merges records for the same physical machine across tools, field-by-field, by trust priority.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Network discovery</h3>
+            <p>Lightweight, ARP-based discovery surfaces unmanaged devices — printers, switches, IoT, rogue boxes — that no MDM or EDR sees. Passive by default: it reads the ARP cache and sends no packets of its own. An active sweep is opt-in (and currently a documented no-op, so enabling it never silently scans).</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>More CMDB backends</h3>
+            <p>Drift can read your system of record from Snipe-IT, GLPI or NetBox — point it at whichever ITAM you already run. Snipe-IT remains the write target for sync.</p>
           </li>
           <li class="card">
             <span class="card__icon" aria-hidden="true">◆</span>
@@ -250,7 +310,7 @@
     <section class="section" id="integrations">
       <div class="container">
         <h2 class="section__title">Works with the tools you already run</h2>
-        <p class="section__sub">Cairn reads from your management tools and writes to one system of record.</p>
+        <p class="section__sub">Cairn reads from your management tools, writes to Snipe-IT, and runs drift against Snipe-IT, GLPI or NetBox. ServiceNow isn't supported yet.</p>
 
         <div class="integrations">
           <div class="integrations__group">
@@ -266,6 +326,7 @@
               <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Defender for Endpoint</li>
               <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Apple Business Manager</li>
               <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> UniFi</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Network discovery (ARP)</li>
               <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> CDW (procurement)</li>
               <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Rudder</li>
             </ul>
@@ -274,7 +335,9 @@
           <div class="integrations__group">
             <h3 class="integrations__label">System of record</h3>
             <ul class="logos">
-              <li class="logo logo--sink"><span class="logo__mark" aria-hidden="true">◆</span> Snipe-IT</li>
+              <li class="logo logo--sink"><span class="logo__mark" aria-hidden="true">◆</span> Snipe-IT — read &amp; write</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> GLPI — read (drift)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> NetBox — read (drift)</li>
             </ul>
           </div>
 
@@ -364,7 +427,7 @@ cairn init &gt; cairn.yaml</code></pre>
       <div class="container cta-strip__inner">
         <div>
           <h2>Stop guessing what you own.</h2>
-          <p>Reconcile your fleet in minutes — with a dry run first.</p>
+          <p>Run a read-only drift report first to see what your CMDB is missing — then reconcile in minutes.</p>
         </div>
         <div class="cta-strip__buttons">
           <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
