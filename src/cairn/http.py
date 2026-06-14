@@ -177,9 +177,16 @@ class OAuth2ClientCredentials:
             data["client_id"] = self.client_id
             data["client_secret"] = self.client_secret
         payload = request_json(self.session, "POST", self.token_url, **kwargs)
+        # Never echo the raw token-endpoint body back into an exception/log: it
+        # may carry sensitive context, and on success it contains the bearer
+        # token itself. Report only the OAuth error code when one is present.
+        if not isinstance(payload, dict):
+            raise HttpError("Token endpoint returned a non-object response")
         token = payload.get("access_token")
         if not token:
-            raise HttpError(f"Token endpoint returned no access_token: {payload}")
+            err = payload.get("error")
+            detail = f" (error: {err})" if isinstance(err, str) and err else ""
+            raise HttpError(f"Token endpoint returned no access_token{detail}")
         self._token = token
         expires_in = int(payload.get("expires_in", 1800))
         self._expires_at = time.time() + max(expires_in - 60, 30)

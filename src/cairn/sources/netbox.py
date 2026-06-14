@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import logging
 from typing import Iterable, Optional
+from urllib.parse import urlsplit
 
 from ..http import build_session, request_json, require_https, resolve_verify
 from ..models import NormalizedDevice
@@ -56,7 +57,26 @@ class NetBoxSource(DeviceSource):
                 if device is not None:
                     yield device
             # NetBox returns an absolute `next` URL (or null on the last page).
-            url = payload.get("next")
+            # The body is server-controlled, so a compromised/malicious NetBox
+            # could point `next` at an attacker host and we'd resend the
+            # `Authorization: Token` header there (SSRF / token exfiltration).
+            # Only follow a `next` that stays on the configured origin.
+            url = self._safe_next(payload.get("next"))
+
+    def _safe_next(self, next_url: Optional[str]) -> Optional[str]:
+        """Accept a pagination URL only if it stays on the configured origin."""
+        if not next_url:
+            return None
+        base = urlsplit(self.base_url)
+        nxt = urlsplit(str(next_url))
+        if nxt.scheme != base.scheme or nxt.netloc != base.netloc:
+            logger.warning(
+                "%s: refusing to follow cross-origin pagination URL %r "
+                "(expected origin %s://%s); stopping pagination.",
+                self.display_name, next_url, base.scheme, base.netloc,
+            )
+            return None
+        return str(next_url)
 
     def _to_device(self, row: dict) -> Optional[NormalizedDevice]:
         if not isinstance(row, dict):

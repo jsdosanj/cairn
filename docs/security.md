@@ -103,6 +103,10 @@ masking is about *display* (logs/reports/chat), not storage.
   following it would resend your `Authorization` header to whatever host the
   server names in `Location` (an SSRF / credential-leak vector). Retry/backoff
   respects `Retry-After`.
+- **Server-supplied pagination URLs are origin-pinned.** The NetBox reader pages
+  via the `next` URL in the response body; Cairn only follows it if it stays on
+  the configured origin (same scheme + host + port), so a compromised CMDB can't
+  redirect your API token to an attacker host.
 
 ---
 
