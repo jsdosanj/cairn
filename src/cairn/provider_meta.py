@@ -119,8 +119,8 @@ SOURCES: dict[str, ProviderMeta] = {
         [
             Field("host", "Controller URL", required=True, placeholder="https://192.168.1.1"),
             Field("api_key", "API key", secret=True, required=True),
-            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
-                  default="true"),
+            Field("ca_bundle", "CA bundle path", "Trusted CA for self-signed certs.",
+                  placeholder="/path/to/controller-ca.pem"),
         ],
     ),
     "cdw": ProviderMeta(
@@ -136,8 +136,8 @@ SOURCES: dict[str, ProviderMeta] = {
         [
             Field("url", "Rudder URL", required=True, placeholder="https://rudder.example.com"),
             Field("api_token", "API token", secret=True, required=True),
-            Field("verify_ssl", "Verify TLS cert", "Set false for self-signed.",
-                  default="true"),
+            Field("ca_bundle", "CA bundle path", "Trusted CA for self-signed certs.",
+                  placeholder="/path/to/rudder-ca.pem"),
         ],
     ),
     "snipeit": ProviderMeta(

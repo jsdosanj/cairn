@@ -3,8 +3,8 @@
 Targets the UniFi Network *Integration* API exposed on a local/self-hosted
 controller at `/proxy/network/integration/v1`. Auth is an `X-API-KEY` header.
 Because these controllers (UDM, Cloud Key, self-hosted) ship a self-signed TLS
-certificate by default, the optional `verify_ssl` config key (default True) can
-be set to False to disable certificate verification on a trusted LAN.
+certificate by default, point the optional `ca_bundle` config key at the
+controller's CA so verification still happens against a trusted root.
 
 Note: UniFi devices are network gear (asset_type "network") and frequently
 report no hardware serial number. Such records still map to a NormalizedDevice;
@@ -17,7 +17,7 @@ from __future__ import annotations
 import logging
 from typing import Iterable
 
-from ..http import build_session, request_json, require_https
+from ..http import build_session, request_json, require_https, resolve_verify
 from ..models import NormalizedDevice
 from .base import DeviceSource, SourceConfigError
 
@@ -55,8 +55,9 @@ class UniFiSource(DeviceSource):
         self.session = build_session(
             headers={"X-API-KEY": self.config["api_key"], "Accept": "application/json"}
         )
-        # Self-signed certs are the norm on local UniFi OS controllers.
-        self.session.verify = bool(self.config.get("verify_ssl", True))
+        # Self-signed certs are the norm on local UniFi OS controllers; point
+        # ca_bundle at the controller's CA rather than disabling verification.
+        self.session.verify = resolve_verify(self.config, host)
 
     # --- data access -----------------------------------------------------
     def fetch_all(self) -> Iterable[NormalizedDevice]:

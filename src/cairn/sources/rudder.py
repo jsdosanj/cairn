@@ -16,7 +16,7 @@ from __future__ import annotations
 import logging
 from typing import Iterable, Optional
 
-from ..http import build_session, request_json, require_https
+from ..http import build_session, request_json, require_https, resolve_verify
 from ..models import NormalizedDevice
 from .base import DeviceSource, SourceConfigError
 
@@ -48,7 +48,9 @@ class RudderSource(DeviceSource):
                 "Accept": "application/json",
             }
         )
-        self.session.verify = bool(self.config.get("verify_ssl", True))
+        # For self-signed/internal PKI, point ca_bundle at the trusted CA rather
+        # than disabling verification.
+        self.session.verify = resolve_verify(self.config, self.base)
 
     # --- data access -----------------------------------------------------
     def fetch_all(self) -> Iterable[NormalizedDevice]:

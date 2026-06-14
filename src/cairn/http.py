@@ -8,6 +8,7 @@ hardening for free and we enforce "HTTPS only" in exactly one place.
 from __future__ import annotations
 
 import logging
+import os
 import time
 from typing import Any, Optional
 from urllib.parse import urlparse
@@ -38,6 +39,37 @@ def require_https(url: str, name: str) -> None:
     if parsed.scheme in ("http", "") and parsed.hostname in _LOCAL_HOSTS:
         return
     raise ValueError(f"{name} must use HTTPS: {url}")
+
+
+def resolve_verify(config: dict[str, Any], host: str) -> Any:
+    """Decide a session's ``verify`` from config, defaulting to secure.
+
+    A custom CA bundle (``ca_bundle``) is honored for self-signed/internal PKI.
+    Disabling verification entirely (``verify_ssl: false``) exposes credentials
+    to MITM, so it is refused unless the operator explicitly opts in by setting
+    ``CAIRN_ALLOW_INSECURE_TLS=1`` in the environment, in which case we log a
+    loud warning naming the host. Returns a value suitable for ``session.verify``
+    (a CA bundle path, or ``True``/``False``).
+    """
+    ca = config.get("ca_bundle")
+    if ca:
+        return ca
+    if config.get("verify_ssl", True) is False:
+        if os.environ.get("CAIRN_ALLOW_INSECURE_TLS") == "1":
+            logger.warning(
+                "TLS verification DISABLED for %s (CAIRN_ALLOW_INSECURE_TLS=1); "
+                "credentials are exposed to man-in-the-middle attacks. Prefer "
+                "setting 'ca_bundle' to a trusted CA instead.",
+                host,
+            )
+            return False
+        logger.warning(
+            "Ignoring verify_ssl=false for %s: TLS verification stays ON. Set "
+            "'ca_bundle' for a self-signed/internal CA, or export "
+            "CAIRN_ALLOW_INSECURE_TLS=1 to force insecure mode.",
+            host,
+        )
+    return True
 
 
 def build_session(
@@ -77,8 +109,21 @@ def request_json(
     timeout: int = DEFAULT_TIMEOUT,
     **kwargs: Any,
 ) -> Any:
-    """Make a request and return parsed JSON, raising HttpError on failure."""
+    """Make a request and return parsed JSON, raising HttpError on failure.
+
+    Redirects are disabled by default: following a 3xx would resend the
+    Authorization header to whatever host the server names in ``Location``,
+    leaking credentials to an internal/metadata endpoint (SSRF). A 3xx is
+    therefore treated as an error unless the caller explicitly opts in.
+    """
+    kwargs.setdefault("allow_redirects", False)
     resp = session.request(method, url, timeout=timeout, **kwargs)
+    if 300 <= resp.status_code < 400:
+        location = resp.headers.get("Location", "")
+        raise HttpError(
+            f"{method} {url} -> {resp.status_code}: unexpected redirect to "
+            f"{location!r} (refusing to forward credentials)"
+        )
     if resp.status_code >= 400:
         body = (resp.text or "")[:300]
         raise HttpError(f"{method} {url} -> {resp.status_code}: {body}")

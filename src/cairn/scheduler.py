@@ -18,6 +18,7 @@ from __future__ import annotations
 import logging
 import os
 import platform
+import plistlib
 import shutil
 import subprocess
 import sys
@@ -69,35 +70,20 @@ def _interval_minutes(seconds: int) -> int:
 
 # --- pure generators (unit-tested) -------------------------------------
 def generate_launchd_plist(argv: list[str], interval: int, log_path: str) -> str:
-    args_xml = "\n".join(f"        <string>{a}</string>" for a in argv)
-    return f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>{LAUNCHD_LABEL}</string>
-    <key>ProgramArguments</key>
-    <array>
-{args_xml}
-    </array>
-    <key>StartInterval</key>
-    <integer>{interval}</integer>
-    <key>RunAtLoad</key>
-    <false/>
-    <key>StandardOutPath</key>
-    <string>{log_path}</string>
-    <key>StandardErrorPath</key>
-    <string>{log_path}</string>
-    <key>ProcessType</key>
-    <string>Background</string>
-    <key>LowPriorityIO</key>
-    <true/>
-    <key>Nice</key>
-    <integer>10</integer>
-</dict>
-</plist>
-"""
+    # Build via plistlib so every value (argv, paths) is XML-escaped; never
+    # interpolate untrusted config straight into markup.
+    plist = {
+        "Label": LAUNCHD_LABEL,
+        "ProgramArguments": list(argv),
+        "StartInterval": interval,
+        "RunAtLoad": False,
+        "StandardOutPath": log_path,
+        "StandardErrorPath": log_path,
+        "ProcessType": "Background",
+        "LowPriorityIO": True,
+        "Nice": 10,
+    }
+    return plistlib.dumps(plist).decode("utf-8")
 
 
 def generate_systemd_service(argv: list[str]) -> str:
@@ -150,6 +136,18 @@ def windows_create_argv(argv: list[str], interval: int) -> list[str]:
 # --- install / uninstall / status --------------------------------------
 def _launchd_plist_path() -> str:
     return os.path.expanduser(f"~/Library/LaunchAgents/{LAUNCHD_LABEL}.plist")
+
+
+def _write_private(path: str, content: str) -> None:
+    """Write a scheduler artifact, then restrict it to owner-only on POSIX.
+
+    Mirrors SyncState.save(): these files name the config path and invocation,
+    so keep them off other local users' radar.
+    """
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+    if os.name != "nt":
+        os.chmod(path, 0o600)
 
 
 def _log_path() -> str:
@@ -216,8 +214,7 @@ def _install_launchd(argv: list[str], interval: int) -> str:
     path = _launchd_plist_path()
     os.makedirs(os.path.dirname(path), exist_ok=True)
     os.makedirs(os.path.dirname(_log_path()), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(generate_launchd_plist(argv, interval, _log_path()))
+    _write_private(path, generate_launchd_plist(argv, interval, _log_path()))
     subprocess.run(["launchctl", "unload", path], capture_output=True, text=True)
     _run(["launchctl", "load", "-w", path], "loaded")
     return (f"Installed launchd agent {LAUNCHD_LABEL} (every {interval}s).\n"
@@ -249,10 +246,10 @@ def _install_linux(argv: list[str], interval: int) -> str:
     if _systemd_available():
         d = _systemd_dir()
         os.makedirs(d, exist_ok=True)
-        with open(os.path.join(d, f"{SYSTEMD_UNIT}.service"), "w", encoding="utf-8") as f:
-            f.write(generate_systemd_service(argv))
-        with open(os.path.join(d, f"{SYSTEMD_UNIT}.timer"), "w", encoding="utf-8") as f:
-            f.write(generate_systemd_timer(interval))
+        _write_private(os.path.join(d, f"{SYSTEMD_UNIT}.service"),
+                       generate_systemd_service(argv))
+        _write_private(os.path.join(d, f"{SYSTEMD_UNIT}.timer"),
+                       generate_systemd_timer(interval))
         subprocess.run(["systemctl", "--user", "daemon-reload"], capture_output=True, text=True)
         _run(["systemctl", "--user", "enable", "--now", f"{SYSTEMD_UNIT}.timer"], "enabled")
         return (f"Installed systemd --user timer {SYSTEMD_UNIT}.timer (every {interval}s).\n"
