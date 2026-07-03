@@ -96,12 +96,15 @@ class SnipeITSink(AssetSink):
         data = request_json(self.session, "GET", f"{self.base_url}/hardware?search={safe}")
         if not isinstance(data, dict):
             return None
+        target = str(serial).strip().upper()
         for row in data.get("rows", []) or []:
-            # Snipe-IT search is fuzzy; confirm exact serial match.
-            if str(row.get("serial", "")).strip().upper() == str(serial).strip().upper():
+            # Snipe-IT search is fuzzy (matches name/notes/model too); confirm EXACT serial.
+            if str(row.get("serial", "")).strip().upper() == target:
                 return row
-        rows = data.get("rows", []) or []
-        return rows[0] if rows else None
+        # No exact serial match => treat as NOT FOUND so the caller CREATEs. Never bind to a
+        # fuzzy hit: rows[0] could be an unrelated asset, which would UPDATE the wrong record,
+        # corrupt the CMDB, and suppress the correct create for a genuinely-new device.
+        return None
 
     def find_or_create_model(self, name: str) -> int:
         safe = quote(str(name or "Unknown"), safe="")
@@ -134,8 +137,11 @@ class SnipeITSink(AssetSink):
                 }
                 if dry_run:
                     return SyncResult(SyncResult.UPDATED, serial, existing["asset_tag"], "dry-run")
-                request_json(self.session, "PUT",
+                resp = request_json(self.session, "PUT",
                              f"{self.base_url}/hardware/{int(existing['id'])}", json=payload)
+                # Snipe-IT returns {"status":"error",...} with HTTP 200 on validation errors.
+                if isinstance(resp, dict) and resp.get("status") == "error":
+                    raise HttpError(f"Snipe-IT rejected update for {serial}: {resp.get('messages')}")
                 return SyncResult(SyncResult.UPDATED, serial, existing["asset_tag"])
             # Create
             asset_tag = generate_asset_tag(serial, hostname)
