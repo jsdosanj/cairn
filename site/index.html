@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Snipe-IT Reconciliation &amp; Device Sync Tool | Cairn</title>
+  <meta name="description" content="Cairn is a free, open-source Snipe-IT reconciliation tool. Sync device inventory from 12+ MDM and EDR sources — Jamf, Intune, CrowdStrike — into one source of truth, and run a drift report that shows where your CMDB disagrees with reality.">
+  <link rel="canonical" href="https://dosanjhlabs.com/cairn/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="keywords" content="Snipe-IT integration, Snipe-IT sync, device reconciliation, asset reconciliation, IT asset management, drift report, CMDB drift, Jamf to Snipe-IT, Intune Snipe-IT sync, MDM EDR inventory sync, CrowdStrike asset sync, GLPI, NetBox, network discovery, open source asset management, fleet reconciliation tool">
+  <meta name="theme-color" content="#0a0f1c">
+
+  <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cairn">
+  <meta property="og:title" content="Snipe-IT Reconciliation &amp; Device Sync Tool | Cairn">
+  <meta property="og:description" content="Cairn is a free, open-source Snipe-IT reconciliation tool. Sync device inventory from 12+ MDM and EDR sources into one source of truth.">
+  <meta property="og:url" content="https://dosanjhlabs.com/cairn/">
+  <meta property="og:image" content="https://dosanjhlabs.com/cairn/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cairn — Snipe-IT device reconciliation, automated.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Snipe-IT Reconciliation &amp; Device Sync Tool | Cairn">
+  <meta name="twitter:description" content="Free, open-source Snipe-IT reconciliation tool. Sync 12+ MDM and EDR sources into one source of truth.">
+  <meta name="twitter:image" content="https://dosanjhlabs.com/cairn/assets/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Cairn",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "IT Asset Management",
+        "operatingSystem": "Linux, Windows, macOS",
+        "url": "https://dosanjhlabs.com/cairn/",
+        "downloadUrl": "https://github.com/jsdosanj/cairn/releases",
+        "softwareHelp": "https://dosanjhlabs.com/cairn/docs.html",
+        "description": "Cairn is a free, open-source device and asset reconciliation tool that pulls device inventory from 12+ MDM and EDR sources (Jamf, Intune, Kandji, JumpCloud, CrowdStrike, Defender, Sophos and more) and syncs one reconciled source of truth into Snipe-IT.",
+        "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+        "isAccessibleForFree": true,
+        "image": "https://dosanjhlabs.com/cairn/assets/og-image.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Cairn"
+        }
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "name": "Cairn",
+        "description": "Open-source (AGPL-3.0) fleet and device reconciliation tool that syncs MDM and EDR inventory into Snipe-IT.",
+        "codeRepository": "https://github.com/jsdosanj/cairn",
+        "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+        "programmingLanguage": "Go",
+        "url": "https://dosanjhlabs.com/cairn/"
+      },
+      {
+        "@type": "Organization",
+        "name": "Cairn",
+        "url": "https://dosanjhlabs.com/cairn/",
+        "logo": "https://dosanjhlabs.com/cairn/assets/apple-touch-icon.png",
+        "sameAs": [
+          "https://github.com/jsdosanj/cairn"
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="#top" aria-label="Cairn home">
+        <img class="brand__mark" src="assets/cairn.svg" alt="" width="28" height="28">
+        <span class="brand__name">Cairn</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#drift">Drift report</a>
+        <a href="#features">Features</a>
+        <a href="#why">Why Cairn</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#install">Install</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="docs.html">Docs</a>
+        <a href="#contact">Contact</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Open source · AGPL-3.0 · Asset reconciliation, automated</p>
+          <h1 class="hero__title">Every device.<br><span class="accent">One source of truth.</span></h1>
+          <p class="hero__lead">
+            Cairn pulls your fleet from the tools that already manage it — Jamf, Intune,
+            Kandji, ChromeOS, CrowdStrike and more — reconciles every device into your
+            asset system of record, and pushes asset tags back to the MDM so both sides
+            agree. Its drift report shows exactly where your CMDB disagrees with reality.
+            It's free and open source (AGPL-3.0): self-host it yourself, at no cost,
+            forever.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
+            <a class="btn btn--ghost" href="docs.html">Read the docs</a>
+          </div>
+          <p class="hero__meta">Free &amp; open source (AGPL-3.0) · Single binary · macOS · Windows · Linux</p>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <div class="cairn-stack">
+            <span class="stone stone--1"></span>
+            <span class="stone stone--2"></span>
+            <span class="stone stone--3"></span>
+            <span class="stone stone--4"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL / CODE -->
+    <section class="demo">
+      <div class="container demo__grid">
+        <figure class="terminal" aria-label="Example Cairn drift report output">
+          <figcaption class="terminal__bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="terminal__title">cairn — is your CMDB lying?</span>
+            <button class="copy-btn" type="button" data-copy="#snippet-cmd" aria-label="Copy command">Copy</button>
+          </figcaption>
+          <pre class="terminal__body"><code id="snippet-cmd"><span class="c-prompt">$</span> cairn drift
+<span class="c-muted">→</span> observed 412 device(s) across sources vs 388 record(s) in the CMDB
+<span class="c-warn">~</span> 7 missing · 3 stale · 2 conflicting · 1 duplicate · 399 ok
+
+<span class="c-warn">MISSING from CMDB (7)</span>
+  ****9F2A   <span class="c-ok">████████░░</span> 85%  not in the system of record   seen by: jamf, crowdstrike
+  ****1C04   <span class="c-warn">███████░░░</span> 70%  not in the system of record   seen by: intune
+<span class="c-warn">CONFLICTING fields (2)</span>
+  ****8D10 [A0991] <span class="c-ok">████████░░</span> 80%  hostname disagrees: MARKETING-07 ≠ mktg-laptop-7</code></pre>
+        </figure>
+
+        <figure class="terminal" aria-label="Example Cairn YAML configuration">
+          <figcaption class="terminal__bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="terminal__title">cairn.yaml</span>
+            <button class="copy-btn" type="button" data-copy="#snippet-yaml" aria-label="Copy config">Copy</button>
+          </figcaption>
+          <pre class="terminal__body"><code id="snippet-yaml"><span class="c-key">mode</span>: fleet
+<span class="c-key">sources</span>:
+  - <span class="c-key">type</span>: jamf
+    <span class="c-key">base_url</span>: https://acme.jamfcloud.com
+    <span class="c-key">trust</span>: 90        <span class="c-muted"># higher wins on conflict</span>
+  - <span class="c-key">type</span>: intune
+    <span class="c-key">trust</span>: 70
+<span class="c-key">sink</span>:
+  <span class="c-key">type</span>: snipe-it
+  <span class="c-key">base_url</span>: https://assets.acme.com
+<span class="c-key">notify</span>:
+  - <span class="c-key">type</span>: slack</code></pre>
+        </figure>
+      </div>
+    </section>
+
+    <!-- DRIFT -->
+    <section class="section section--alt" id="drift">
+      <div class="container">
+        <h2 class="section__title">Is your CMDB lying?</h2>
+        <p class="section__sub">
+          <code>cairn drift</code> is read-only — it writes nothing. It pulls every source,
+          reconciles by serial, reads your system of record, and diffs them, so you see
+          exactly where the official record disagrees with the tools that actually manage your fleet.
+        </p>
+
+        <ul class="grid grid--features">
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Missing</h3>
+            <p>A device your MDM or EDR sees that isn't in the CMDB at all — bought and never logged.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Stale</h3>
+            <p>A record no source has seen in your stale window (default 30 days) — a retirement or lost-device candidate.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Duplicate</h3>
+            <p>More than one record sharing the same serial. Merge or delete the extra rows.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Conflicting</h3>
+            <p>Present in both, but a field disagrees — hostname, model, manufacturer or OS. A blank field is a backfill opportunity, not a conflict.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Confidence scores</h3>
+            <p>Every finding carries a 0–100 score weighted by how many independent sources corroborate it, so you triage the sure things first.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Scheduled digests</h3>
+            <p>Exits non-zero on drift to gate CI, and sends a "what's missing/stale/conflicting" summary to Teams, Slack or a webhook on a cadence — without ever writing to your CMDB.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <h2 class="section__title">Built for honest inventory</h2>
+        <p class="section__sub">Cairn does one job well: it makes your system of record match reality.</p>
+
+        <ul class="grid grid--features">
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Pluggable providers</h3>
+            <p>Add a new MDM or EDR by dropping in a provider — no changes to the core engine.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Agent &amp; fleet modes</h3>
+            <p>Run on each endpoint to sync that machine, or run centrally to reconcile the whole fleet.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Serial reconciliation</h3>
+            <p>Merges records for the same physical machine across tools, field-by-field, by trust priority.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Network discovery</h3>
+            <p>Lightweight, ARP-based discovery surfaces unmanaged devices — printers, switches, IoT, rogue boxes — that no MDM or EDR sees. Passive by default: it reads the ARP cache and sends no packets of its own. An active sweep is opt-in (and currently a documented no-op, so enabling it never silently scans).</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>More CMDB backends</h3>
+            <p>Drift can read your system of record from Snipe-IT, GLPI or NetBox — point it at whichever ITAM you already run. Snipe-IT remains the write target for sync.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Security-first</h3>
+            <p>HTTPS-only, secrets via env vars, config permission checks, and serial masking in logs.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Single binary</h3>
+            <p>One cross-platform binary for macOS, Windows, and Linux — download a release or build from source on GitHub.</p>
+          </li>
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">◆</span>
+            <h3>Dry-run mode</h3>
+            <p>Preview every create, update, and conflict resolution before a single write hits your SoR.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WHY CAIRN -->
+    <section class="section section--alt" id="why">
+      <div class="container">
+        <h2 class="section__title">Why "Cairn"</h2>
+        <p class="section__sub">
+          A cairn is a stack of stones travelers build to mark a safe path — each one placed by
+          someone who came before, so the next person doesn't lose their way. That's the spirit of
+          this project: an open, community-built set of markers that show small teams the route
+          through compliance. Anyone can add a stone; everyone benefits from the trail.
+        </p>
+        <p class="section__sub">
+          Cairn doesn't have to stand alone — it integrates with
+          <a href="https://dosanjhlabs.com/sightline/" target="_blank" rel="noopener">Sightline</a>,
+          <a href="https://dosanjhlabs.com/lookout/" target="_blank" rel="noopener">Lookout</a>, and
+          <a href="https://dosanjhlabs.com/bastion/" target="_blank" rel="noopener">Bastion</a>,
+          so the evidence and posture you build here can flow into the rest of your compliance and
+          monitoring stack.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTEGRATIONS -->
+    <section class="section" id="integrations">
+      <div class="container">
+        <h2 class="section__title">Works with the tools you already run</h2>
+        <p class="section__sub">Cairn reads from your management tools, writes to Snipe-IT, and runs drift against Snipe-IT, GLPI or NetBox. ServiceNow isn't supported yet.</p>
+
+        <div class="integrations">
+          <div class="integrations__group">
+            <h3 class="integrations__label">Sources</h3>
+            <ul class="logos">
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Jamf Pro</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Intune</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Kandji</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> JumpCloud</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Google Workspace (ChromeOS)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> CrowdStrike Falcon</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Sophos Central</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Defender for Endpoint</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Apple Business Manager</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> UniFi</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Network discovery (ARP)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> CDW (procurement)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Rudder</li>
+            </ul>
+          </div>
+
+          <div class="integrations__group">
+            <h3 class="integrations__label">System of record</h3>
+            <ul class="logos">
+              <li class="logo logo--sink"><span class="logo__mark" aria-hidden="true">◆</span> Snipe-IT — read &amp; write</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> GLPI — read (drift)</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> NetBox — read (drift)</li>
+            </ul>
+          </div>
+
+          <div class="integrations__group">
+            <h3 class="integrations__label">Notifications</h3>
+            <ul class="logos">
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Microsoft Teams</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Slack</li>
+              <li class="logo"><span class="logo__mark" aria-hidden="true">◆</span> Generic webhook</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section class="section" id="install">
+      <div class="container">
+        <h2 class="section__title">Install Cairn</h2>
+        <p class="section__sub">Pick your platform. Cairn is free and open source (AGPL-3.0) — grab a release from <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a> or build from source.</p>
+
+        <div class="tabs" role="tablist" aria-label="Install options">
+          <button class="tab is-active" role="tab" id="tab-macos" aria-selected="true" aria-controls="panel-macos">macOS</button>
+          <button class="tab" role="tab" id="tab-windows" aria-selected="false" aria-controls="panel-windows" tabindex="-1">Windows</button>
+          <button class="tab" role="tab" id="tab-linux" aria-selected="false" aria-controls="panel-linux" tabindex="-1">Linux</button>
+          <button class="tab" role="tab" id="tab-pip" aria-selected="false" aria-controls="panel-pip" tabindex="-1">From source</button>
+        </div>
+
+        <div class="tabpanels">
+          <div class="tabpanel is-active" role="tabpanel" id="panel-macos" aria-labelledby="tab-macos">
+            <p class="tabpanel__hint">Grab the latest release binary from GitHub and drop it in your PATH:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-macos" aria-label="Copy macOS install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-macos"><span class="c-muted"># Download the latest macOS release from GitHub</span>
+curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-macos.tar.gz | tar xz
+sudo mv cairn /usr/local/bin/
+cairn --version</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
+            <p class="tabpanel__hint">Download the release .zip from GitHub and extract it:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-windows" aria-label="Copy Windows install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-windows"><span class="c-muted"># PowerShell — download the latest Windows release and extract</span>
+Invoke-WebRequest `
+  https://github.com/jsdosanj/cairn/releases/latest/download/cairn-windows-x64.zip `
+  -OutFile cairn.zip
+Expand-Archive cairn.zip -DestinationPath "$Env:ProgramFiles\Cairn"
+cairn --version</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux" hidden>
+            <p class="tabpanel__hint">Install the <code>.deb</code> on Debian/Ubuntu, or use the tarball anywhere:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-linux" aria-label="Copy Linux install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-linux"><span class="c-muted"># Debian / Ubuntu (.deb)</span>
+curl -fsSLO https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.deb
+sudo dpkg -i cairn-linux.deb
+
+<span class="c-muted"># Or the portable tarball</span>
+curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.tar.gz | tar xz
+sudo mv cairn /usr/local/bin/</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-pip" aria-labelledby="tab-pip" hidden>
+            <p class="tabpanel__hint">Clone the repo and build the open-source binary yourself:</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pip" aria-label="Copy build-from-source commands">Copy</button>
+              <pre class="terminal__body"><code id="install-pip"><span class="c-muted"># Clone and build from source (AGPL-3.0)</span>
+git clone https://github.com/jsdosanj/cairn.git
+cd cairn
+make build &amp;&amp; sudo mv ./bin/cairn /usr/local/bin/
+
+<span class="c-muted"># then generate a starter config</span>
+cairn init &gt; cairn.yaml</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <section class="cta-strip">
+      <div class="container cta-strip__inner">
+        <div>
+          <h2>Stop guessing what you own.</h2>
+          <p>Run a read-only drift report first to see what your CMDB is missing — then reconcile in minutes.</p>
+        </div>
+        <div class="cta-strip__buttons">
+          <a class="btn btn--primary" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">Get it on GitHub</a>
+          <a class="btn btn--ghost" href="docs.html">Read the docs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section--alt" id="contact">
+      <div class="container contact">
+        <h2 class="section__title">Get in touch</h2>
+        <p class="section__sub">Questions about Cairn, a deployment, or a custom provider? Send us a note and we'll get back to you.</p>
+
+        <div class="contact__card">
+          <div id="ok" class="contact__ok" hidden>
+            <span class="contact__ok-icon" aria-hidden="true">◆</span>
+            <div>
+              <h3>Message sent</h3>
+              <p>Thanks for reaching out — we'll be in touch shortly.</p>
+            </div>
+          </div>
+
+          <form id="cf" class="contact__form" method="POST" data-e="ZG90cy13aGlza3MuNnJAaWNsb3VkLmNvbQ==">
+            <input type="hidden" name="_subject" value="New Cairn inquiry">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_autoresponse" value="Thanks for reaching out about Cairn — we've received your message and someone will be in touch shortly. — Cairn, a Dosanjh Labs project">
+            <input type="hidden" name="_next" value="https://dosanjhlabs.com/cairn/?sent=1#contact">
+            <input type="hidden" name="Source" value="Cairn">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-name">Name</label>
+                <input class="field__input" id="cf-name" type="text" name="Name" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-email">Email</label>
+                <input class="field__input" id="cf-email" type="email" name="email" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-company">Company / project</label>
+                <input class="field__input" id="cf-company" type="text" name="Company" autocomplete="organization">
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-role">Role / title</label>
+                <input class="field__input" id="cf-role" type="text" name="Role" autocomplete="organization-title">
+              </div>
+            </div>
+
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label" for="cf-size">Company size</label>
+                <select class="field__input" id="cf-size" name="Company size">
+                  <option value="">Select…</option>
+                  <option>Just me</option>
+                  <option>2–25 people</option>
+                  <option>26–250 people</option>
+                  <option>250+ people</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field__label" for="cf-topic">What's this about?</label>
+                <select class="field__input" id="cf-topic" name="Topic">
+                  <option value="">Select…</option>
+                  <option>Using Cairn</option>
+                  <option>Integrating with Sightline / Lookout / Bastion</option>
+                  <option>Contributing</option>
+                  <option>Support / bug</option>
+                  <option>Something else</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-phone">Phone <span class="field__opt">(optional)</span></label>
+              <input class="field__input" id="cf-phone" type="tel" name="Phone" autocomplete="tel">
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cf-message">Message</label>
+              <textarea class="field__input field__input--area" id="cf-message" name="Message" rows="5" required></textarea>
+            </div>
+
+            <button class="btn btn--primary" type="submit">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/cairn.svg" alt="Cairn logo" width="24" height="24" loading="lazy" decoding="async">
+        <span>Cairn</span>
+      </div>
+      <p class="footer__meta">
+        <a href="pricing.html">Pricing</a> ·
+        <a href="docs.html">Docs</a> ·
+        <a href="#contact">Contact</a> ·
+        <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
+      </p>
+      <p class="footer__copy">© 2026 Cairn · Free &amp; open source (AGPL-3.0) · Every device. One source of truth.</p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+  <script>
+   (function(){try{var f=document.getElementById('cf');f.action='https://formsubmit.co/'+atob(f.getAttribute('data-e'));}catch(e){}})();
+   if(location.search.indexOf('sent=1')>=0){var o=document.getElementById('ok'),f=document.getElementById('cf');if(o)o.hidden=false;if(f)f.style.display='none';}
+  </script>
+</body>
+</html>
