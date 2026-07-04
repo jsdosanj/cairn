@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here.
 
+## [1.3.1] — 2026-07-03
+
+**Fix: a CMDB-corrupting bug where a writeback or sync could update the wrong Snipe-IT asset.**
+
+### Fixed
+
+- **No more fuzzy-match fallback on serial lookup.** `find_asset_by_serial` looked
+  for an exact serial match in Snipe-IT's search results, but if none was found it
+  fell back to the first row anyway. Snipe-IT's search is fuzzy over name/notes/model,
+  so that row could be a completely unrelated asset — silently updating it instead of
+  creating the genuinely-new device, corrupting the CMDB. Lookup now returns `None`
+  on no exact match so the caller correctly falls through to CREATE.
+- **Update (PUT) path now fails loudly on a rejected write.** Snipe-IT can return
+  HTTP 200 with a `{"status": "error", ...}` body when it rejects an update. The
+  CREATE path already checked for this; the UPDATE path didn't, so a rejected write
+  was reported as a silent success. It now raises and surfaces as `FAILED`.
+- Added 2 regression tests covering both fixes. Full suite: 103 passed.
+
+[1.3.1]: https://github.com/jsdosanj/cairn/releases/tag/v1.3.1
+
 ## [1.3.0] — 2026-06-11
 
 **Cairn now syncs both directions: it can push your Snipe-IT asset tags back into the MDM.**
