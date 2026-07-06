@@ -19,21 +19,30 @@ Most listed integrations are single-purpose. Cairn absorbs them as plugins.
 |---|---|---|---|
 | JAMF2Snipe | MDM → Snipe (inbound) | `sources/jamf` | ✅ shipped |
 | (Intune, JumpCloud, CrowdStrike, Sophos, Defender) | MDM/EDR → Snipe | `sources/*` | ✅ shipped |
-| Kandji2Snipe | MDM → Snipe | new `sources/kandji` | planned |
-| axm2snipe | Apple Business/School Manager → Snipe | new `sources/apple_axm` | planned |
-| retriever2snipe | Google Workspace / ChromeOS → Snipe | new `sources/google_workspace` | planned |
-| UniFi to Snipe-IT | Network gear → Snipe | new `sources/unifi` | planned |
-| cdw2snipe | Procurement (CDW orders) → Snipe | new `sources/cdw` | planned |
-| Rudder.io ↔ Snipe-IT | RMM/config-mgmt ↔ Snipe | `sources/rudder` (+ writeback) | planned |
-| snipe2jamf | Snipe → Jamf (outbound) | writeback capability | planned |
-| Snipe-IT to InTune | Snipe → Intune (outbound) | writeback capability | planned |
+| Kandji2Snipe | MDM → Snipe | `sources/kandji` | ✅ shipped |
+| axm2snipe | Apple Business/School Manager → Snipe | `sources/apple_business_manager` | ✅ shipped |
+| retriever2snipe | Google Workspace / ChromeOS → Snipe | `sources/google_workspace` | ✅ shipped |
+| UniFi to Snipe-IT | Network gear → Snipe | `sources/unifi` | ✅ shipped |
+| cdw2snipe | Procurement (CDW orders) → Snipe | `sources/cdw` | ✅ shipped |
+| Rudder.io ↔ Snipe-IT | RMM/config-mgmt ↔ Snipe | `sources/rudder` (+ writeback) | ✅ shipped |
+| snipe2jamf | Snipe → Jamf (outbound) | `writebacks/jamf` | ✅ shipped |
+| Snipe-IT to InTune | Snipe → Intune (outbound) | `writebacks/intune` | ✅ shipped |
 | SnipeSharp / PowerShell / Python module / SAM cli | API wrappers | documented `cairn` Python client | optional |
 | MCP server for Snipe-IT | AI access | `cairn mcp` server | optional |
 | Asset Reservation/Checkout | Workflow app | out of scope (note as adjacent) | n/a |
 | InQRy, JupiterOne, Python Module | archived | skip | n/a |
 
-Net new connectors to reach parity: **Kandji, Apple ABM/ASM, Google/ChromeOS,
-UniFi, CDW, Rudder**, plus **outbound writeback** to Jamf/Intune.
+Also shipped, beyond this table's original scope: **GLPI** and **NetBox** as
+CMDB readers (`sources/glpi`, `sources/netbox`, used by `cairn drift` and
+writeback — see [Sinks & CMDB readers](sinks-and-cmdb.md)), and a **network
+discovery** source (`sources/network_discovery`, see
+[Network discovery](network-discovery.md)).
+
+Every connector originally scoped as net-new for parity — **Kandji, Apple
+ABM/ASM, Google/ChromeOS, UniFi, CDW, Rudder** — has shipped, as has **outbound
+writeback** to Jamf/Intune (see the phasing table below). The only remaining
+open item from this table is the optional ecosystem-parity work (P6: MCP
+server, documented Python client).
 
 ---
 
@@ -157,6 +166,6 @@ site's integration list.
 
 ## 6. Immediate next step
 
-P1 is the natural start and a clean demo of the consolidation story: add **Kandji**
-and **Google/ChromeOS** sources plus the **asset-type** field, with mocked-API tests,
-behind the same `cairn sync` users already have. Say the word and I'll build P1.
+P1–P5 have shipped (see the phasing table above). The only remaining item from this
+roadmap is **P6 — MCP server + documented Python client**, and it's optional. Say the
+word and I'll build it.
