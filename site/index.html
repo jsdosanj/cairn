@@ -359,12 +359,13 @@
     <section class="section" id="install">
       <div class="container">
         <h2 class="section__title">Install Cairn</h2>
-        <p class="section__sub">Pick your platform. Cairn is free and open source (AGPL-3.0) — grab a release from <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a> or build from source.</p>
+        <p class="section__sub">Pick your platform. Cairn is free and open source (AGPL-3.0) — <code>pip install cairn-sync</code>, grab a release from <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>, or build from source.</p>
 
         <div class="tabs" role="tablist" aria-label="Install options">
           <button class="tab is-active" role="tab" id="tab-macos" aria-selected="true" aria-controls="panel-macos">macOS</button>
           <button class="tab" role="tab" id="tab-windows" aria-selected="false" aria-controls="panel-windows" tabindex="-1">Windows</button>
           <button class="tab" role="tab" id="tab-linux" aria-selected="false" aria-controls="panel-linux" tabindex="-1">Linux</button>
+          <button class="tab" role="tab" id="tab-pypi" aria-selected="false" aria-controls="panel-pypi" tabindex="-1">pip (PyPI)</button>
           <button class="tab" role="tab" id="tab-pip" aria-selected="false" aria-controls="panel-pip" tabindex="-1">From source</button>
         </div>
 
@@ -404,6 +405,16 @@ sudo dpkg -i cairn-linux.deb
 <span class="c-muted"># Or the portable tarball</span>
 curl -fsSL https://github.com/jsdosanj/cairn/releases/latest/download/cairn-linux.tar.gz | tar xz
 sudo mv cairn /usr/local/bin/</code></pre>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-pypi" aria-labelledby="tab-pypi" hidden>
+            <p class="tabpanel__hint">Install from PyPI with pip (Python 3.9+):</p>
+            <div class="terminal terminal--plain">
+              <button class="copy-btn copy-btn--corner" type="button" data-copy="#install-pypi" aria-label="Copy pip install commands">Copy</button>
+              <pre class="terminal__body"><code id="install-pypi"><span class="c-muted"># Install from PyPI</span>
+pip install cairn-sync
+cairn --version</code></pre>
             </div>
           </div>
 
