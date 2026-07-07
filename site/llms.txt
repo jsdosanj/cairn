@@ -1,0 +1,46 @@
+# Cairn
+
+> Cairn is a free, open-source (AGPL-3.0) tool that reconciles device
+> inventory from your MDM and EDR tools into a single IT asset system of
+> record in Snipe-IT, and reports where that record drifts from reality.
+
+Cairn reads device data from the tools that already manage your fleet — Jamf
+Pro, Microsoft Intune, Kandji, JumpCloud, Google Workspace (ChromeOS),
+CrowdStrike Falcon, Sophos Central, Microsoft Defender for Endpoint, Apple
+Business Manager, UniFi, CDW, and Rudder, plus lightweight ARP-based network
+discovery — matches records for the same physical machine by serial number,
+merges them field-by-field by a configurable trust score, and writes one
+reconciled record into Snipe-IT (the system of record it writes to; it can
+also read drift against GLPI or NetBox). It then pushes the resulting asset
+tag back to the source MDM so both sides agree.
+
+Its read-only `cairn drift` command never writes anything: it compares every
+connected source against the CMDB and reports devices that are missing,
+stale, duplicated, or conflicting, each with a 0–100 confidence score, and can
+post a scheduled digest to Slack, Microsoft Teams, or a webhook. `cairn sync
+--dry-run` previews every create/update before any write happens.
+
+Cairn is single-binary (macOS, Windows, Linux), free and open source under
+the AGPL-3.0 (the same license as Snipe-IT), with no paid tiers, no seat
+limits, and no license keys. It's also installable from PyPI as `cairn-sync`.
+
+## Pages
+
+- [Home](https://cairn.dosanjhlabs.com/): product overview, drift report,
+  features, integrations, and install instructions.
+- [Docs](https://cairn.dosanjhlabs.com/docs.html): setup guide (install,
+  connect sources, point at Snipe-IT, dry-run then sync) and FAQ.
+- [Pricing](https://cairn.dosanjhlabs.com/pricing.html): free and open
+  source, forever — no paid plans, seat limits, or license keys.
+- [AI & content-usage policy](https://cairn.dosanjhlabs.com/ai-policy.html):
+  how AI/answer crawlers may use this site's content.
+
+## Source & license
+
+- GitHub: https://github.com/jsdosanj/cairn
+- License: AGPL-3.0 — https://www.gnu.org/licenses/agpl-3.0.html
+
+## Contact
+
+Get in touch through the contact form at
+https://cairn.dosanjhlabs.com/#contact — Cairn, a Dosanjh Labs project.

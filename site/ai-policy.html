@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>AI &amp; Content-Usage Policy | Cairn</title>
+  <meta name="description" content="How AI crawlers may use Cairn's site: answer/search engines are welcome to crawl and cite it, but automated collection for AI/ML training is not permitted without a license.">
+  <link rel="canonical" href="https://cairn.dosanjhlabs.com/ai-policy.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="keywords" content="AI content policy, TDM reservation, AI crawler policy, noai, content usage policy, AI training opt out, robots.txt AI, Cairn">
+  <meta name="theme-color" content="#0a0f1c">
+
+  <link rel="icon" type="image/svg+xml" href="assets/cairn.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cairn">
+  <meta property="og:title" content="AI &amp; Content-Usage Policy | Cairn">
+  <meta property="og:description" content="Answer/search AI is welcome to crawl and cite Cairn's site. Automated collection for AI/ML training is reserved and not permitted without a license.">
+  <meta property="og:url" content="https://cairn.dosanjhlabs.com/ai-policy.html">
+  <meta property="og:image" content="https://cairn.dosanjhlabs.com/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cairn — Snipe-IT device reconciliation, automated.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI &amp; Content-Usage Policy | Cairn">
+  <meta name="twitter:description" content="Answer/search AI is welcome here. Automated collection for AI/ML training is reserved and requires a license.">
+  <meta name="twitter:image" content="https://cairn.dosanjhlabs.com/assets/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cairn.dosanjhlabs.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "AI & Content-Usage Policy",
+        "item": "https://cairn.dosanjhlabs.com/ai-policy.html"
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can AI answer engines and assistants crawl this site?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Answer and search-oriented AI — including OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User, Applebot, Amazon's search agents, Meta's web indexer/fetcher, MistralAI's index/user agents, and DuckAssistBot — is welcome to crawl this site and cite it in answers. That kind of crawling drives traffic back to Cairn and we want it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can this content be used to train AI or machine-learning models?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not without a license. Automated collection of this site's content for AI/ML training, fine-tuning, building a RAG corpus, or otherwise constructing a dataset is not permitted. This content is reserved under the W3C TDM (Text and Data Mining) Reservation Protocol."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which crawlers are allowed, and which are blocked?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "robots.txt is the authoritative list. Answer/search crawlers are explicitly allowed. Known AI training and dataset crawlers — including GPTBot, ClaudeBot, anthropic-ai, Claude-Web, Google-Extended, Applebot-Extended, Meta-ExternalAgent, CCBot, Bytespider, and similar — are disallowed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does blocking Google-Extended or Applebot-Extended hurt my search ranking?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Google-Extended and Applebot-Extended are training-only opt-out control tokens. Disallowing them stops Google's and Apple's AI-training use of this content but has no effect on regular Googlebot or Applebot search indexing, which stays fully allowed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is this policy technically enforced?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Through layered, machine-readable signals: per-bot Allow/Disallow rules in robots.txt, a TDM reservation record at /.well-known/tdmrep.json, an /ai.txt policy file, and HTTP response headers (X-Robots-Tag: noai, noimageai; Content-Usage: train-ai=n, search=y; TDM-Reservation: 1; TDM-Policy) sent with every page."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I license this content for AI training, or ask a question about this policy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Get in touch through the contact form at https://cairn.dosanjhlabs.com/#contact. We're open to licensing conversations for AI/ML training or dataset use — just not to having it taken without one."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html#top" aria-label="Cairn home">
+        <img class="brand__mark" src="assets/cairn.svg" alt="" width="28" height="28">
+        <span class="brand__name">Cairn</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#integrations">Integrations</a>
+        <a href="index.html#install">Install</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="docs.html">Docs</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="nav__github" href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section pricing">
+      <div class="container">
+        <h1 class="section__title">AI &amp; content-usage policy</h1>
+        <p class="section__sub">
+          Answer and search AI is welcome to crawl this site and cite Cairn in its
+          responses — that's traffic we want. Automated collection of this content
+          for AI/ML training, fine-tuning, or dataset construction is reserved and
+          not permitted without a license.
+        </p>
+
+        <div class="docs__block" aria-label="Policy detail">
+          <h2>Answer &amp; search AI: welcome</h2>
+          <p class="docs__lead">
+            AI-powered search and assistants — OAI-SearchBot, ChatGPT-User,
+            Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User,
+            Applebot, Amazon's search agents, Meta's web indexer/fetcher,
+            MistralAI's index/user agents, and DuckAssistBot — may crawl this
+            site freely to answer questions and cite Cairn as the source. See
+            <a href="robots.txt">robots.txt</a> for the authoritative per-bot rules.
+          </p>
+        </div>
+
+        <div class="docs__block" aria-label="Policy detail">
+          <h2>AI / ML training: reserved</h2>
+          <p class="docs__lead">
+            Automated collection of this site's content to train or fine-tune AI or
+            machine-learning models, to build a retrieval (RAG) corpus, or to
+            otherwise construct a dataset is <strong>not permitted without a
+            license</strong>. Known training and dataset crawlers — GPTBot,
+            ClaudeBot, anthropic-ai, Claude-Web, Google-Extended, Applebot-Extended,
+            Meta-ExternalAgent, FacebookBot, Amazonbot, CCBot, Bytespider, cohere-ai,
+            and similar — are disallowed in robots.txt. Google-Extended and
+            Applebot-Extended are training-only opt-out tokens; blocking them does
+            not affect regular Googlebot or Applebot search indexing.
+          </p>
+        </div>
+
+        <div class="docs__block" aria-label="Policy detail">
+          <h2>How this is enforced</h2>
+          <p class="docs__lead">
+            This policy is expressed in layered, machine-readable form so both
+            AI crawlers and standards-aware tooling can honor it automatically:
+          </p>
+          <div class="docs__step">
+            <h3>robots.txt</h3>
+            <p>Explicit per-bot <code>Allow</code> rules for answer/search AI and <code>Disallow</code> rules for training/dataset crawlers.</p>
+          </div>
+          <div class="docs__step">
+            <h3>TDM Reservation Protocol</h3>
+            <p>A machine-readable reservation at <a href="/.well-known/tdmrep.json">/.well-known/tdmrep.json</a>, per the W3C TDMRep standard.</p>
+          </div>
+          <div class="docs__step">
+            <h3>ai.txt</h3>
+            <p>A human- and machine-readable summary of this policy at <a href="ai.txt">/ai.txt</a>.</p>
+          </div>
+          <div class="docs__step">
+            <h3>HTTP response headers</h3>
+            <p>Every page is served with <code>X-Robots-Tag: noai, noimageai</code>, <code>Content-Usage: train-ai=n, search=y</code>, <code>TDM-Reservation: 1</code>, and a <code>TDM-Policy</code> link back to this page — while search indexing stays fully enabled.</p>
+          </div>
+        </div>
+
+        <section class="docs__block" aria-label="AI policy questions">
+          <h2>Frequently asked questions</h2>
+          <div class="faq">
+            <details class="faq__item">
+              <summary>Can AI answer engines and assistants crawl this site?</summary>
+              <div class="faq__answer"><p>
+                Yes. Answer and search-oriented AI — including OAI-SearchBot,
+                ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot,
+                Perplexity-User, Applebot, Amazon's search agents, Meta's web
+                indexer/fetcher, MistralAI's index/user agents, and DuckAssistBot —
+                is welcome to crawl this site and cite it in answers. That kind of
+                crawling drives traffic back to Cairn and we want it.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>Can this content be used to train AI or machine-learning models?</summary>
+              <div class="faq__answer"><p>
+                Not without a license. Automated collection of this site's content
+                for AI/ML training, fine-tuning, building a RAG corpus, or otherwise
+                constructing a dataset is not permitted. This content is reserved
+                under the W3C TDM (Text and Data Mining) Reservation Protocol.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>Which crawlers are allowed, and which are blocked?</summary>
+              <div class="faq__answer"><p>
+                <a href="robots.txt">robots.txt</a> is the authoritative list.
+                Answer/search crawlers are explicitly allowed. Known AI training and
+                dataset crawlers — including GPTBot, ClaudeBot, anthropic-ai,
+                Claude-Web, Google-Extended, Applebot-Extended, Meta-ExternalAgent,
+                CCBot, Bytespider, and similar — are disallowed.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>Does blocking Google-Extended or Applebot-Extended hurt my search ranking?</summary>
+              <div class="faq__answer"><p>
+                No. Google-Extended and Applebot-Extended are training-only opt-out
+                control tokens. Disallowing them stops Google's and Apple's
+                AI-training use of this content but has no effect on regular
+                Googlebot or Applebot search indexing, which stays fully allowed.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>How is this policy technically enforced?</summary>
+              <div class="faq__answer"><p>
+                Through layered, machine-readable signals: per-bot Allow/Disallow
+                rules in robots.txt, a TDM reservation record at
+                <a href="/.well-known/tdmrep.json">/.well-known/tdmrep.json</a>, an
+                <a href="ai.txt">/ai.txt</a> policy file, and HTTP response headers
+                (<code>X-Robots-Tag: noai, noimageai</code>;
+                <code>Content-Usage: train-ai=n, search=y</code>;
+                <code>TDM-Reservation: 1</code>; <code>TDM-Policy</code>) sent with
+                every page.
+              </p></div>
+            </details>
+
+            <details class="faq__item">
+              <summary>How do I license this content for AI training, or ask a question about this policy?</summary>
+              <div class="faq__answer"><p>
+                Get in touch through the <a href="index.html#contact">contact form</a>.
+                We're open to licensing conversations for AI/ML training or dataset
+                use — just not to having it taken without one.
+              </p></div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/cairn.svg" alt="Cairn logo" width="24" height="24" loading="lazy" decoding="async">
+        <span>Cairn</span>
+      </div>
+      <p class="footer__meta">
+        <a href="pricing.html">Pricing</a> ·
+        <a href="docs.html">Docs</a> ·
+        <a href="ai-policy.html">AI Policy</a> ·
+        <a href="index.html#contact">Contact</a> ·
+        <a href="https://github.com/jsdosanj/cairn" target="_blank" rel="noopener">GitHub</a>
+      </p>
+      <p class="footer__copy">© 2026 Cairn · Free &amp; open source (AGPL-3.0) · Every device. One source of truth.</p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+</body>
+</html>
