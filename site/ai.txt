@@ -30,7 +30,8 @@ All content on this site is reserved under the W3C TDM Reservation Protocol
 ## Licensing & contact
 
 To license this content for AI training, dataset construction, or any use
-beyond answer/search citation, contact: dots-whisks.6r@icloud.com
+beyond answer/search citation, get in touch through the contact form at
+https://cairn.dosanjhlabs.com/#contact
 
 ## Product
 
@@ -38,6 +39,6 @@ Cairn is a free, open-source (AGPL-3.0) tool that reconciles device inventory
 from MDM/EDR sources (Jamf, Intune, Kandji, JumpCloud, CrowdStrike, Sophos,
 Defender, and more) into Snipe-IT as a single system of record, with a
 read-only drift report showing where the CMDB disagrees with reality.
-Source: https://github.com/jsdosanj/cairn
+Source: https://github.com/jsdosanj/cairn — a Dosanjh Labs project.
 
 Full policy: https://cairn.dosanjhlabs.com/ai-policy.html

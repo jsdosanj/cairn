@@ -42,4 +42,5 @@ limits, and no license keys. It's also installable from PyPI as `cairn-sync`.
 
 ## Contact
 
-dots-whisks.6r@icloud.com — Cairn, a Dosanjh Labs project.
+Get in touch through the contact form at
+https://cairn.dosanjhlabs.com/#contact — Cairn, a Dosanjh Labs project.
