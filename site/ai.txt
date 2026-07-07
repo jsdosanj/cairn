@@ -1,0 +1,43 @@
+# ai.txt — AI & content-usage policy for Cairn
+# https://cairn.dosanjhlabs.com
+
+This file is both human- and machine-readable. It states how automated and
+AI-related systems may use the content published at cairn.dosanjhlabs.com.
+
+## Answer engines & AI search (welcomed)
+
+AI answer engines, AI-powered search, and assistants that crawl this site to
+answer a user's question and cite/link back to Cairn as the source are
+welcome to crawl this site. This includes (non-exhaustively) OAI-SearchBot,
+ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User,
+Applebot, Amazon's search agents, Meta's web indexer/fetcher, MistralAI's
+index/user agents, and DuckAssistBot. See robots.txt for the authoritative
+per-bot rules.
+
+## AI / ML training (not permitted without a license)
+
+Automated collection of this site's content for the purpose of training or
+fine-tuning AI/ML models, building a RAG corpus, or otherwise constructing a
+dataset for model training is NOT permitted without a separate license. This
+applies to crawlers such as GPTBot, ClaudeBot, anthropic-ai, Claude-Web,
+Google-Extended, Applebot-Extended, Meta-ExternalAgent, CCBot, Bytespider,
+and similar dataset/training crawlers — see robots.txt for the full,
+authoritative list.
+
+All content on this site is reserved under the W3C TDM Reservation Protocol
+(TDMRep) — see /.well-known/tdmrep.json and /ai-policy.html.
+
+## Licensing & contact
+
+To license this content for AI training, dataset construction, or any use
+beyond answer/search citation, contact: dots-whisks.6r@icloud.com
+
+## Product
+
+Cairn is a free, open-source (AGPL-3.0) tool that reconciles device inventory
+from MDM/EDR sources (Jamf, Intune, Kandji, JumpCloud, CrowdStrike, Sophos,
+Defender, and more) into Snipe-IT as a single system of record, with a
+read-only drift report showing where the CMDB disagrees with reality.
+Source: https://github.com/jsdosanj/cairn
+
+Full policy: https://cairn.dosanjhlabs.com/ai-policy.html
